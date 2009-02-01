@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::Strict;
+package Test::Apocalypse::Compile;
 use strict; use warnings;
 
 # Initialize our version
@@ -7,11 +7,11 @@ use vars qw( $VERSION );
 $VERSION = '0.01';
 
 # setup our tests and etc
-use Test::Strict;
+use Test::Compile;
 
 # does our stuff!
 sub do_test {
-	all_perl_files_ok();
+	all_pm_files_ok();
 
 	return;
 }
@@ -20,7 +20,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::Strict - Plugin for Test::Strict
+Test::Apocalypse::Compile - Plugin for Test::Compile
 
 =head1 SYNOPSIS
 
@@ -28,11 +28,11 @@ Test::Apocalypse::Strict - Plugin for Test::Strict
 
 =head1 ABSTRACT
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Compile functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Compile functionality.
 
 =head1 EXPORT
 
@@ -42,7 +42,7 @@ None.
 
 L<Test::Apocalypse>
 
-L<Test::Strict>
+L<Test::Compile>
 
 =head1 AUTHOR
 

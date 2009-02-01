@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::Strict;
+package Test::Apocalypse::Pod_Coverage;
 use strict; use warnings;
 
 # Initialize our version
@@ -7,11 +7,14 @@ use vars qw( $VERSION );
 $VERSION = '0.01';
 
 # setup our tests and etc
-use Test::Strict;
+use Test::More;
+use Test::Pod::Coverage;
 
 # does our stuff!
 sub do_test {
-	all_perl_files_ok();
+	# FIXME not used now
+	#all_pod_coverage_ok( 'lib/');
+	plan skip_all => 'not done yet';
 
 	return;
 }
@@ -20,7 +23,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::Strict - Plugin for Test::Strict
+Test::Apocalypse::Pod_Coverage - Plugin for Test::Pod::Coverage
 
 =head1 SYNOPSIS
 
@@ -28,11 +31,11 @@ Test::Apocalypse::Strict - Plugin for Test::Strict
 
 =head1 ABSTRACT
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Pod::Coverage functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Pod::Coverage functionality.
 
 =head1 EXPORT
 
@@ -42,7 +45,7 @@ None.
 
 L<Test::Apocalypse>
 
-L<Test::Strict>
+L<Test::Pod::Coverage>
 
 =head1 AUTHOR
 

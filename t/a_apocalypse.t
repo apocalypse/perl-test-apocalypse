@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+use strict; use warnings;
 
 # do our stuff!
 use Test::Apocalypse;

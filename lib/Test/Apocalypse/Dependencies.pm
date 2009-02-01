@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::Strict;
+package Test::Apocalypse::Dependencies;
 use strict; use warnings;
 
 # Initialize our version
@@ -7,11 +7,18 @@ use vars qw( $VERSION );
 $VERSION = '0.01';
 
 # setup our tests and etc
-use Test::Strict;
+require Test::Dependencies;
 
 # does our stuff!
 sub do_test {
-	all_perl_files_ok();
+	# build up our exclude list of usual installers that we never use() but T::D is stupid to detect :(
+	my @exclude = qw( Module::Build Module::Install ExtUtils::MakeMaker );
+
+	# FIXME Do we need to add the dist module? ( sometimes we never use() it! )
+
+	# run it!
+	Test::Dependencies->import( 'exclude' => \@exclude );
+	ok_dependencies();
 
 	return;
 }
@@ -20,7 +27,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::Strict - Plugin for Test::Strict
+Test::Apocalypse::Dependencies - Plugin for Test::Dependencies
 
 =head1 SYNOPSIS
 
@@ -28,11 +35,11 @@ Test::Apocalypse::Strict - Plugin for Test::Strict
 
 =head1 ABSTRACT
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Dependencies functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Dependencies functionality.
 
 =head1 EXPORT
 
@@ -42,7 +49,7 @@ None.
 
 L<Test::Apocalypse>
 
-L<Test::Strict>
+L<Test::Dependencies>
 
 =head1 AUTHOR
 

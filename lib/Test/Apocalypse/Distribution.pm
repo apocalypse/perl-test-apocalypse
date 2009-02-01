@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::Strict;
+package Test::Apocalypse::Distribution;
 use strict; use warnings;
 
 # Initialize our version
@@ -7,11 +7,13 @@ use vars qw( $VERSION );
 $VERSION = '0.01';
 
 # setup our tests and etc
-use Test::Strict;
+require Test::Distribution;
 
 # does our stuff!
 sub do_test {
-	all_perl_files_ok();
+	# skip podcover because it is redundant
+	# FIXME is setting distversion too excessive?
+	Test::Distribution->import( not => 'podcover', distversion => 1 );
 
 	return;
 }
@@ -20,7 +22,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::Strict - Plugin for Test::Strict
+Test::Apocalypse::Distribution - Plugin for Test::Distribution
 
 =head1 SYNOPSIS
 
@@ -28,11 +30,11 @@ Test::Apocalypse::Strict - Plugin for Test::Strict
 
 =head1 ABSTRACT
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Distribution functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Distribution functionality.
 
 =head1 EXPORT
 
@@ -42,7 +44,7 @@ None.
 
 L<Test::Apocalypse>
 
-L<Test::Strict>
+L<Test::Distribution>
 
 =head1 AUTHOR
 

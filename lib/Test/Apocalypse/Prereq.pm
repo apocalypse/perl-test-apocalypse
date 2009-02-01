@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::Strict;
+package Test::Apocalypse::Prereq;
 use strict; use warnings;
 
 # Initialize our version
@@ -7,11 +7,16 @@ use vars qw( $VERSION );
 $VERSION = '0.01';
 
 # setup our tests and etc
-use Test::Strict;
+use Test::More;
+use Test::Prereq;
 
 # does our stuff!
 sub do_test {
-	all_perl_files_ok();
+	if ( not $ENV{PERL_TEST_PREREQ} ) {
+		plan skip_all => 'PREREQ test ( warning: LONG! ) Sent $ENV{PERL_TEST_PREREQ} to a true value to run.';
+	} else {
+		prereq_ok();
+	}
 
 	return;
 }
@@ -20,7 +25,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::Strict - Plugin for Test::Strict
+Test::Apocalypse::Prereq - Plugin for Test::Prereq
 
 =head1 SYNOPSIS
 
@@ -28,11 +33,11 @@ Test::Apocalypse::Strict - Plugin for Test::Strict
 
 =head1 ABSTRACT
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Prereq functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Prereq functionality.
 
 =head1 EXPORT
 
@@ -42,7 +47,7 @@ None.
 
 L<Test::Apocalypse>
 
-L<Test::Strict>
+L<Test::Prereq>
 
 =head1 AUTHOR
 

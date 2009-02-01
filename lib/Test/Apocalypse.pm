@@ -7,9 +7,9 @@ use vars qw( $VERSION );
 $VERSION = '0.01';
 
 # setup our tests and etc
-use Test::Group;
+use Test::Block qw( $Plan );
 use Test::More;
-use Module::Pluggable require => 1;
+use Module::Pluggable require => 1, search_path => [ __PACKAGE__ ];
 
 # auto-export the only sub we have
 use base qw( Exporter );
@@ -22,14 +22,43 @@ sub is_apocalypse_here {
 	# should we even run those tests?
 	if ( ! $ENV{TEST_AUTHOR} ) {
 		plan skip_all => 'Author test. Sent $ENV{TEST_AUTHOR} to a true value to run.';
+	} else {
+		plan 'no_plan';
 	}
 
 	# loop through our plugins
 	foreach my $t ( __PACKAGE__->plugins() ) {
+		# localize the stuff
+		local $Plan;
+
+		# do nasty override of Test::Builder::plan
+		no warnings 'redefine'; no strict 'refs';
+		my $oldplan = \&Test::Builder::plan;
+		my $newplan = sub {
+			my( $self, $cmd, $arg ) = @_;
+			return unless $cmd;
+
+			# handle the cmds
+			if ( $cmd eq 'skip_all' ) {
+				$Plan = 1;
+				$self->skip( "skipping $t" );
+			} elsif ( $cmd eq 'tests' ) {
+				$Plan = $arg;
+			} elsif ( $cmd eq 'no_plan' ) {
+				# ignore it
+			}
+
+			return 1;
+		};
+		*{'Test::Builder::plan'} = $newplan;
+
 		# run it!
-		test $t => sub {
-			$t->do_test();
-		}
+		use warnings; use strict;
+		$t->do_test();
+
+		# revert the override
+		no warnings 'redefine'; no strict 'refs';
+		*{'Test::Builder::plan'} = $oldplan;
 	}
 
 	# passed all tests!

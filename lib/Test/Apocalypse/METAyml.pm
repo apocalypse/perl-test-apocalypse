@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::Strict;
+package Test::Apocalypse::METAyml;
 use strict; use warnings;
 
 # Initialize our version
@@ -7,11 +7,11 @@ use vars qw( $VERSION );
 $VERSION = '0.01';
 
 # setup our tests and etc
-use Test::Strict;
+use Test::YAML::Meta;
 
 # does our stuff!
 sub do_test {
-	all_perl_files_ok();
+	meta_yaml_ok();
 
 	return;
 }
@@ -20,7 +20,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::Strict - Plugin for Test::Strict
+Test::Apocalypse::METAyml - Plugin for Test::YAML::Meta
 
 =head1 SYNOPSIS
 
@@ -28,11 +28,11 @@ Test::Apocalypse::Strict - Plugin for Test::Strict
 
 =head1 ABSTRACT
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::YAML::Meta functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::YAML::Meta functionality.
 
 =head1 EXPORT
 
@@ -42,7 +42,7 @@ None.
 
 L<Test::Apocalypse>
 
-L<Test::Strict>
+L<Test::YAML::Meta>
 
 =head1 AUTHOR
 

@@ -1,4 +1,5 @@
 # Build.PL
+use strict; use warnings;
 use Module::Build;
 
 my $build = Module::Build->new(
@@ -25,22 +26,33 @@ my $build = Module::Build->new(
 
 	'requires'		=> {
 		# Test stuff
+		'Test::More'		=> '0.86',
 		'Test::Compile'		=> 0,
 		'Test::Perl::Critic'	=> 0,
 		'Test::Dependencies'	=> 0,
 		'Test::Distribution'	=> 0,
 		'Test::Fixme'		=> 0,
 		'Test::HasVersion'	=> 0,
-		'Test::Kwalitee'	=> 0,
 		'Test::CheckManifest'	=> 0,
 		'Test::MinimumVersion'	=> 0,
 		'Test::Pod::Coverage'	=> 0,
 		'Test::Spelling'	=> 0,
 		'Test::Pod'		=> 0,
 		'Test::Prereq'		=> 0,
+		'Test::Prereq::Build'	=> 0,
 		'Test::Strict'		=> 0,
 		'Test::UseAllModules'	=> 0,
 		'Test::YAML::Meta'	=> 0,
+
+		# handy tools
+		'File::Find::Rule'		=> 0,
+		'Module::CPANTS::Analyze'	=> 0,
+		'Perl::Metrics::Simple'		=> 0,
+		'Test::Block'			=> 0,
+		'YAML'				=> 0,
+		'version'			=> 0,
+		'CPANPLUS::Backend'		=> 0,
+		'CPANPLUS::Configure'		=> 0,
 	},
 );
 
