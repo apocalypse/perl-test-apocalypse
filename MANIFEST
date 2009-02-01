@@ -1,0 +1,13 @@
+Build.PL
+MANIFEST
+MANIFEST.SKIP
+README
+lib/Test/Apocalypse.pm
+Makefile.PL
+META.yml
+Changes
+
+examples/simple.pl
+
+t/1_load.t
+t/a_apocalypse.t
