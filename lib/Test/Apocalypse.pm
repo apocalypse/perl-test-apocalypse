@@ -9,7 +9,7 @@ $VERSION = '0.01';
 # setup our tests and etc
 use Test::Group;
 use Test::More;
-use Module::Pluggable sub_name => 'do_test', require => 1;
+use Module::Pluggable require => 1;
 
 # auto-export the only sub we have
 use base qw( Exporter );

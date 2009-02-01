@@ -3,6 +3,7 @@ MANIFEST
 MANIFEST.SKIP
 README
 lib/Test/Apocalypse.pm
+lib/Test/Apocalypse/Strict.pm
 Makefile.PL
 META.yml
 Changes
