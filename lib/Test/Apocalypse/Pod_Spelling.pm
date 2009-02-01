@@ -11,6 +11,9 @@ use Test::Spelling;
 
 # does our stuff!
 sub do_test {
+	# Add our global list of stopwords
+	add_stopwords( qw( AnnoCPAN CPAN RT dist prereqs ) );
+
 	all_pod_files_spelling_ok();
 
 	return;

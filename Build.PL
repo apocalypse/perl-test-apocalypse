@@ -43,16 +43,20 @@ my $build = Module::Build->new(
 		'Test::Strict'		=> 0,
 		'Test::UseAllModules'	=> 0,
 		'Test::YAML::Meta'	=> 0,
+		'Test::NoWarnings'	=> 0,
 
 		# handy tools
 		'File::Find::Rule'		=> 0,
-		'Module::CPANTS::Analyze'	=> 0,
+		'Module::CPANTS::Analyse'	=> 0,
 		'Perl::Metrics::Simple'		=> 0,
 		'Test::Block'			=> 0,
 		'YAML'				=> 0,
 		'version'			=> 0,
 		'CPANPLUS::Backend'		=> 0,
 		'CPANPLUS::Configure'		=> 0,
+
+		# we need a recent perl
+		'perl'			=> '5.008',
 	},
 );
 

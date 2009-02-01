@@ -10,31 +10,37 @@ $VERSION = '0.01';
 use Test::More;
 use Cwd qw( cwd );
 use Module::CPANTS::Analyse;
+use version;
 
 # does our stuff!
 sub do_test {
 	# the following code was copied/plagarized/transformed from Test::Kwalitee, thanks!
 
-	# init CPANTS
+	# init CPANTS with the latest tarball
 	my $analyzer = Module::CPANTS::Analyse->new({
-		'distdir'	=> cwd(),
-		'dist'		=> cwd(),
+	#	'distdir'	=> cwd(),
+	#	'dist'		=> cwd(),
+		'dist'	=> get_tarball(),
 	});
 
 	# set the number of tests / run analyzer
 	my @indicators = $analyzer->mck()->get_indicators();
 	plan tests => scalar @indicators;
+	$analyzer->unpack;
 	$analyzer->analyse;
 	$analyzer->calc_kwalitee;
 
 	# loop over the kwalitee metrics
 	foreach my $gen ( @{ $analyzer->mck()->generators() } ) {
+		# let it analyze the data
+		#$gen->analyse( $analyzer );
+
 		foreach my $metric ( @{ $gen->kwalitee_indicators() } ) {
 			# skip problematic ones
 			#if ( $metric->{'name'} =~ /^(?:extracts_nicely|has_version|has_proper_version)$/ ) { next }
 
 			# get the result
-			my $result = $metric->{'code'}->( $analyzer->d(), $gen );
+			my $result = $metric->{'code'}->( $analyzer->d(), $metric );
 			ok( $result, $metric->{'name'} );
 
 			# print more diag if it failed
@@ -53,6 +59,28 @@ sub do_test {
 	cleanup_debian_files();
 
 	return;
+}
+
+sub get_tarball {
+	# get our list of stuff, and try to find the latest tarball
+	opendir( my $dir, '.' ) or die "unable to opendir: $!";
+	my @dirlist = readdir( $dir );
+	closedir( $dir );
+
+	# get the tarballs
+	@dirlist = grep { /\.tar\.gz$/ } @dirlist;
+
+	# get the versions
+	@dirlist = map { [ $_, $_ ] } @dirlist;
+	for ( @dirlist ) {
+		$_->[0] =~ s/^.*\-([^\-]+)\.tar\.gz$/$1/;
+		$_->[0] = version->new( $_->[0] );
+	}
+
+	# sort by version
+	@dirlist = sort { $b->[0] <=> $a->[0] } @dirlist;
+
+	return $dirlist[0]->[1];
 }
 
 # Module::CPANTS::Kwalitee::Distros suck!

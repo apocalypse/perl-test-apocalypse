@@ -28,6 +28,7 @@ META.yml
 Changes
 
 examples/simple.pl
+t/perlcriticrc
 
 t/1_load.t
 t/a_apocalypse.t

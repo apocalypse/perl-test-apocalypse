@@ -62,8 +62,9 @@ sub load_yml {
 	# silence CPANPLUS!
 	{
 		no warnings 'redefine';
-		eval "sub Log::Message::Handlers::cp_msg { return }";
-		eval "sub Log::Message::Handlers::cp_error { return }";
+		## no critic ( ProhibitNestedSubs )
+		eval { sub Log::Message::Handlers::cp_msg { return } };
+		eval { sub Log::Message::Handlers::cp_error { return } };
 	}
 
 	# Okay, how many prereqs do we have?
@@ -131,11 +132,11 @@ Test::Apocalypse::OutdatedPrereqs - Plugin to detect outdated prereqs
 
 =head1 ABSTRACT
 
-This plugin detects outdated prereqs in F<META.yml> being specified relative to CPAN.
+This plugin detects outdated prereqs in F<META.yml> specified relative to CPAN.
 
 =head1 DESCRIPTION
 
-This plugin detects outdated prereqs in F<META.yml> being specified relative to CPAN.
+This plugin detects outdated prereqs in F<META.yml> specified relative to CPAN.
 
 =head1 EXPORT
 

@@ -24,5 +24,6 @@
 \b\.#
 \.bak$
 
-# our tarballs
+# our tarballs + stuff we spew
 \.tar\.gz$
+^Debian_CPANTS\.txt

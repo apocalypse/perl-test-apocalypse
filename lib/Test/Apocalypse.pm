@@ -9,11 +9,13 @@ $VERSION = '0.01';
 # setup our tests and etc
 use Test::Block qw( $Plan );
 use Test::More;
+use Test::Builder;
 use Module::Pluggable require => 1, search_path => [ __PACKAGE__ ];
+use Test::NoWarnings;
 
 # auto-export the only sub we have
 use base qw( Exporter );
-our @EXPORT = qw( is_apocalypse_here );
+our @EXPORT = qw( is_apocalypse_here ); ## no critic ( ProhibitAutomaticExportation )
 
 sub is_apocalypse_here {
 	# arrayref of tests to skip/use/etc
@@ -27,12 +29,12 @@ sub is_apocalypse_here {
 	}
 
 	# loop through our plugins
-	foreach my $t ( __PACKAGE__->plugins() ) {
+	foreach my $t ( Test::Apocalypse->plugins() ) {
 		# localize the stuff
 		local $Plan;
 
 		# do nasty override of Test::Builder::plan
-		no warnings 'redefine'; no strict 'refs';
+		no warnings 'redefine'; no strict 'refs';	## no critic ( ProhibitProlongedStrictureOverride )
 		my $oldplan = \&Test::Builder::plan;
 		my $newplan = sub {
 			my( $self, $cmd, $arg ) = @_;
@@ -40,12 +42,13 @@ sub is_apocalypse_here {
 
 			# handle the cmds
 			if ( $cmd eq 'skip_all' ) {
-				$Plan = 1;
+				$Plan = { $t => 1 };
 				$self->skip( "skipping $t" );
 			} elsif ( $cmd eq 'tests' ) {
-				$Plan = $arg;
+				$Plan = { $t => $arg };
 			} elsif ( $cmd eq 'no_plan' ) {
 				# ignore it
+				$Plan = { $t => 0 };
 			}
 
 			return 1;
@@ -67,6 +70,7 @@ sub is_apocalypse_here {
 
 1;
 __END__
+
 =head1 NAME
 
 Test::Apocalypse - Apocalypse's favorite tests bundled into a simple interface
@@ -78,16 +82,11 @@ Test::Apocalypse - Apocalypse's favorite tests bundled into a simple interface
 
 	use Test::More;
 
-	# AUTHOR test
-	if ( not $ENV{TEST_AUTHOR} ) {
-		plan skip_all => 'Author test. Sent $ENV{TEST_AUTHOR} to a true value to run.';
+	eval { use Test::Apocalypse };
+	if ( $@ ) {
+		plan skip_all => 'Test::Apocalypse required for validating the distribution';
 	} else {
-		eval { use Test::Apocalypse };
-		if ( $@ ) {
-			plan skip_all => 'Test::Apocalypse required for validating the distribution';
-		} else {
-			is_apocalypse_here();
-		}
+		is_apocalypse_here();
 	}
 
 =head1 ABSTRACT
