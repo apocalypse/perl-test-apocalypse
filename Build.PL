@@ -17,7 +17,7 @@ my $build = Module::Build->new(
 
 	'test_files'		=> 't/*.t',
 
-	'add_to_cleanup'	=> [ 'META.yml', 'Makefile.PL', 'README' ],	# automatically generated
+	'add_to_cleanup'	=> [ 'META.yml', 'Makefile.PL', 'README', 'Makefile' ],	# automatically generated
 
 	'requires'		=> {
 		# Test stuff

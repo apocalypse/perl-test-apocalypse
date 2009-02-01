@@ -25,11 +25,11 @@ sub is_apocalypse_here {
 		plan skip_all => 'Author test. Sent $ENV{TEST_AUTHOR} to a true value to run.';
 	} else {
 		plan 'no_plan';
-		eval "use Test::NoWarnings";
+		eval "use Test::NoWarnings";	## no critic ( ProhibitStringyEval )
 	}
 
 	# loop through our plugins
-	foreach my $t ( Test::Apocalypse->plugins() ) {
+	foreach my $t ( __PACKAGE__->plugins() ) {	# FIXME stupid Perl::Critic ## no critic ( RequireExplicitInclusion )
 		# localize the stuff
 		local $Plan;
 
@@ -42,7 +42,9 @@ sub is_apocalypse_here {
 			# handle the cmds
 			if ( $cmd eq 'skip_all' ) {
 				$Plan = { $t => 1 };
-				$self->skip( "skipping $t" );
+				SKIP: {
+					$self->skip( "skipping $t", 1 );
+				}
 			} elsif ( $cmd eq 'tests' ) {
 				$Plan = { $t => $arg };
 			} elsif ( $cmd eq 'no_plan' ) {
@@ -98,6 +100,29 @@ Using this test module simplifies/bundles common distribution tests favored by t
 
 =head1 DESCRIPTION
 
+This module greatly simplifies common author tests for modules heading towards CPAN. I was sick of copy/pasting
+the tons of t/foo.t scripts + managing them in every distro. I thought it would be nice to bundle all of it into
+one module and toss it on CPAN :) That way, every time I update this module all of my dists would be magically
+updated!
+
+This module respects the TEST_AUTHOR env variable, if it is not set it will skip the entire testsuite. Normally
+end-users should not run it; but you can if you want to see how bad my dists are, ha!
+
+This module uses L<Module::Pluggable> to have custom "backends" that process various tests. We wrap them in a hackish
+L<Test::Block> block per-plugin and it seems to work nicely. If you want to write your own, it should be a breeze
+once you look at some of my plugins and see how it works. ( more documentation to come )
+
+=head2 Usage
+
+In order to use this, you would need to be familiar with the "standard" steps in order to fully exercise the testsuite.
+There are a few steps we require, because our plugins need stuff to be prepared for them. For starters, you would need
+a test file in your distribution similar to the one in SYNOPSIS. Once that is done and added to your MANIFEST and etc,
+you can do this:
+
+	perl Build.PL			# sets up the dist ( duh, hah )
+	./Build dist			# makes the tarball ( so certain plugins can process it )
+	TEST_AUTHOR=1 ./Build test	# runs the testsuite!
+
 =head1 EXPORT
 
 Automatically exports the "is_apocalypse_here" sub.
@@ -109,6 +134,10 @@ Automatically exports the "is_apocalypse_here" sub.
 =item * Make sure we have no unnecessary +x files ( especially Build.PL! )
 
 =item * Document the way we do plugins so others can add to this testsuite :)
+
+=item * Per-plugin configuration for distros so we can override the default config
+
+=item * POD standards check ( do we have SYNOPSIS, ABSTRACT, SUPPORT, etc sections? )
 
 =back
 

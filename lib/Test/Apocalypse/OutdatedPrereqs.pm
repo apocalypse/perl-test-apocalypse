@@ -61,6 +61,7 @@ sub load_yml {
 	# silence CPANPLUS!
 	{
 		no warnings 'redefine';
+		## no critic ( ProhibitStringyEval )
 		eval "sub Log::Message::Handlers::cp_msg { return }";
 		eval "sub Log::Message::Handlers::cp_error { return }";
 	}

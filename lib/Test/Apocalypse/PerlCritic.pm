@@ -23,8 +23,6 @@ my $exclude = [ qw( Subroutines::ProhibitCallsToUndeclaredSubs Subroutines::Requ
 
 # does our stuff!
 sub do_test {
-	# FIXME should we skip this?
-
 	# build our default options
 	my %opt = (
 		'-severity'	=> 'stern',

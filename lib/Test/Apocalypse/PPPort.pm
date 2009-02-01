@@ -18,7 +18,14 @@ sub do_test {
 	# do we have an existing ppport.h file?
 	my $haveppport = 0;
 	my $needstrip = 0;
-	if ( -f 'ppport.h' ) {
+	SKIP: {
+		if ( ! -f 'ppport.h' ) {
+			# generate our own ppport.h file
+			Devel::PPPort::WriteFile( 'ppport.h' );
+
+			skip( 'distro did not come with a ppport.h file', 1 );
+		}
+
 		$haveppport++;
 
 		# was it already stripped or not?
@@ -33,11 +40,6 @@ sub do_test {
 		# remove it and create a new one so we have the latest one, always
 		unlink( 'ppport.h' ) or die "unable to unlink: $!";
 		Devel::PPPort::WriteFile( 'ppport.h' );
-	} else {
-		# generate our own ppport.h file
-		Devel::PPPort::WriteFile( 'ppport.h' );
-
-		skip( 'distro did not come with a ppport.h file' );
 	}
 
 	# Then, we run it :)
