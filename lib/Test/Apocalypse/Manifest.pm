@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::CheckManifest;
+package Test::Apocalypse::Manifest;
 use strict; use warnings;
 
 # Initialize our version
@@ -7,12 +7,16 @@ use vars qw( $VERSION );
 $VERSION = '0.01';
 
 # setup our tests and etc
-use Test::CheckManifest;
+use Test::CheckManifest;	# FIXME Test::DistManifest seems better but it is br0ken :(
 
 # does our stuff!
 sub do_test {
 	ok_manifest( {
-		'filter'	=>	[ qr/\.svn/, qr/\.git/, qr/\.tar\.gz$/ ],
+		# for now, exclude some annoying stuff
+		'filter' => [ qr/\.svn/, qr/\.git/, qr/\.tar\.gz$/,	# RCS systems
+			qr/\.project$/,					# Eclipse file
+			qr/\.c$/, qr/\.o$/,				# compiled stuff ( XS )
+		],
 	} );
 
 	return;

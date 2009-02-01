@@ -1,9 +1,0 @@
-# set global policies
-color = 1
-
-# get rid of some annoying policies
-[-Subroutines::ProhibitCallsToUndeclaredSubs]
-[-ValuesAndExpressions::ProhibitAccessOfPrivateData]
-[-TestingAndDebugging::ProhibitNoStrict]
-[-TestingAndDebugging::ProhibitNoWarnings]
-[-ErrorHandling::RequireUseOfExceptions]

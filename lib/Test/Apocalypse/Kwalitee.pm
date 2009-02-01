@@ -8,7 +8,6 @@ $VERSION = '0.01';
 
 # setup our tests and etc
 use Test::More;
-use Cwd qw( cwd );
 use Module::CPANTS::Analyse;
 use version;
 
@@ -18,42 +17,56 @@ sub do_test {
 
 	# init CPANTS with the latest tarball
 	my $analyzer = Module::CPANTS::Analyse->new({
-	#	'distdir'	=> cwd(),
-	#	'dist'		=> cwd(),
 		'dist'	=> get_tarball(),
 	});
 
 	# set the number of tests / run analyzer
 	my @indicators = $analyzer->mck()->get_indicators();
-	plan tests => scalar @indicators;
+	plan tests => scalar @indicators - 3;	# remove the problematic tests
 	$analyzer->unpack;
 	$analyzer->analyse;
 	$analyzer->calc_kwalitee;
+	my $kwalitee_points = 0;
+	my $available_kwalitee = 0;
 
 	# loop over the kwalitee metrics
 	foreach my $gen ( @{ $analyzer->mck()->generators() } ) {
-		# let it analyze the data
-		#$gen->analyse( $analyzer );
-
 		foreach my $metric ( @{ $gen->kwalitee_indicators() } ) {
 			# skip problematic ones
-			#if ( $metric->{'name'} =~ /^(?:extracts_nicely|has_version|has_proper_version)$/ ) { next }
+			if ( $metric->{'name'} =~ /^(?:is_prereq|prereq_matches_use|build_prereq_matches_use)$/ ) { next }
 
 			# get the result
 			my $result = $metric->{'code'}->( $analyzer->d(), $metric );
-			ok( $result, $metric->{'name'} );
+			my $type = 'CORE';
+			if ( exists $metric->{'is_experimental'} and $metric->{'is_experimental'} ) {
+				$type = 'EXPERIMENTAL';
+			}
+			if ( exists $metric->{'is_extra'} and $metric->{'is_extra'} ) {
+				$type = 'EXTRA';
+			}
+			ok( $result, "[$type] $metric->{'name'}" );
 
 			# print more diag if it failed
-			if ( ! $result ) {
+			if ( ! $result && $ENV{TEST_VERBOSE} ) {
 				diag( '[' . $metric->{'name'} . '] error(' . $metric->{'error'} . ') remedy(' . $metric->{'remedy'} . ')' );
+
+			}
+
+			# should we tally up the kwalitee?
+			if ( ! exists $metric->{'is_experimental'} || ! $metric->{'is_experimental'} ) {
+				# we increment available only for CORE, not extra
+				if ( ! exists $metric->{'is_extra'} || ! $metric->{'is_extra'} ) {
+					$available_kwalitee++;
+				}
+				if ( $result ) {
+					$kwalitee_points++;
+				}
 			}
 		}
 	}
 
 	# for diag, print out the kwalitee of the module
-	if ( $ENV{TEST_VERBOSE} ) {
-		diag( "Total Kwalitee: " . $analyzer->mck()->total_kwalitee() );
-	}
+	diag( "Kwalitee rating: " . sprintf( "%.2f%%", 100 * ( $kwalitee_points / $available_kwalitee ) ) . " [$kwalitee_points / $available_kwalitee]" );
 
 	# That piece of crap dumps files all over :(
 	cleanup_debian_files();

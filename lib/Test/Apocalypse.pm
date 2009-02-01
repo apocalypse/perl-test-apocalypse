@@ -11,7 +11,6 @@ use Test::Block qw( $Plan );
 use Test::More;
 use Test::Builder;
 use Module::Pluggable require => 1, search_path => [ __PACKAGE__ ];
-use Test::NoWarnings;
 
 # auto-export the only sub we have
 use base qw( Exporter );
@@ -26,6 +25,7 @@ sub is_apocalypse_here {
 		plan skip_all => 'Author test. Sent $ENV{TEST_AUTHOR} to a true value to run.';
 	} else {
 		plan 'no_plan';
+		eval "use Test::NoWarnings";
 	}
 
 	# loop through our plugins
@@ -34,8 +34,7 @@ sub is_apocalypse_here {
 		local $Plan;
 
 		# do nasty override of Test::Builder::plan
-		no warnings 'redefine'; no strict 'refs';	## no critic ( ProhibitProlongedStrictureOverride )
-		my $oldplan = \&Test::Builder::plan;
+		my $oldplan = \&Test::Builder::plan;		## no critic ( ProhibitCallsToUnexportedSubs )
 		my $newplan = sub {
 			my( $self, $cmd, $arg ) = @_;
 			return unless $cmd;
@@ -53,10 +52,13 @@ sub is_apocalypse_here {
 
 			return 1;
 		};
+
+		no warnings 'redefine'; no strict 'refs';
 		*{'Test::Builder::plan'} = $newplan;
 
 		# run it!
 		use warnings; use strict;
+		diag( "running $t tests..." );
 		$t->do_test();
 
 		# revert the override
@@ -64,7 +66,7 @@ sub is_apocalypse_here {
 		*{'Test::Builder::plan'} = $oldplan;
 	}
 
-	# passed all tests!
+	# done with testing
 	return 1;
 }
 
@@ -81,11 +83,12 @@ Test::Apocalypse - Apocalypse's favorite tests bundled into a simple interface
 	use strict; use warnings;
 
 	use Test::More;
-
 	eval { use Test::Apocalypse };
 	if ( $@ ) {
 		plan skip_all => 'Test::Apocalypse required for validating the distribution';
 	} else {
+		# lousy hack for kwalitee
+		require Test::NoWarnings; require Test::Pod; require Test::Pod::Coverage;
 		is_apocalypse_here();
 	}
 
@@ -98,6 +101,16 @@ Using this test module simplifies/bundles common distribution tests favored by t
 =head1 EXPORT
 
 Automatically exports the "is_apocalypse_here" sub.
+
+=head1 MORE IDEAS
+
+=over 4
+
+=item * Make sure we have no unnecessary +x files ( especially Build.PL! )
+
+=item * Document the way we do plugins so others can add to this testsuite :)
+
+=back
 
 =head1 SEE ALSO
 

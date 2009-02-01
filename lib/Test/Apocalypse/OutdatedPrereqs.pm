@@ -12,6 +12,7 @@ use YAML;
 use CPANPLUS::Backend;
 use CPANPLUS::Configure;
 use version;
+use Module::CoreList;
 
 # does our stuff!
 sub do_test {
@@ -45,8 +46,6 @@ sub load_yml {
 		plan tests => 1;
 		fail( "Unable to load $file => $@" );
 		return;
-	} else {
-		note( "Loaded $file, proceeding with analysis" );
 	}
 
 	# massage the data
@@ -62,9 +61,8 @@ sub load_yml {
 	# silence CPANPLUS!
 	{
 		no warnings 'redefine';
-		## no critic ( ProhibitNestedSubs )
-		eval { sub Log::Message::Handlers::cp_msg { return } };
-		eval { sub Log::Message::Handlers::cp_error { return } };
+		eval "sub Log::Message::Handlers::cp_msg { return }";
+		eval "sub Log::Message::Handlers::cp_error { return }";
 	}
 
 	# Okay, how many prereqs do we have?
@@ -89,7 +87,7 @@ sub check_cpan {
 	if ( defined $module ) {
 		# okay, for starters we check to see if it's version 0 then we skip it
 		if ( $version eq '0' ) {
-			ok( 1, "Skipping '$prereq' because it is specified as version 0" );
+			pass( "Skipping '$prereq' because it is specified as version 0" );
 			return;
 		}
 
@@ -112,9 +110,14 @@ sub check_cpan {
 		my $cpanversion = version->new( $module->version );
 
 		# check it!
-		is( $cpanversion, $version, "Comparing '$prereq' to CPAN version" );
+		cmp_ok( $cpanversion, '==', $version, "Comparing '$prereq' to CPAN version" );
 	} else {
-		ok( 0, "Warning: '$prereq' is not found on CPAN!" );
+		my $release = Module::CoreList->first_release( $prereq );
+		if ( defined $release ) {
+			pass( "Skipping '$prereq' because it is a CORE module" );
+		} else {
+			fail( "Warning: '$prereq' is not found on CPAN!" );
+		}
 	}
 
 	return;

@@ -9,15 +9,19 @@ $VERSION = '0.01';
 # setup our tests and etc
 require Test::Dependencies;
 
+# build up our exclude list of usual installers that we never use() but T::D is stupid to detect :(
+my @exclude = qw( Module::Build Module::Install ExtUtils::MakeMaker );
+
+# Also, add some more stupid deps that T::D fucks up
+# FIXME we need to figure out how to exclude 'perl' or pester T::D to ignore it!
+push( @exclude, 'Test::More' );
+
 # does our stuff!
 sub do_test {
-	# build up our exclude list of usual installers that we never use() but T::D is stupid to detect :(
-	my @exclude = qw( Module::Build Module::Install ExtUtils::MakeMaker );
-
 	# FIXME Do we need to add the dist module? ( sometimes we never use() it! )
 
 	# run it!
-	Test::Dependencies->import( 'exclude' => \@exclude );
+	Test::Dependencies->import( 'exclude' => \@exclude, 'style' => 'light' );
 	ok_dependencies();
 
 	return;

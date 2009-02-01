@@ -9,10 +9,16 @@ $VERSION = '0.01';
 # setup our tests and etc
 use Test::Spelling;
 
+# our list of common stopwords
+my @stopwords = qw( AnnoCPAN CPAN RT dist prereqs API XS );
+
+# FIXME figure this out per-dist! I'm adding myself for now :)
+push( @stopwords, 'APOCAL' );
+
 # does our stuff!
 sub do_test {
 	# Add our global list of stopwords
-	add_stopwords( qw( AnnoCPAN CPAN RT dist prereqs ) );
+	add_stopwords( @stopwords );
 
 	all_pod_files_spelling_ok();
 

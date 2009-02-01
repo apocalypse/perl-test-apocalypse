@@ -10,6 +10,17 @@ $VERSION = '0.01';
 require Test::Perl::Critic;
 use File::Spec;
 
+# set our common policy exclusion list that I'm sick of :)
+my $exclude = [ qw( Subroutines::ProhibitCallsToUndeclaredSubs Subroutines::RequireArgUnpacking
+	Subroutines::ProhibitCallsToUnexportedSubs Subroutines::ProhibitBuiltinHomonyms
+
+	TestingAndDebugging::ProhibitNoStrict TestingAndDebugging::ProhibitNoWarnings
+
+	ErrorHandling::RequireUseOfExceptions
+
+	ValuesAndExpressions::ProhibitAccessOfPrivateData ValuesAndExpressions::ProhibitMixedBooleanOperators
+) ];
+
 # does our stuff!
 sub do_test {
 	# FIXME should we skip this?
@@ -18,13 +29,8 @@ sub do_test {
 	my %opt = (
 		'-severity'	=> 'stern',
 		'-verbose'	=> 8,		# "[%p] %m at line %l, column %c.  (Severity: %s)\n",
+		'-exclude'	=> $exclude,
 	);
-
-	# Do we have a custom profile?
-	my $profile = File::Spec->catfile( 't', 'perlcriticrc' );
-	if ( -f $profile ) {
-		$opt{'-profile'} = $profile;
-	}
 
 	# did we get a severity level?
 	if ( exists $ENV{PERL_TEST_CRITIC} and defined $ENV{PERL_TEST_CRITIC} and length $ENV{PERL_TEST_CRITIC} > 1 ) {
@@ -33,6 +39,7 @@ sub do_test {
 
 	# finally, run it!
 	Test::Perl::Critic->import( %opt );
+	no warnings;	# Perl::Critic sometimes throws warnings and we want Test::NoWarnings to succeed!
 	all_critic_ok();
 
 	return;

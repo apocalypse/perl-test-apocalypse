@@ -1,6 +1,6 @@
-^.includepath
-^.project
-^.settings/
+\.includepath$
+\.project$
+\.settings/
 
 # Avoid version control files.
 \B\.svn\b
@@ -26,4 +26,4 @@
 
 # our tarballs + stuff we spew
 \.tar\.gz$
-^Debian_CPANTS\.txt
+Debian_CPANTS\.txt

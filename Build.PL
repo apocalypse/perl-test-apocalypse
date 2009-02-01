@@ -19,14 +19,9 @@ my $build = Module::Build->new(
 
 	'add_to_cleanup'	=> [ 'META.yml', 'Makefile.PL', 'README' ],	# automatically generated
 
-	'build_requires'	=> {
-		# Test stuff
-		'Test::More'			=> '0.86',	# require latest for note() support in t/a_is_prereq_outdated.t
-	},
-
 	'requires'		=> {
 		# Test stuff
-		'Test::More'		=> '0.86',
+		'Test::More'		=> 0,
 		'Test::Compile'		=> 0,
 		'Test::Perl::Critic'	=> 0,
 		'Test::Dependencies'	=> 0,
@@ -54,6 +49,8 @@ my $build = Module::Build->new(
 		'version'			=> 0,
 		'CPANPLUS::Backend'		=> 0,
 		'CPANPLUS::Configure'		=> 0,
+		'Devel::PPPort'			=> 0,
+		'Module::CoreList'		=> 0,
 
 		# we need a recent perl
 		'perl'			=> '5.008',
