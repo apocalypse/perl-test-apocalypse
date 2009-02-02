@@ -29,7 +29,7 @@ sub is_apocalypse_here {
 	}
 
 	# loop through our plugins
-	foreach my $t ( __PACKAGE__->plugins() ) {	# FIXME stupid Perl::Critic ## no critic ( RequireExplicitInclusion )
+	foreach my $t ( __PACKAGE__->plugins() ) {	## no critic ( RequireExplicitInclusion )
 		# localize the stuff
 		local $Plan;
 
