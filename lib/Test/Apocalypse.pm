@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 # setup our tests and etc
 use Test::Block qw( $Plan );
@@ -85,7 +85,7 @@ Test::Apocalypse - Apocalypse's favorite tests bundled into a simple interface
 	use strict; use warnings;
 
 	use Test::More;
-	eval { use Test::Apocalypse };
+	eval "use Test::Apocalypse";
 	if ( $@ ) {
 		plan skip_all => 'Test::Apocalypse required for validating the distribution';
 	} else {
