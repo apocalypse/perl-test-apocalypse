@@ -4,10 +4,10 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 # setup our tests and etc
-use Test::CheckManifest;	# FIXME Test::DistManifest seems better but it is br0ken :(
+use Test::CheckManifest;
 
 # does our stuff!
 sub do_test {

@@ -21,24 +21,29 @@ my $build = Module::Build->new(
 
 	'requires'		=> {
 		# Test stuff
-		'Test::More'		=> 0,
-		'Test::Compile'		=> 0,
-		'Test::Perl::Critic'	=> 0,
-		'Test::Dependencies'	=> 0,
-		'Test::Distribution'	=> 0,
-		'Test::Fixme'		=> 0,
-		'Test::HasVersion'	=> 0,
-		'Test::CheckManifest'	=> 0,
-		'Test::MinimumVersion'	=> 0,
-		'Test::Pod::Coverage'	=> 0,
-		'Test::Spelling'	=> 0,
-		'Test::Pod'		=> 0,
-		'Test::Prereq'		=> 0,
-		'Test::Prereq::Build'	=> 0,
-		'Test::Strict'		=> 0,
-		'Test::UseAllModules'	=> 0,
-		'Test::YAML::Meta'	=> 0,
-		'Test::NoWarnings'	=> 0,
+		'Test::More'			=> 0,
+		'Test::Compile'			=> 0,
+		'Test::Perl::Critic'		=> 0,
+		'Test::Dependencies'		=> 0,
+		'Test::Distribution'		=> 0,
+		'Test::Fixme'			=> 0,
+		'Test::HasVersion'		=> 0,
+		'Test::CheckManifest'		=> 0,
+		'Test::MinimumVersion'		=> 0,
+		'Test::Pod::Coverage'		=> 0,
+		'Test::Spelling'		=> 0,
+		'Test::Pod'			=> 0,
+		'Test::Prereq'			=> 0,
+		'Test::Prereq::Build'		=> 0,
+		'Test::Strict'			=> 0,
+		'Test::UseAllModules'		=> 0,
+		'Test::YAML::Meta'		=> 0,
+		'Test::NoWarnings'		=> 0,
+		'Test::CheckChanges'		=> 0,
+		'Test::File'			=> 0,
+		'Test::Dir'			=> 0,
+		'Test::Signature'		=> 0,
+		'Test::Portability::Files'	=> 0,
 
 		# handy tools
 		'File::Find::Rule'		=> 0,
@@ -53,7 +58,7 @@ my $build = Module::Build->new(
 		'Module::CoreList'		=> 0,
 
 		# we need a recent perl
-		'perl'			=> '5.008',
+		'perl'				=> '5.008',
 	},
 );
 

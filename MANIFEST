@@ -24,6 +24,11 @@ lib/Test/Apocalypse/Manifest.pm
 lib/Test/Apocalypse/Distribution.pm
 lib/Test/Apocalypse/OutdatedPrereqs.pm
 lib/Test/Apocalypse/PPPort.pm
+lib/Test/Apocalypse/CheckChanges.pm
+lib/Test/Apocalypse/FileChecks.pm
+lib/Test/Apocalypse/DirChecks.pm
+lib/Test/Apocalypse/Signature.pm
+lib/Test/Apocalypse/FilePortability.pm
 Makefile.PL
 META.yml
 Changes

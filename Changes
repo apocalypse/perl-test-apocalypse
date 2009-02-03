@@ -1,5 +1,9 @@
 Revision history for Perl extension Test::Apocalypse
 
+* 0.03
+
+	Added more tests :)
+
 * 0.02
 
 	fix bad test

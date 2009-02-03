@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::Strict;
+package Test::Apocalypse::Signature;
 use strict; use warnings;
 
 # Initialize our version
@@ -7,11 +7,21 @@ use vars qw( $VERSION );
 $VERSION = '0.03';
 
 # setup our tests and etc
-use Test::Strict;
+use Test::More;
+use Test::Signature;
 
 # does our stuff!
 sub do_test {
-	all_perl_files_ok();
+	plan tests => 1;
+
+	# do we have a signature file?
+	SKIP: {
+		if ( -e 'SIGNATURE' ) {
+			signature_ok();
+		} else {
+			skip( 'no SIGNATURE file found', 1 );
+		}
+	}
 
 	return;
 }
@@ -20,7 +30,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::Strict - Plugin for Test::Strict
+Test::Apocalypse::Signature - Plugin for Test::Signature
 
 =head1 SYNOPSIS
 
@@ -28,11 +38,11 @@ Test::Apocalypse::Strict - Plugin for Test::Strict
 
 =head1 ABSTRACT
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Signature functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Signature functionality.
 
 =head1 EXPORT
 
@@ -42,7 +52,7 @@ None.
 
 L<Test::Apocalypse>
 
-L<Test::Strict>
+L<Test::Signature>
 
 =head1 AUTHOR
 

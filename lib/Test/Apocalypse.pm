@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 # setup our tests and etc
 use Test::Block qw( $Plan );
@@ -25,7 +25,9 @@ sub is_apocalypse_here {
 		plan skip_all => 'Author test. Sent $ENV{TEST_AUTHOR} to a true value to run.';
 	} else {
 		plan 'no_plan';
-		eval "use Test::NoWarnings";	## no critic ( ProhibitStringyEval )
+
+		# load our nifty "catch-all" tests
+		eval "use Test::NoWarnings";		## no critic ( ProhibitStringyEval )
 	}
 
 	# loop through our plugins
@@ -131,13 +133,45 @@ Automatically exports the "is_apocalypse_here" sub.
 
 =over 4
 
-=item * Make sure we have no unnecessary +x files ( especially Build.PL! )
-
 =item * Document the way we do plugins so others can add to this testsuite :)
 
 =item * Per-plugin configuration for distros so we can override the default config
 
-=item * POD standards check ( do we have SYNOPSIS, ABSTRACT, SUPPORT, etc sections? )
+=item * POD standards check
+
+Do we have SYNOPSIS, ABSTRACT, SUPPORT, etc sections?
+
+=item * Use Test::AutoLoader to check for .al files
+
+Br0ken install at this time...
+
+=item * Help with version updates automatically
+
+This little snippet helps a lot, I was wondering if I could integrate it into the testsuite hah!
+
+	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.03';/"
+
+=item * Help Test::CheckChanges author for more formats
+
+I already filed a ticket, RT#42976 but if others have different formats please contribute!
+
+=item * Use Test::DistManifest instead of Test::CheckManifest
+
+DistManifest has better support for MANIFEST.SKIP but the install is br0ken at this time...
+
+=item * Use Test::GreaterVersion to sanity check versions
+
+The problem here is that I've got to learn the CPAN backend to extract the module name from the distro tarball,
+and pass it on to the test...
+
+=item * Use Test::PerlTidy to check code style
+
+Br0ken install at this time...
+
+=item * Integrate Test::UniqueTestNames into the testsuite
+
+This would be nice, but I'm not sure if I can actually force this on other tests. Otherwise I'll be just making
+sure that the Test::Apocalypse tests is unique, which is worthless to $dist trying to clean itself up...
 
 =back
 
