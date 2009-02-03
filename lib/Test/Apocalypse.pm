@@ -173,6 +173,10 @@ Br0ken install at this time...
 This would be nice, but I'm not sure if I can actually force this on other tests. Otherwise I'll be just making
 sure that the Test::Apocalypse tests is unique, which is worthless to $dist trying to clean itself up...
 
+=item * Use Test::CPAN::Meta
+
+I'm not sure of the difference between this and Test::YAML::Meta but more tests == the better ;)
+
 =back
 
 =head1 SEE ALSO
