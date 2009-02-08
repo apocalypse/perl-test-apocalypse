@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 # setup our tests and etc
 use Test::Block qw( $Plan );
@@ -139,7 +139,7 @@ Automatically exports the "is_apocalypse_here" sub.
 
 =item * POD standards check
 
-Do we have SYNOPSIS, ABSTRACT, SUPPORT, etc sections?
+Do we have SYNOPSIS, ABSTRACT, SUPPORT, etc sections? ( PerlCritic can do that! Need to investigate more... )
 
 =item * Use Test::AutoLoader to check for .al files
 
@@ -149,7 +149,7 @@ Br0ken install at this time...
 
 This little snippet helps a lot, I was wondering if I could integrate it into the testsuite hah!
 
-	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.03';/"
+	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.04';/"
 
 =item * Help Test::CheckChanges author for more formats
 
@@ -166,7 +166,7 @@ and pass it on to the test...
 
 =item * Use Test::PerlTidy to check code style
 
-Br0ken install at this time...
+Br0ken install at this time... ( PerlCritic can do that! Need to investigate more... )
 
 =item * Integrate Test::UniqueTestNames into the testsuite
 

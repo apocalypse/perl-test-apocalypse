@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::METAyml;
+package Test::Apocalypse::DistManifest;
 use strict; use warnings;
 
 # Initialize our version
@@ -7,11 +7,11 @@ use vars qw( $VERSION );
 $VERSION = '0.04';
 
 # setup our tests and etc
-use Test::YAML::Meta;
+use Test::DistManifest;
 
 # does our stuff!
 sub do_test {
-	meta_yaml_ok();
+	manifest_ok();
 
 	return;
 }
@@ -20,7 +20,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::METAyml - Plugin for Test::YAML::Meta
+Test::Apocalypse::DistManifest - Plugin for Test::DistManifest
 
 =head1 SYNOPSIS
 
@@ -28,11 +28,11 @@ Test::Apocalypse::METAyml - Plugin for Test::YAML::Meta
 
 =head1 ABSTRACT
 
-Encapsulates Test::YAML::Meta functionality.
+Encapsulates Test::DistManifest functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::YAML::Meta functionality.
+Encapsulates Test::DistManifest functionality.
 
 =head1 EXPORT
 
@@ -42,7 +42,7 @@ None.
 
 L<Test::Apocalypse>
 
-L<Test::YAML::Meta>
+L<Test::DistManifest>
 
 =head1 AUTHOR
 

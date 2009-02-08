@@ -44,6 +44,7 @@ my $build = Module::Build->new(
 		'Test::Dir'			=> 0,
 		'Test::Signature'		=> 0,
 		'Test::Portability::Files'	=> 0,
+		'Test::DistManifest'		=> 0,
 
 		# handy tools
 		'File::Find::Rule'		=> 0,
