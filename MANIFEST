@@ -20,7 +20,6 @@ lib/Test/Apocalypse/Prereq_Build.pm
 lib/Test/Apocalypse/Prereq.pm
 lib/Test/Apocalypse/Strict.pm
 lib/Test/Apocalypse/UseAllModules.pm
-lib/Test/Apocalypse/Manifest.pm
 lib/Test/Apocalypse/Distribution.pm
 lib/Test/Apocalypse/OutdatedPrereqs.pm
 lib/Test/Apocalypse/PPPort.pm

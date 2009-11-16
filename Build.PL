@@ -28,7 +28,6 @@ my $build = Module::Build->new(
 		'Test::Distribution'		=> 0,
 		'Test::Fixme'			=> 0,
 		'Test::HasVersion'		=> 0,
-		'Test::CheckManifest'		=> 0,
 		'Test::MinimumVersion'		=> 0,
 		'Test::Pod::Coverage'		=> 0,
 		'Test::Spelling'		=> 0,
@@ -47,6 +46,7 @@ my $build = Module::Build->new(
 		'Test::DistManifest'		=> 0,
 
 		# handy tools
+		'File::Spec'			=> 0,
 		'File::Find::Rule'		=> 0,
 		'Module::CPANTS::Analyse'	=> 0,
 		'Perl::Metrics::Simple'		=> 0,

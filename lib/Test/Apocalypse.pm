@@ -155,10 +155,6 @@ This little snippet helps a lot, I was wondering if I could integrate it into th
 
 I already filed a ticket, RT#42976 but if others have different formats please contribute!
 
-=item * Use Test::DistManifest instead of Test::CheckManifest
-
-DistManifest has better support for MANIFEST.SKIP but the install is br0ken at this time...
-
 =item * Use Test::GreaterVersion to sanity check versions
 
 The problem here is that I've got to learn the CPAN backend to extract the module name from the distro tarball,

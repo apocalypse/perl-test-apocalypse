@@ -22,7 +22,7 @@ sub do_test {
 
 	# set the number of tests / run analyzer
 	my @indicators = $analyzer->mck()->get_indicators();
-	plan tests => scalar @indicators - 3;	# remove the problematic tests
+	plan tests => scalar @indicators - 1;	# remove the problematic tests
 	$analyzer->unpack;
 	$analyzer->analyse;
 	$analyzer->calc_kwalitee;
@@ -33,7 +33,8 @@ sub do_test {
 	foreach my $gen ( @{ $analyzer->mck()->generators() } ) {
 		foreach my $metric ( @{ $gen->kwalitee_indicators() } ) {
 			# skip problematic ones
-			if ( $metric->{'name'} =~ /^(?:is_prereq|prereq_matches_use|build_prereq_matches_use)$/ ) { next }
+			#if ( $metric->{'name'} =~ /^(?:is_prereq|prereq_matches_use|build_prereq_matches_use)$/ ) { next }
+			if ( $metric->{'name'} =~ /^(?:is_prereq)$/ ) { next }
 
 			# get the result
 			my $result = $metric->{'code'}->( $analyzer->d(), $metric );
@@ -49,7 +50,10 @@ sub do_test {
 			# print more diag if it failed
 			if ( ! $result && $ENV{TEST_VERBOSE} ) {
 				diag( '[' . $metric->{'name'} . '] error(' . $metric->{'error'} . ') remedy(' . $metric->{'remedy'} . ')' );
-
+				if ( $metric->{'name'} eq 'prereq_matches_use' or $metric->{'name'} eq 'build_prereq_matches_use' ) {
+					require Data::Dumper;
+					diag( "module information: " . Data::Dumper::Dumper( $analyzer->d->{'uses'} ) );
+				}
 			}
 
 			# should we tally up the kwalitee?

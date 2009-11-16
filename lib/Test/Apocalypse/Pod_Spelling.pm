@@ -8,9 +8,12 @@ $VERSION = '0.04';
 
 # setup our tests and etc
 use Test::Spelling;
+use File::Spec;
 
 # our list of common stopwords
-my @stopwords = qw( AnnoCPAN CPAN RT dist prereqs API XS );
+my @stopwords = qw( TODO FIXME pong timestamp AnnoCPAN CPAN RT dist prereqs API XS HTTP XML URI
+	hostname ip useragent PHP hashrefs datetime DNS PoCo
+);
 
 # FIXME figure this out per-dist! I'm adding myself for now :)
 push( @stopwords, 'APOCAL' );
@@ -19,6 +22,17 @@ push( @stopwords, 'APOCAL' );
 sub do_test {
 	# Add our global list of stopwords
 	add_stopwords( @stopwords );
+
+	# get our list of files, and add the "namespaces" as stopwords
+	foreach my $p ( Test::Spelling::all_pod_files() ) {
+		foreach my $word ( File::Spec->splitdir( $p ) ) {
+			next if ! length $word;
+			if ( $word eq 'lib' or $word eq 'blib' ) { next }
+			if ( $word =~ /^(.+)\.pm$/ ) { $word = $1 }
+
+			add_stopwords( $word );
+		}
+	}
 
 	all_pod_files_spelling_ok();
 
@@ -42,6 +56,9 @@ Encapsulates Test::Spelling functionality.
 =head1 DESCRIPTION
 
 Encapsulates Test::Spelling functionality.
+
+Furthermore, we add a custom list of stopwords before running the tests. Please look at the code for the
+list, and how we generate it.
 
 =head1 EXPORT
 
