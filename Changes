@@ -3,6 +3,7 @@ Revision history for Perl extension Test::Apocalypse
 * 0.04
 
 	Removed Test::CheckManifest and replaced with Test::DistManifest, thanks JAWNSY!
+	Various POD cleanups and additions
 
 * 0.03
 

@@ -50,6 +50,9 @@ sub do_test {
 
 1;
 __END__
+
+=for stopwords dist
+
 =head1 NAME
 
 Test::Apocalypse::FileChecks - Plugin to test for file sanity

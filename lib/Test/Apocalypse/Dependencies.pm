@@ -18,8 +18,6 @@ push( @exclude, 'Test::More' );
 
 # does our stuff!
 sub do_test {
-	# FIXME Do we need to add the dist module? ( sometimes we never use() it! )
-
 	# run it!
 	Test::Dependencies->import( 'exclude' => \@exclude, 'style' => 'light' );
 	ok_dependencies();
@@ -44,6 +42,8 @@ Encapsulates Test::Dependencies functionality.
 =head1 DESCRIPTION
 
 Encapsulates Test::Dependencies functionality.
+
+We also add some "standard" modules to exclude from the checks.
 
 =head1 EXPORT
 

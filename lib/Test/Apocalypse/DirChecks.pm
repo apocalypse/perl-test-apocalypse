@@ -28,6 +28,9 @@ sub do_test {
 
 1;
 __END__
+
+=for stopwords dist
+
 =head1 NAME
 
 Test::Apocalypse::DirChecks - Plugin to test for directory sanity

@@ -37,4 +37,4 @@ LICENSE
 examples/simple.pl
 
 t/1_load.t
-t/a_apocalypse.t
+t/apocalypse.t

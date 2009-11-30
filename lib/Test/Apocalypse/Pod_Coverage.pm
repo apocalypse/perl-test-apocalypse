@@ -37,6 +37,8 @@ Encapsulates Test::Pod::Coverage functionality.
 
 Encapsulates Test::Pod::Coverage functionality.
 
+NOTE: This module is currently disabled.
+
 =head1 EXPORT
 
 None.

@@ -10,19 +10,8 @@ $VERSION = '0.04';
 use Test::Spelling;
 use File::Spec;
 
-# our list of common stopwords
-my @stopwords = qw( TODO FIXME pong timestamp AnnoCPAN CPAN RT dist prereqs API XS HTTP XML URI
-	hostname ip useragent PHP hashrefs datetime DNS PoCo
-);
-
-# FIXME figure this out per-dist! I'm adding myself for now :)
-push( @stopwords, 'APOCAL' );
-
 # does our stuff!
 sub do_test {
-	# Add our global list of stopwords
-	add_stopwords( @stopwords );
-
 	# get our list of files, and add the "namespaces" as stopwords
 	foreach my $p ( Test::Spelling::all_pod_files() ) {
 		foreach my $word ( File::Spec->splitdir( $p ) ) {
@@ -41,6 +30,9 @@ sub do_test {
 
 1;
 __END__
+
+=for stopwords spellchecker stopword stopwords pm
+
 =head1 NAME
 
 Test::Apocalypse::Pod_Spelling - Plugin for Test::Spelling
@@ -55,10 +47,9 @@ Encapsulates Test::Spelling functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Spelling functionality.
+Encapsulates Test::Spelling functionality. We also add each filename as a stopword, to reduce "noise" from the spellchecker.
 
-Furthermore, we add a custom list of stopwords before running the tests. Please look at the code for the
-list, and how we generate it.
+If you need to add stopwords, please look at L<Pod::Spell> for ways to add it to each .pm file!
 
 =head1 EXPORT
 

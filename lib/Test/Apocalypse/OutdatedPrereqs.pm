@@ -126,6 +126,9 @@ sub check_cpan {
 
 1;
 __END__
+
+=for stopwords CPAN prereq prereqs
+
 =head1 NAME
 
 Test::Apocalypse::OutdatedPrereqs - Plugin to detect outdated prereqs

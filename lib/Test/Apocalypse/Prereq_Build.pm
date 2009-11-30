@@ -39,6 +39,8 @@ Encapsulates Test::Prereq::Build functionality.
 
 Encapsulates Test::Prereq::Build functionality.
 
+NOTE: This test normally takes FOREVER to run! Please set $ENV{PERL_TEST_PREREQ} = 1 in order to enable this test.
+
 =head1 EXPORT
 
 None.

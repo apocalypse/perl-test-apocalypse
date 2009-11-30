@@ -14,10 +14,12 @@ my $build = Module::Build->new(
 	'create_packlist'	=> 1,
 	'create_makefile_pl'	=> 'traditional',
 	'create_readme'		=> 1,
+	'create_license'	=> 1,
+	'sign'			=> 0,
 
 	'test_files'		=> 't/*.t',
 
-	'add_to_cleanup'	=> [ 'META.yml', 'Makefile.PL', 'README', 'Makefile' ],	# automatically generated
+	'add_to_cleanup'	=> [ 'META.yml', 'Makefile.PL', 'README', 'Makefile', 'LICENSE' ], # automatically generated
 
 	'requires'		=> {
 		# Test stuff
@@ -60,6 +62,16 @@ my $build = Module::Build->new(
 
 		# we need a recent perl
 		'perl'				=> '5.008',
+	},
+
+	# include the standard stuff in META.yml
+	'meta_merge'	=> {
+		'resources'	=> {
+			'license'	=> 'http://dev.perl.org/licenses/',
+			'homepage'	=> 'http://search.cpan.org/dist/Test-Apocalypse',
+			'bugtracker'	=> 'http://rt.cpan.org/NoAuth/Bugs.html?Dist=Test-Apocalypse',
+			'repository'	=> 'http://github.com/apocalypse/perl-test-apocalypse',
+		},
 	},
 );
 
