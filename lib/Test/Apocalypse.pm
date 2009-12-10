@@ -183,6 +183,10 @@ We should make sure that the META.yml includes the "repository", "license", and 
 
 As always, we should keep up on the "latest" in the perl world and look at other authors for what they are doing.
 
+=item * indirect syntax
+
+We should figure out how to use indirect.pm to detect this deprecated method of coding.
+
 =back
 
 =head1 SEE ALSO
