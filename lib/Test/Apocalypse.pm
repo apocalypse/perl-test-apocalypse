@@ -153,10 +153,6 @@ This little snippet helps a lot, I was wondering if I could integrate it into th
 
 	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.04';/"
 
-=item * Help Test::CheckChanges author for more formats
-
-I already filed a ticket, RT#42976 but if others have different formats please contribute!
-
 =item * Use Test::GreaterVersion to sanity check versions
 
 The problem here is that I've got to learn the CPAN backend to extract the module name from the distro tarball,
@@ -185,7 +181,11 @@ As always, we should keep up on the "latest" in the perl world and look at other
 
 =item * indirect syntax
 
-We should figure out how to use indirect.pm to detect this deprecated method of coding.
+We should figure out how to use indirect.pm to detect this deprecated method of coding. There's a L<Perl::Critic> plugin for this, yay!
+
+=item * Use Test::Module::Used
+
+Add this module as a dependency, and check out it's usefulness...
 
 =back
 
