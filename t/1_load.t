@@ -1,6 +1,18 @@
 #!/usr/bin/perl
 use strict; use warnings;
 
-use Test::NoWarnings;
-use Test::More tests => 1 + 1;	# add 1 for the Test::NoWarnings
+my $numtests;
+BEGIN {
+	$numtests = 1;
+
+	eval "use Test::NoWarnings";
+	if ( ! $@ ) {
+		# increment by one
+		$numtests++;
+
+	}
+}
+
+use Test::More tests => $numtests;
+
 use_ok( 'Test::Apocalypse' );

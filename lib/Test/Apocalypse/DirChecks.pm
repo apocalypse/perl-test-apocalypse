@@ -4,22 +4,30 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
-# setup our tests and etc
 use Test::More;
-use Test::Dir;
 
-# our list of directories to check
-my @dirs = qw( lib t examples );
-
-# does our stuff!
 sub do_test {
-	plan tests => scalar @dirs;
+	my %MODULES = (
+		'Test::Dir'	=> '1.006',
+	);
 
-	# ensure our basic CPAN dist contains everything we need
+	while (my ($module, $version) = each %MODULES) {
+		eval "use $module $version";	## no critic ( ProhibitStringyEval )
+		next unless $@;
+
+		if ( $ENV{RELEASE_TESTING} ) {
+			die 'Could not load release-testing module ' . $module;
+		} else {
+			plan skip_all => $module . ' not available for testing';
+		}
+	}
+
+	# Run the test!
+	my @dirs = qw( lib t examples );
+	plan tests => scalar @dirs;
 	foreach my $d ( @dirs ) {
-		# scripts is
 		dir_exists_ok( $d, "directory $d exists" );
 	}
 
@@ -37,19 +45,15 @@ Test::Apocalypse::DirChecks - Plugin to test for directory sanity
 
 =head1 SYNOPSIS
 
-	Please do not use this module directly.
+	# Please do not use this module directly.
 
 =head1 ABSTRACT
 
-This plugin ensures basic sanity for the directories in the dist.
+Encapsulates Test::Dir functionality.
 
 =head1 DESCRIPTION
 
-This plugin ensures basic sanity for the directories in the dist.
-
-=head1 EXPORT
-
-None.
+Encapsulates Test::Dir functionality.
 
 =head1 SEE ALSO
 

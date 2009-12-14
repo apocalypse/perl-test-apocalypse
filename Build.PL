@@ -46,6 +46,8 @@ my $build = Module::Build->new(
 		'Test::Signature'		=> 0,
 		'Test::Portability::Files'	=> 0,
 		'Test::DistManifest'		=> 0,
+		'Test::Module::Used'		=> 0,
+		'Test::Synopsis'		=> 0,
 
 		# handy tools
 		'File::Spec'			=> 0,

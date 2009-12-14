@@ -4,14 +4,27 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
-# setup our tests and etc
 use Test::More;
-use Test::Prereq::Build;
 
-# does our stuff!
 sub do_test {
+	my %MODULES = (
+		'Test::Prereq::Build'	=> '1.037',
+	);
+
+	while (my ($module, $version) = each %MODULES) {
+		eval "use $module $version";	## no critic ( ProhibitStringyEval )
+		next unless $@;
+
+		if ( $ENV{RELEASE_TESTING} ) {
+			die 'Could not load release-testing module ' . $module;
+		} else {
+			plan skip_all => $module . ' not available for testing';
+		}
+	}
+
+	# Run the test!
 	if ( not $ENV{PERL_TEST_PREREQ} ) {
 		plan skip_all => 'PREREQ test ( warning: LONG! ) Sent $ENV{PERL_TEST_PREREQ} to a true value to run.';
 	} else {
@@ -29,7 +42,7 @@ Test::Apocalypse::Prereq_Build - Plugin for Test::Prereq::Build
 
 =head1 SYNOPSIS
 
-	Please do not use this module directly.
+	# Please do not use this module directly.
 
 =head1 ABSTRACT
 
@@ -40,10 +53,6 @@ Encapsulates Test::Prereq::Build functionality.
 Encapsulates Test::Prereq::Build functionality.
 
 NOTE: This test normally takes FOREVER to run! Please set $ENV{PERL_TEST_PREREQ} = 1 in order to enable this test.
-
-=head1 EXPORT
-
-None.
 
 =head1 SEE ALSO
 

@@ -4,40 +4,27 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
-# setup our tests and etc
-require Test::Perl::Critic;
-use File::Spec;
+use Test::More;
 
-# set our common policy exclusion list that I'm sick of :)
-my $exclude = [ qw( Subroutines::ProhibitCallsToUndeclaredSubs Subroutines::RequireArgUnpacking
-	Subroutines::ProhibitCallsToUnexportedSubs Subroutines::ProhibitBuiltinHomonyms
-
-	TestingAndDebugging::ProhibitNoStrict TestingAndDebugging::ProhibitNoWarnings
-
-	ErrorHandling::RequireUseOfExceptions
-
-	ValuesAndExpressions::ProhibitAccessOfPrivateData ValuesAndExpressions::ProhibitMixedBooleanOperators
-) ];
-
-# does our stuff!
 sub do_test {
-	# build our default options
-	my %opt = (
-		'-severity'	=> 'stern',
-		'-verbose'	=> 8,		# "[%p] %m at line %l, column %c.  (Severity: %s)\n",
-		'-exclude'	=> $exclude,
+	my %MODULES = (
+		'Test::Perl::Critic'	=> '1.02',
 	);
 
-	# did we get a severity level?
-	if ( exists $ENV{PERL_TEST_CRITIC} and defined $ENV{PERL_TEST_CRITIC} and length $ENV{PERL_TEST_CRITIC} > 1 ) {
-		$opt{'-severity'} = $ENV{PERL_TEST_CRITIC};
+	while (my ($module, $version) = each %MODULES) {
+		eval "use $module $version";	## no critic ( ProhibitStringyEval )
+		next unless $@;
+
+		if ( $ENV{RELEASE_TESTING} ) {
+			die 'Could not load release-testing module ' . $module;
+		} else {
+			plan skip_all => $module . ' not available for testing';
+		}
 	}
 
-	# finally, run it!
-	Test::Perl::Critic->import( %opt );
-	no warnings;	# Perl::Critic sometimes throws warnings and we want Test::NoWarnings to succeed!
+	# Run the test!
 	all_critic_ok();
 
 	return;
@@ -51,7 +38,7 @@ Test::Apocalypse::PerlCritic - Plugin for Test::Perl::Critic
 
 =head1 SYNOPSIS
 
-	Please do not use this module directly.
+	# Please do not use this module directly.
 
 =head1 ABSTRACT
 
@@ -60,10 +47,6 @@ Encapsulates Test::Perl::Critic functionality.
 =head1 DESCRIPTION
 
 Encapsulates Test::Perl::Critic functionality.
-
-=head1 EXPORT
-
-None.
 
 =head1 SEE ALSO
 

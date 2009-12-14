@@ -4,13 +4,27 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
-# setup our tests and etc
-use Test::Fixme;
+use Test::More;
 
-# does our stuff!
 sub do_test {
+	my %MODULES = (
+		'Test::Fixme'	=> '0.04',
+	);
+
+	while (my ($module, $version) = each %MODULES) {
+		eval "use $module $version";	## no critic ( ProhibitStringyEval )
+		next unless $@;
+
+		if ( $ENV{RELEASE_TESTING} ) {
+			die 'Could not load release-testing module ' . $module;
+		} else {
+			plan skip_all => $module . ' not available for testing';
+		}
+	}
+
+	# Run the test!
 	run_tests(
 		'where'			=> 'lib',
 		'match'			=> qr/[F]IXME|[T]ODO|[X]XX/,
@@ -28,7 +42,7 @@ Test::Apocalypse::Fixme - Plugin for Test::Fixme
 
 =head1 SYNOPSIS
 
-	Please do not use this module directly.
+	# Please do not use this module directly.
 
 =head1 ABSTRACT
 
@@ -37,10 +51,6 @@ Encapsulates Test::Fixme functionality.
 =head1 DESCRIPTION
 
 Encapsulates Test::Fixme functionality.
-
-=head1 EXPORT
-
-None.
 
 =head1 SEE ALSO
 

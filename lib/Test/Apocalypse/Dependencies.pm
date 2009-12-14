@@ -4,21 +4,34 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
-# setup our tests and etc
-require Test::Dependencies;
+use Test::More;
 
-# build up our exclude list of usual installers that we never use() but T::D is stupid to detect :(
-my @exclude = qw( Module::Build Module::Install ExtUtils::MakeMaker );
-
-# Also, add some more stupid deps that T::D fucks up
-# FIXME we need to figure out how to exclude 'perl' or pester T::D to ignore it!
-push( @exclude, 'Test::More' );
-
-# does our stuff!
 sub do_test {
-	# run it!
+	my %MODULES = (
+		'Test::Dependencies'	=> '0.12',
+	);
+
+	while (my ($module, $version) = each %MODULES) {
+		eval "use $module $version ()";	## no critic ( ProhibitStringyEval )
+		next unless $@;
+
+		if ( $ENV{RELEASE_TESTING} ) {
+			die 'Could not load release-testing module ' . $module;
+		} else {
+			plan skip_all => $module . ' not available for testing';
+		}
+	}
+
+	# build up our exclude list of usual installers that we never use() but T::D is stupid to detect :(
+	my @exclude = qw( Module::Build Module::Install ExtUtils::MakeMaker );
+
+	# Also, add some more stupid deps that T::D fucks up
+	# FIXME we need to figure out how to exclude 'perl' or pester T::D to ignore it!
+	push( @exclude, 'Test::More' );
+
+	# Run the test!
 	Test::Dependencies->import( 'exclude' => \@exclude, 'style' => 'light' );
 	ok_dependencies();
 
@@ -33,7 +46,7 @@ Test::Apocalypse::Dependencies - Plugin for Test::Dependencies
 
 =head1 SYNOPSIS
 
-	Please do not use this module directly.
+	# Please do not use this module directly.
 
 =head1 ABSTRACT
 
@@ -44,10 +57,6 @@ Encapsulates Test::Dependencies functionality.
 Encapsulates Test::Dependencies functionality.
 
 We also add some "standard" modules to exclude from the checks.
-
-=head1 EXPORT
-
-None.
 
 =head1 SEE ALSO
 

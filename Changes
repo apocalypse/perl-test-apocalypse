@@ -1,5 +1,12 @@
 Revision history for Perl extension Test::Apocalypse
 
+* 0.05
+
+	Added Test::Module::Used to the testsuite
+	Added Test::Synopsis to the testsuite
+	Enabled the Test::Pod::Coverage test, it was previously disabled by mistake!
+	Changed to the new ENV var scheme, proposed by Alias ( and thanks to JAWNSY for prodding me )
+
 * 0.04
 
 	Removed Test::CheckManifest and replaced with Test::DistManifest, thanks JAWNSY!

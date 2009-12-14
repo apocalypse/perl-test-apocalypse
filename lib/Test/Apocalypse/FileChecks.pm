@@ -4,31 +4,37 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
-# setup our tests and etc
 use Test::More;
-use Test::File;
-use File::Find::Rule;
 
-# our list of files to check
-my @files = qw( Changes Build.PL Makefile.PL LICENSE MANIFEST MANIFEST.SKIP README META.yml );
-
-# does our stuff!
 sub do_test {
-	my @pmfiles = File::Find::Rule->file()->name( '*.pm' )->in( 'lib' );
-	plan tests => ( ( scalar @files ) * 4 ) + ( ( scalar @pmfiles ) * 3 ) + 3;
+	my %MODULES = (
+		'File::Find::Rule'	=> '0.32',
+		'Test::File'		=> '1.29',
+	);
 
-	# check SIGNATURE if it's there
-	SKIP: {
-		if ( -e 'SIGNATURE' ) {
-			file_not_empty_ok( 'SIGNATURE', "file SIGNATURE got data" );
-			file_readable_ok( 'SIGNATURE', "file SIGNATURE is readable" );
-			file_not_executable_ok( 'SIGNATURE', "file SIGNATURE is not executable" );
+	while (my ($module, $version) = each %MODULES) {
+		eval "use $module $version";	## no critic ( ProhibitStringyEval )
+		next unless $@;
+
+		if ( $ENV{RELEASE_TESTING} ) {
+			die 'Could not load release-testing module ' . $module;
 		} else {
-			skip( 'no SIGNATURE file found', 3 );
+			plan skip_all => $module . ' not available for testing';
 		}
 	}
+
+	# Run the test!
+	my @files = qw( Changes Build.PL Makefile.PL LICENSE MANIFEST MANIFEST.SKIP README META.yml );
+	my @pmfiles = File::Find::Rule->file()->name( '*.pm' )->in( 'lib' );
+
+	# check SIGNATURE if it's there
+	if ( -e 'SIGNATURE' ) {
+		push( @files, 'SIGNATURE' );
+	}
+
+	plan tests => ( ( scalar @files ) * 4 ) + ( ( scalar @pmfiles ) * 3 );
 
 	# ensure our basic CPAN dist contains everything we need
 	foreach my $f ( @files ) {
@@ -59,7 +65,7 @@ Test::Apocalypse::FileChecks - Plugin to test for file sanity
 
 =head1 SYNOPSIS
 
-	Please do not use this module directly.
+	# Please do not use this module directly.
 
 =head1 ABSTRACT
 
@@ -68,10 +74,6 @@ This plugin ensures basic sanity for the files in the dist.
 =head1 DESCRIPTION
 
 This plugin ensures basic sanity for the files in the dist.
-
-=head1 EXPORT
-
-None.
 
 =head1 SEE ALSO
 

@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::Distribution;
+package Test::Apocalypse::ModuleUsed;
 use strict; use warnings;
 
 # Initialize our version
@@ -10,22 +10,23 @@ use Test::More;
 
 sub do_test {
 	my %MODULES = (
-		'Test::Distribution'	=> '2.00',
+		'Test::Module::Used'	=> '0.1.2',
 	);
 
 	while (my ($module, $version) = each %MODULES) {
-		eval "use $module $version ()";	## no critic ( ProhibitStringyEval )
+		eval "use $module $version";	## no critic ( ProhibitStringyEval )
 		next unless $@;
 
 		if ( $ENV{RELEASE_TESTING} ) {
-			die 'Could not load release-testing module ' . $module . ' ' . $@;
+			die 'Could not load release-testing module ' . $module;
 		} else {
 			plan skip_all => $module . ' not available for testing';
 		}
 	}
 
 	# Run the test!
-	Test::Distribution->import( not => 'podcover', distversion => 1 );
+	my $used = Test::Module::Used->new;
+	$used->ok;
 
 	return;
 }
@@ -34,7 +35,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::Distribution - Plugin for Test::Distribution
+Test::Apocalypse::ModuleUsed - Plugin for Test::Module::Used
 
 =head1 SYNOPSIS
 
@@ -42,17 +43,17 @@ Test::Apocalypse::Distribution - Plugin for Test::Distribution
 
 =head1 ABSTRACT
 
-Encapsulates Test::Distribution functionality.
+Encapsulates Test::Module::Used functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Distribution functionality.
+Encapsulates Test::Module::Used functionality.
 
 =head1 SEE ALSO
 
 L<Test::Apocalypse>
 
-L<Test::Distribution>
+L<Test::Module::Used>
 
 =head1 AUTHOR
 

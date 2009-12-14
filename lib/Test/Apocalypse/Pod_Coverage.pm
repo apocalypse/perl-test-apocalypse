@@ -4,17 +4,28 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
-# setup our tests and etc
 use Test::More;
-use Test::Pod::Coverage;
 
-# does our stuff!
 sub do_test {
-	# FIXME not used now
-	#all_pod_coverage_ok( 'lib/');
-	plan skip_all => 'not done yet';
+	my %MODULES = (
+		'Test::Pod::Coverage'	=> '1.08',
+	);
+
+	while (my ($module, $version) = each %MODULES) {
+		eval "use $module $version";	## no critic ( ProhibitStringyEval )
+		next unless $@;
+
+		if ( $ENV{RELEASE_TESTING} ) {
+			die 'Could not load release-testing module ' . $module;
+		} else {
+			plan skip_all => $module . ' not available for testing';
+		}
+	}
+
+	# Run the test!
+	all_pod_coverage_ok( 'lib/');
 
 	return;
 }
@@ -27,7 +38,7 @@ Test::Apocalypse::Pod_Coverage - Plugin for Test::Pod::Coverage
 
 =head1 SYNOPSIS
 
-	Please do not use this module directly.
+	# Please do not use this module directly.
 
 =head1 ABSTRACT
 
@@ -36,12 +47,6 @@ Encapsulates Test::Pod::Coverage functionality.
 =head1 DESCRIPTION
 
 Encapsulates Test::Pod::Coverage functionality.
-
-NOTE: This module is currently disabled.
-
-=head1 EXPORT
-
-None.
 
 =head1 SEE ALSO
 

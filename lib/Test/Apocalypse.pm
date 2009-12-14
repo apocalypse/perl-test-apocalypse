@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 # setup our tests and etc
 use Test::Block qw( $Plan );
@@ -21,8 +21,8 @@ sub is_apocalypse_here {
 	my $tests = shift;
 
 	# should we even run those tests?
-	if ( ! $ENV{TEST_AUTHOR} ) {
-		plan skip_all => 'Author test. Sent $ENV{TEST_AUTHOR} to a true value to run.';
+	unless ( $ENV{RELEASE_TESTING} or $ENV{AUTOMATED_TESTING} ) {
+		plan skip_all => 'Author test. Please set $ENV{RELEASE_TESTING} to a true value to run.';
 	} else {
 		plan 'no_plan';
 
@@ -77,7 +77,7 @@ sub is_apocalypse_here {
 1;
 __END__
 
-=for stopwords APOCAL AUTHORs AnnoCPAN CPAN RT al backend debian distro distros dists env hackish plugins testsuite yml
+=for stopwords APOCAL AUTHORs AnnoCPAN CPAN RT al backend debian distro distros dists env hackish plugins testsuite yml pm yay
 
 =head1 NAME
 
@@ -125,7 +125,7 @@ you can do this:
 
 	perl Build.PL			# sets up the dist ( duh, hah )
 	./Build dist			# makes the tarball ( so certain plugins can process it )
-	TEST_AUTHOR=1 ./Build test	# runs the testsuite!
+	RELEASE_TESTING=1 ./Build test	# runs the testsuite!
 
 =head1 EXPORT
 
@@ -151,7 +151,7 @@ Br0ken install at this time...
 
 This little snippet helps a lot, I was wondering if I could integrate it into the testsuite hah!
 
-	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.04';/"
+	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.05';/"
 
 =item * Use Test::GreaterVersion to sanity check versions
 
@@ -167,10 +167,6 @@ Br0ken install at this time... ( PerlCritic can do that! Need to investigate mor
 This would be nice, but I'm not sure if I can actually force this on other tests. Otherwise I'll be just making
 sure that the Test::Apocalypse tests is unique, which is worthless to $dist trying to clean itself up...
 
-=item * Use Test::CPAN::Meta
-
-I'm not sure of the difference between this and Test::YAML::Meta but more tests == the better ;)
-
 =item * META.yml checks
 
 We should make sure that the META.yml includes the "repository", "license", and other useful keys!
@@ -182,10 +178,6 @@ As always, we should keep up on the "latest" in the perl world and look at other
 =item * indirect syntax
 
 We should figure out how to use indirect.pm to detect this deprecated method of coding. There's a L<Perl::Critic> plugin for this, yay!
-
-=item * Use Test::Module::Used
-
-Add this module as a dependency, and check out it's usefulness...
 
 =back
 

@@ -4,14 +4,27 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
-# setup our tests and etc
-use Test::Spelling;
-use File::Spec;
+use Test::More;
 
-# does our stuff!
 sub do_test {
+	my %MODULES = (
+		'Test::Spelling'	=> '0.11',
+		'File::Spec'		=> '3.31',
+	);
+
+	while (my ($module, $version) = each %MODULES) {
+		eval "use $module $version";	## no critic ( ProhibitStringyEval )
+		next unless $@;
+
+		if ( $ENV{RELEASE_TESTING} ) {
+			die 'Could not load release-testing module ' . $module;
+		} else {
+			plan skip_all => $module . ' not available for testing';
+		}
+	}
+
 	# get our list of files, and add the "namespaces" as stopwords
 	foreach my $p ( Test::Spelling::all_pod_files() ) {
 		foreach my $word ( File::Spec->splitdir( $p ) ) {
@@ -23,6 +36,7 @@ sub do_test {
 		}
 	}
 
+	# Run the test!
 	all_pod_files_spelling_ok();
 
 	return;
@@ -39,7 +53,7 @@ Test::Apocalypse::Pod_Spelling - Plugin for Test::Spelling
 
 =head1 SYNOPSIS
 
-	Please do not use this module directly.
+	# Please do not use this module directly.
 
 =head1 ABSTRACT
 
@@ -50,10 +64,6 @@ Encapsulates Test::Spelling functionality.
 Encapsulates Test::Spelling functionality. We also add each filename as a stopword, to reduce "noise" from the spellchecker.
 
 If you need to add stopwords, please look at L<Pod::Spell> for ways to add it to each .pm file!
-
-=head1 EXPORT
-
-None.
 
 =head1 SEE ALSO
 

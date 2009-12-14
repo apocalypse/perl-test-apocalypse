@@ -4,15 +4,28 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
-# setup our tests and etc
 use Test::More;
-use version;
-use Devel::PPPort qw( WriteFile );
 
-# does our stuff!
 sub do_test {
+	my %MODULES = (
+		'version'	=> '0.78',
+		'Devel::PPPort'	=> '3.19',
+	);
+
+	while (my ($module, $version) = each %MODULES) {
+		eval "use $module $version";	## no critic ( ProhibitStringyEval )
+		next unless $@;
+
+		if ( $ENV{RELEASE_TESTING} ) {
+			die 'Could not load release-testing module ' . $module;
+		} else {
+			plan skip_all => $module . ' not available for testing';
+		}
+	}
+
+	# Run the test!
 	plan tests => 2;
 
 	# do we have an existing ppport.h file?
@@ -85,7 +98,7 @@ Test::Apocalypse::PPPort - Plugin to test for Devel::PPPort warnings
 
 =head1 SYNOPSIS
 
-	Please do not use this module directly.
+	# Please do not use this module directly.
 
 =head1 ABSTRACT
 
@@ -94,10 +107,6 @@ Plugin to test for Devel::PPPort warnings.
 =head1 DESCRIPTION
 
 Plugin to test for Devel::PPPort warnings.
-
-=head1 EXPORT
-
-None.
 
 =head1 SEE ALSO
 

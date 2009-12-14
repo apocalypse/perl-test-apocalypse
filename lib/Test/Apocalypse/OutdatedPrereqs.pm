@@ -4,18 +4,31 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
-# setup our tests and etc
 use Test::More;
-use YAML;
-use CPANPLUS::Backend;
-use CPANPLUS::Configure;
-use version;
-use Module::CoreList;
 
-# does our stuff!
 sub do_test {
+	my %MODULES = (
+		'YAML'			=> '0.70',
+		'CPANPLUS::Configure'	=> '0.88',
+		'CPANPLUS::Backend'	=> '0.88',
+		'version'		=> '0.78',
+		'Module::CoreList'	=> '2.23',
+	);
+
+	while (my ($module, $version) = each %MODULES) {
+		eval "use $module $version";	## no critic ( ProhibitStringyEval )
+		next unless $@;
+
+		if ( $ENV{RELEASE_TESTING} ) {
+			die 'Could not load release-testing module ' . $module;
+		} else {
+			plan skip_all => $module . ' not available for testing';
+		}
+	}
+
+	# Run the test!
 	# does META.yml exist?
 	if ( -e 'META.yml' and -f _ ) {
 		load_yml( 'META.yml' );
@@ -135,7 +148,7 @@ Test::Apocalypse::OutdatedPrereqs - Plugin to detect outdated prereqs
 
 =head1 SYNOPSIS
 
-	Please do not use this module directly.
+	# Please do not use this module directly.
 
 =head1 ABSTRACT
 
@@ -144,10 +157,6 @@ This plugin detects outdated prereqs in F<META.yml> specified relative to CPAN.
 =head1 DESCRIPTION
 
 This plugin detects outdated prereqs in F<META.yml> specified relative to CPAN.
-
-=head1 EXPORT
-
-None.
 
 =head1 SEE ALSO
 

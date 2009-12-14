@@ -4,15 +4,28 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
-# setup our tests and etc
 use Test::More;
-use Module::CPANTS::Analyse;
-use version;
 
-# does our stuff!
 sub do_test {
+	my %MODULES = (
+		'Module::CPANTS::Analyse'	=> '0.85',
+		'version'			=> '0.78',
+	);
+
+	while (my ($module, $version) = each %MODULES) {
+		eval "use $module $version";	## no critic ( ProhibitStringyEval )
+		next unless $@;
+
+		if ( $ENV{RELEASE_TESTING} ) {
+			die 'Could not load release-testing module ' . $module;
+		} else {
+			plan skip_all => $module . ' not available for testing';
+		}
+	}
+
+	# Run the test!
 	# the following code was copied/plagarized/transformed from Test::Kwalitee, thanks!
 
 	# init CPANTS with the latest tarball
@@ -129,7 +142,7 @@ Test::Apocalypse::Kwalitee - Plugin for Test::Kwalitee
 
 =head1 SYNOPSIS
 
-	Please do not use this module directly.
+	# Please do not use this module directly.
 
 =head1 ABSTRACT
 
@@ -138,10 +151,6 @@ Encapsulates Test::Kwalitee functionality.
 =head1 DESCRIPTION
 
 Encapsulates Test::Kwalitee functionality.
-
-=head1 EXPORT
-
-None.
 
 =head1 SEE ALSO
 
