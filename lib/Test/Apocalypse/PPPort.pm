@@ -106,7 +106,7 @@ Plugin to test for Devel::PPPort warnings.
 
 =head1 DESCRIPTION
 
-Plugin to test for Devel::PPPort warnings.
+Plugin to test for Devel::PPPort warnings. It automatically updates your bundled ppport.h file to the latest provided by L<Devel::PPPort>!
 
 =head1 SEE ALSO
 

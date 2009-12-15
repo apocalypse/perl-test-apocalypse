@@ -27,10 +27,18 @@ sub do_test {
 	# Run the test!
 	plan tests => 1;
 
+	# Find what directories we have
+	my @dirs;
+	foreach my $d ( qw( lib t examples script xt doc ) ) {	# TODO any other "standard" CPAN dirs?
+		if ( -d $d ) {
+			push( @dirs, $d );
+		}
+	}
+
 	# generate the file list
 	my $rule = File::Find::Rule->new;
 	$rule->grep( qr/\r\n/ );
-	my @files = $rule->in( qw( lib t examples ) );	# FIXME sometimes we don't have examples dir, F:F:R complains!
+	my @files = $rule->in( @dirs );
 
 	# FIXME read in MANIFEST.SKIP and use it!
 	# for now, we skip SVN + git stuff

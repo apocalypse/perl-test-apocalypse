@@ -179,6 +179,34 @@ As always, we should keep up on the "latest" in the perl world and look at other
 
 We should figure out how to use indirect.pm to detect this deprecated method of coding. There's a L<Perl::Critic> plugin for this, yay!
 
+=item * Test::ConsistentVersion
+
+Seems like another test similar to Test::HasVersion but it's good :)
+
+=item * Test::EOL
+
+Very similar to our DOSnewline test...
+
+=item * Test::LatestPrereqs
+
+This looks cool but we need to fiddle with config files? My OutdatedPrereqs test already covers it pretty well...
+
+=item * Test::NoBreakpoints
+
+I like this!
+
+=item * Test::PPPort
+
+Already implemented as PPPort.pm but it's less invasive than my version, ha!
+
+=item * Test::PureASCII
+
+This rocks, as I don't care about unicode in my perl! ;)
+
+=item * Test::Pod::Content
+
+Maybe this is useful to test my "common" boilerplate POD and make sure they are the "latest", eh?
+
 =back
 
 =head1 SEE ALSO
