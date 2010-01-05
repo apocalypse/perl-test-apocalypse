@@ -9,7 +9,6 @@ BEGIN {
 	if ( ! $@ ) {
 		# increment by one
 		$numtests++;
-
 	}
 }
 

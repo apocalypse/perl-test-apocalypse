@@ -36,6 +36,9 @@ sub do_test {
 		}
 	}
 
+	# Add our "common" perl crap that the spellchecker doesn't catch!
+	add_stopwords( qw( annocpan CPAN HTTP poe RT STDIN TODO xs YAML STDOUT yml FIXME perl csv db backpan LWP sqlite backend hardcode svn git cvs plugin ) );
+
 	# Run the test!
 	all_pod_files_spelling_ok();
 
