@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 use Test::More;
 
@@ -18,7 +18,7 @@ sub do_test {
 		next unless $@;
 
 		if ( $ENV{RELEASE_TESTING} ) {
-			die 'Could not load release-testing module ' . $module;
+			die 'Could not load release-testing module ' . $module . " -> $@";
 		} else {
 			plan skip_all => $module . ' not available for testing';
 		}

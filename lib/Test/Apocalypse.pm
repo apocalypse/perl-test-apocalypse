@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 # setup our tests and etc
 use Test::Block qw( $Plan );
@@ -151,7 +151,7 @@ Br0ken install at this time...
 
 This little snippet helps a lot, I was wondering if I could integrate it into the testsuite hah!
 
-	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.05';/"
+	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.06';/"
 
 =item * Use Test::GreaterVersion to sanity check versions
 
