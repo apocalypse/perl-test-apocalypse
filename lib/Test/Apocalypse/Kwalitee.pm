@@ -11,7 +11,7 @@ use Test::More;
 sub do_test {
 	my %MODULES = (
 		'Module::CPANTS::Analyse'	=> '0.85',
-		'version'			=> '0.78',
+		'version'			=> '0.77',
 	);
 
 	while (my ($module, $version) = each %MODULES) {

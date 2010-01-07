@@ -13,7 +13,7 @@ sub do_test {
 		'YAML'			=> '0.70',
 		'CPANPLUS::Configure'	=> '0.88',
 		'CPANPLUS::Backend'	=> '0.88',
-		'version'		=> '0.78',
+		'version'		=> '0.77',
 		'Module::CoreList'	=> '2.23',
 	);
 

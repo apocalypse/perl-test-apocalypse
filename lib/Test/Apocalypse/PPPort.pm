@@ -10,7 +10,7 @@ use Test::More;
 
 sub do_test {
 	my %MODULES = (
-		'version'	=> '0.78',
+		'version'	=> '0.77',
 		'Devel::PPPort'	=> '3.19',
 	);
 
