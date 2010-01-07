@@ -80,7 +80,11 @@ sub load_yml {
 	}
 
 	# Okay, how many prereqs do we have?
-	plan tests => scalar keys %$data;
+        if(scalar keys %$data > 0) {
+          plan tests => scalar keys %$data;
+        } else {
+          plan skip_all => "No prereqs";
+        }
 
 	# analyze every one of them!
 	foreach my $prereq ( keys %$data ) {
