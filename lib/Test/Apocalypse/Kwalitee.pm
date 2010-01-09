@@ -115,7 +115,7 @@ sub get_tarball {
 	closedir( $dir ) or die "Unable to closedir: $!";
 
 	# get the tarballs
-	@dirlist = grep { /\.tar\.(?:gz|bz2)$/ } @dirlist;
+	@dirlist = grep { /(?:tar(?:\.gz|\.bz2)?|tgz|zip)$/ } @dirlist;
 
 	# short-circuit
 	if ( scalar @dirlist == 0 ) {
@@ -125,7 +125,7 @@ sub get_tarball {
 	# get the versions
 	@dirlist = map { [ $_, $_ ] } @dirlist;
 	for ( @dirlist ) {
-		$_->[0] =~ s/^.*\-([^\-]+)\.tar\.(?:gz|bz2)$/$1/;
+		$_->[0] =~ s/^.*\-([^\-]+)(?:tar(?:\.gz|\.bz2)?|tgz|zip)$/$1/;
 		$_->[0] = version->new( $_->[0] );
 	}
 

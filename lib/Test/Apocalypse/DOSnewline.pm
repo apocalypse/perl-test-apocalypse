@@ -34,7 +34,7 @@ sub do_test {
 
 	# for now, we skip SVN + git stuff
 	# also skip any tarballs
-	@files = grep { $_ !~ /(?:\.svn\/|\.git\/|\.tar\.(?:gz|bz2))/ } @files;
+	@files = grep { $_ !~ /(?:\.svn\/|\.git\/|tar(?:\.gz|\.bz2)?|tgz|zip)/ } @files;
 
 	# test it!
 	if ( scalar @files ) {
