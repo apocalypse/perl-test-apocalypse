@@ -27,8 +27,15 @@ sub do_test {
 
 	# Run the test!
 	# the following code was copied/plagarized/transformed from Test::Kwalitee, thanks!
+	# The reason why I didn't just use that module is because it doesn't print the kwalitee or consider extra metrics...
 
 	# init CPANTS with the latest tarball
+	my $tarball = get_tarball();
+	if ( ! defined $tarball ) {
+		plan skip_all => 'Distribution tarball not found, unable to run CPANTS Kwalitee tests.';
+		return;
+	}
+
 	my $analyzer = Module::CPANTS::Analyse->new({
 		'dist'	=> get_tarball(),
 	});
@@ -58,7 +65,17 @@ sub do_test {
 			if ( exists $metric->{'is_extra'} and $metric->{'is_extra'} ) {
 				$type = 'EXTRA';
 			}
-			ok( $result, "[$type] $metric->{'name'}" );
+
+			if ( $type eq 'CORE' ) {
+				ok( $result, "[$type] $metric->{'name'}" );
+			} else {
+				# non-core tests PASS automatically
+				pass( "Ignoring test '$metric->{'name'}' because it is marked as $type" );
+
+				if ( ! $result ) {
+					diag( "Failed '$metric->{'name'}' $type test" );
+				}
+			}
 
 			# print more diag if it failed
 			if ( ! $result && $ENV{TEST_VERBOSE} ) {
@@ -93,17 +110,22 @@ sub do_test {
 
 sub get_tarball {
 	# get our list of stuff, and try to find the latest tarball
-	opendir( my $dir, '.' ) or die "unable to opendir: $!";
+	opendir( my $dir, '.' ) or die "Unable to opendir: $!";
 	my @dirlist = readdir( $dir );
-	closedir( $dir );
+	closedir( $dir ) or die "Unable to closedir: $!";
 
 	# get the tarballs
-	@dirlist = grep { /\.tar\.gz$/ } @dirlist;
+	@dirlist = grep { /\.tar\.(?:gz|bz2)$/ } @dirlist;
+
+	# short-circuit
+	if ( scalar @dirlist == 0 ) {
+		return;
+	}
 
 	# get the versions
 	@dirlist = map { [ $_, $_ ] } @dirlist;
 	for ( @dirlist ) {
-		$_->[0] =~ s/^.*\-([^\-]+)\.tar\.gz$/$1/;
+		$_->[0] =~ s/^.*\-([^\-]+)\.tar\.(?:gz|bz2)$/$1/;
 		$_->[0] = version->new( $_->[0] );
 	}
 
@@ -142,7 +164,7 @@ Test::Apocalypse::Kwalitee - Plugin for Test::Kwalitee
 
 =head1 SYNOPSIS
 
-	# Please do not use this module directly.
+	die "Don't use this module directly. Please use Test::Apocalypse instead.";
 
 =head1 ABSTRACT
 
@@ -150,7 +172,7 @@ Encapsulates Test::Kwalitee functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Kwalitee functionality.
+Encapsulates Test::Kwalitee functionality. This plugin also processes the extra metrics, and prints out the kwalitee as a diag() for info.
 
 =head1 SEE ALSO
 
@@ -164,7 +186,7 @@ Apocalypse E<lt>apocal@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2009 by Apocalypse
+Copyright 2010 by Apocalypse
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

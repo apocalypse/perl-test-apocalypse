@@ -37,6 +37,10 @@ lib/Test/Apocalypse/DistManifest.pm
 lib/Test/Apocalypse/ModuleUsed.pm
 lib/Test/Apocalypse/CPANMeta.pm
 lib/Test/Apocalypse/Synopsis.pm
+lib/Test/Apocalypse/NoBreakpoints.pm
+lib/Test/Apocalypse/EOL.pm
+lib/Test/Apocalypse/ConsistentVersion.pm
+lib/Test/Apocalypse/AutoLoader.pm
 
 examples/simple.pl
 

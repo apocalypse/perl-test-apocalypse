@@ -22,6 +22,8 @@ my $build = Module::Build->new(
 	'add_to_cleanup'	=> [ 'META.yml', 'Makefile.PL', 'README', 'Makefile', 'LICENSE' ], # automatically generated
 
 	'requires'		=> {
+		# FIXME this sucks, I have to repeat the version here and in the Test::Apocalypse::XYZ module...
+
 		# Test stuff
 		'Test::More'			=> '0.94',
 		'Test::Compile'			=> '0.11',
@@ -49,6 +51,10 @@ my $build = Module::Build->new(
 		'Test::Module::Used'		=> '0.1.2',
 		'Test::Synopsis'		=> '0.06',
 		'Test::CPAN::Meta'		=> '0.13',
+		'Test::NoBreakpoints'		=> '0.13',
+		'Test::EOL'			=> '0.3',
+		'Test::ConsistentVersion'	=> '0.2.2',
+		'Test::AutoLoader'		=> '0.03',
 
 		# handy tools
 		'File::Spec'			=> '3.31',
@@ -57,9 +63,8 @@ my $build = Module::Build->new(
 		'Perl::Metrics::Simple'		=> '0.13',
 		'Test::Block'			=> '0.11',
 		'YAML'				=> '0.70',
-		'version'			=> '0.78',
-		'CPANPLUS::Backend'		=> '0.9001',
-		'CPANPLUS::Configure'		=> '0.9001',
+		'version'			=> '0.77',
+		'CPANPLUS'			=> '0.90',
 		'Devel::PPPort'			=> '3.19',
 		'Module::CoreList'		=> '2.23',
 

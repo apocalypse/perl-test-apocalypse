@@ -43,7 +43,7 @@ Test::Apocalypse::Strict - Plugin for Test::Strict
 
 =head1 SYNOPSIS
 
-	# Please do not use this module directly.
+	die "Don't use this module directly. Please use Test::Apocalypse instead.";
 
 =head1 ABSTRACT
 
@@ -67,7 +67,7 @@ Apocalypse E<lt>apocal@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2009 by Apocalypse
+Copyright 2010 by Apocalypse
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

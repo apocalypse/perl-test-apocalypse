@@ -17,9 +17,6 @@ use base qw( Exporter );
 our @EXPORT = qw( is_apocalypse_here ); ## no critic ( ProhibitAutomaticExportation )
 
 sub is_apocalypse_here {
-	# arrayref of tests to skip/use/etc
-	my $tests = shift;
-
 	# should we even run those tests?
 	unless ( $ENV{RELEASE_TESTING} or $ENV{AUTOMATED_TESTING} ) {
 		plan skip_all => 'Author test. Please set $ENV{RELEASE_TESTING} to a true value to run.';
@@ -30,10 +27,66 @@ sub is_apocalypse_here {
 		eval "use Test::NoWarnings";		## no critic ( ProhibitStringyEval )
 	}
 
+	# The options hash
+	my %opt;
+
+	# Support passing in a hash ref or a regular hash
+	if ( ( @_ & 1 ) and ref $_[0] and ref( $_[0] ) eq 'HASH' ) {
+		%opt = %{ $_[0] };
+	} else {
+		# Sanity checking
+		if ( @_ & 1 ) {
+			die 'The sub is_apocalypse_here() requires an even number of options';
+		}
+
+		%opt = @_;
+	}
+
+	# lowercase keys
+	%opt = map { lc($_) => $opt{$_} } keys %opt;
+
+	# setup the "allow/deny" tests
+	if ( exists $opt{'allow'} and exists $opt{'deny'} ) {
+		die 'Unable to use "allow" and "deny" at the same time!';
+	}
+	foreach my $type ( qw( allow deny ) ) {
+		if ( ! exists $opt{ $type } or ! defined $opt{ $type } ) {
+			# Don't set anything
+			delete $opt{ $type } if exists $opt{ $type };
+		} else {
+			if ( ! ref $opt{ $type } ) {
+				# convert it to a qr// regex?
+				eval { $opt{ $type } = qr/$opt{ $type }/i };
+				if ( $@ ) {
+					die "Unable to compile the '$type' regex: $@";
+				}
+			} elsif ( ref( $opt{ $type } ) ne 'Regexp' ) {
+				die "The '$type' option is not a regexp!";
+			}
+		}
+	}
+
 	# loop through our plugins
 	foreach my $t ( __PACKAGE__->plugins() ) {	## no critic ( RequireExplicitInclusion )
 		# localize the stuff
 		local $Plan;
+
+		# Do we want this test?
+		if ( exists $opt{'allow'} ) {
+			if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
+				if ( $1 !~ $opt{'allow'} ) {
+					diag( "Skipping '$t' tests..." );
+					next;
+				}
+			}
+		} elsif ( exists $opt{'deny'} ) {
+			if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
+				if ( $1 =~ $opt{'deny'} ) {
+					diag( "Skipping '$t' tests..." );
+					next;
+				}
+			}
+		}
 
 		# do nasty override of Test::Builder::plan
 		my $oldplan = \&Test::Builder::plan;		## no critic ( ProhibitCallsToUnexportedSubs )
@@ -57,16 +110,16 @@ sub is_apocalypse_here {
 			return 1;
 		};
 
-		no warnings 'redefine'; no strict 'refs';
+		no warnings 'redefine'; no strict 'refs';	## no critic ( ProhibitNoStrict )
 		*{'Test::Builder::plan'} = $newplan;
 
 		# run it!
 		use warnings; use strict;
-		diag( "running $t tests..." );
+		diag( "Running '$t' tests..." );
 		$t->do_test();
 
 		# revert the override
-		no warnings 'redefine'; no strict 'refs';
+		no warnings 'redefine'; no strict 'refs';	## no critic ( ProhibitNoStrict )
 		*{'Test::Builder::plan'} = $oldplan;
 	}
 
@@ -77,7 +130,7 @@ sub is_apocalypse_here {
 1;
 __END__
 
-=for stopwords APOCAL AUTHORs AnnoCPAN CPAN RT al backend debian distro distros dists env hackish plugins testsuite yml pm yay
+=for stopwords APOCAL AUTHORs AnnoCPAN CPAN RT al backend debian distro distros dists env hackish plugins testsuite yml pm yay unicode blog
 
 =head1 NAME
 
@@ -109,8 +162,9 @@ the tons of t/foo.t scripts + managing them in every distro. I thought it would 
 one module and toss it on CPAN :) That way, every time I update this module all of my dists would be magically
 updated!
 
-This module respects the TEST_AUTHOR env variable, if it is not set it will skip the entire testsuite. Normally
-end-users should not run it; but you can if you want to see how bad my dists are, ha!
+This module respects the RELEASE_TESTING env variable, if it is not set it will skip the entire testsuite. Normally
+end-users should not run it; but you can if you want to see how bad my dists are, ha! The scheme is exactly the same
+as the one Alias proposed in L<Test::XT> and in his blog post, L<http://use.perl.org/~Alias/journal/38822>.
 
 This module uses L<Module::Pluggable> to have custom "backends" that process various tests. We wrap them in a hackish
 L<Test::Block> block per-plugin and it seems to work nicely. If you want to write your own, it should be a breeze
@@ -127,6 +181,49 @@ you can do this:
 	./Build dist			# makes the tarball ( so certain plugins can process it )
 	RELEASE_TESTING=1 ./Build test	# runs the testsuite!
 
+=head1 Methods
+
+=head2 is_apocalypse_here()
+
+This is the main entry point for this testsuite. By default, it runs every plugin in the testsuite. You can enable/disable
+specific plugins if you desire. It accepts a single argument: a hashref or a hash. It can contain various options, but as of
+now it only supports two options. If you try to use allow and deny at the same time, this module will throw an exception.
+
+=head3 allow
+
+Setting "allow" to a string or a precompiled regex will run only the plugins that match the regex.
+
+	# run only the EOL test and disable all other tests
+	is_apocalypse_here( {
+		allow	=> qr/^EOL$/,
+	} );
+
+	# run all "dist" tests
+	is_apocalypse_here( {
+		allow	=> 'dist',
+	} );
+
+=head3 deny
+
+Setting "deny" to a string or a precompiled regex will not run the plugins that match the regex.
+
+	# disable Pod_Coverage test and enable all other tests
+	is_apocalypse_here( {
+		deny	=> qr/^Pod_Coverage$/,
+	} );
+
+	# disable all pod tests
+	is_apocalypse_here( {
+		deny	=> 'pod',
+	} );
+
+=head2 plugins()
+
+Since this module uses L<Module::Pluggable> you can use this method on the package to find out what plugins are available. Handy if you need
+to know what plugins to skip, for example.
+
+	my @tests = Test::Apocalypse->plugins;
+
 =head1 EXPORT
 
 Automatically exports the "is_apocalypse_here" sub.
@@ -142,10 +239,6 @@ Automatically exports the "is_apocalypse_here" sub.
 =item * POD standards check
 
 Do we have SYNOPSIS, ABSTRACT, SUPPORT, etc sections? ( PerlCritic can do that! Need to investigate more... )
-
-=item * Use Test::AutoLoader to check for .al files
-
-Br0ken install at this time...
 
 =item * Help with version updates automatically
 
@@ -179,21 +272,9 @@ As always, we should keep up on the "latest" in the perl world and look at other
 
 We should figure out how to use indirect.pm to detect this deprecated method of coding. There's a L<Perl::Critic> plugin for this, yay!
 
-=item * Test::ConsistentVersion
-
-Seems like another test similar to Test::HasVersion but it's good :)
-
-=item * Test::EOL
-
-Very similar to our DOSnewline test...
-
 =item * Test::LatestPrereqs
 
 This looks cool but we need to fiddle with config files? My OutdatedPrereqs test already covers it pretty well...
-
-=item * Test::NoBreakpoints
-
-I like this!
 
 =item * Test::PPPort
 
@@ -259,7 +340,7 @@ Thanks to jawnsy@cpan.org for the prodding and help in getting this package read
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2009 by Apocalypse
+Copyright 2010 by Apocalypse
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

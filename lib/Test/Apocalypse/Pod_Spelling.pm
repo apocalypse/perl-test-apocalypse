@@ -37,7 +37,8 @@ sub do_test {
 	}
 
 	# Add our "common" perl crap that the spellchecker doesn't catch!
-	add_stopwords( qw( annocpan CPAN HTTP poe RT STDIN TODO xs YAML STDOUT yml FIXME perl csv db backpan LWP sqlite backend hardcode svn git cvs plugin ) );
+	add_stopwords( qw( annocpan cpan http poe rt stdin todo xs yaml stdout yml fixme perl
+		csv db backpan lwp sqlite backend hardcode svn git cvs plugin unicode ppport ) );
 
 	# Run the test!
 	all_pod_files_spelling_ok();
@@ -56,7 +57,7 @@ Test::Apocalypse::Pod_Spelling - Plugin for Test::Spelling
 
 =head1 SYNOPSIS
 
-	# Please do not use this module directly.
+	die "Don't use this module directly. Please use Test::Apocalypse instead.";
 
 =head1 ABSTRACT
 
@@ -80,7 +81,7 @@ Apocalypse E<lt>apocal@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2009 by Apocalypse
+Copyright 2010 by Apocalypse
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

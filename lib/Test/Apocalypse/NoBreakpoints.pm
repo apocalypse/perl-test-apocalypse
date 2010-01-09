@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::Compile;
+package Test::Apocalypse::NoBreakpoints;
 use strict; use warnings;
 
 # Initialize our version
@@ -10,7 +10,7 @@ use Test::More;
 
 sub do_test {
 	my %MODULES = (
-		'Test::Compile'	=> '0.11',
+		'Test::NoBreakpoints'	=> '0.13',
 	);
 
 	while (my ($module, $version) = each %MODULES) {
@@ -25,7 +25,7 @@ sub do_test {
 	}
 
 	# Run the test!
-	all_pm_files_ok();
+	all_files_no_breakpoints_ok();
 
 	return;
 }
@@ -34,7 +34,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::Compile - Plugin for Test::Compile
+Test::Apocalypse::NoBreakpoints - Plugin for Test::NoBreakpoints
 
 =head1 SYNOPSIS
 
@@ -42,17 +42,17 @@ Test::Apocalypse::Compile - Plugin for Test::Compile
 
 =head1 ABSTRACT
 
-Encapsulates Test::Compile functionality.
+Encapsulates Test::NoBreakpoints functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Compile functionality.
+Encapsulates Test::NoBreakpoints functionality.
 
 =head1 SEE ALSO
 
 L<Test::Apocalypse>
 
-L<Test::Compile>
+L<Test::NoBreakpoints>
 
 =head1 AUTHOR
 

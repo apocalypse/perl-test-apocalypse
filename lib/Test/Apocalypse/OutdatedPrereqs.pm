@@ -11,8 +11,7 @@ use Test::More;
 sub do_test {
 	my %MODULES = (
 		'YAML'			=> '0.70',
-		'CPANPLUS::Configure'	=> '0.88',
-		'CPANPLUS::Backend'	=> '0.88',
+		'CPANPLUS'		=> '0.90',
 		'version'		=> '0.77',
 		'Module::CoreList'	=> '2.23',
 	);
@@ -66,6 +65,8 @@ sub load_yml {
 	delete $data->{'perl'} if exists $data->{'perl'};
 
 	# init the backend ( and set some options )
+	require CPANPLUS::Configure;
+	require CPANPLUS::Backend;
 	my $cpanconfig = CPANPLUS::Configure->new;
 	$cpanconfig->set_conf( 'verbose' => 0 );
 	$cpanconfig->set_conf( 'no_update' => 1 );
@@ -80,11 +81,11 @@ sub load_yml {
 	}
 
 	# Okay, how many prereqs do we have?
-        if(scalar keys %$data > 0) {
-          plan tests => scalar keys %$data;
-        } else {
-          plan skip_all => "No prereqs";
-        }
+	if ( scalar keys %$data > 0 ) {
+		plan tests => scalar keys %$data;
+	} else {
+		plan skip_all => "No prereqs found in META.yml";
+	}
 
 	# analyze every one of them!
 	foreach my $prereq ( keys %$data ) {
@@ -111,7 +112,7 @@ sub check_cpan {
 
 		# Does the prereq have funky characters that we're unable to process now?
 		if ( $version =~ /[<>=,!]+/ ) {
-			# FIXME simplistic style of parsing
+			# simple style of parsing, may blow up in the future!
 			my @versions = split( ',', $version );
 
 			# sort them by version, descending
@@ -152,7 +153,7 @@ Test::Apocalypse::OutdatedPrereqs - Plugin to detect outdated prereqs
 
 =head1 SYNOPSIS
 
-	# Please do not use this module directly.
+	die "Don't use this module directly. Please use Test::Apocalypse instead.";
 
 =head1 ABSTRACT
 
@@ -172,7 +173,7 @@ Apocalypse E<lt>apocal@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2009 by Apocalypse
+Copyright 2010 by Apocalypse
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
