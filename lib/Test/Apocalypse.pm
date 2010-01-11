@@ -318,7 +318,7 @@ L<http://annocpan.org/dist/Test-Apocalypse>
 
 L<http://cpanratings.perl.org/d/Test-Apocalypse>
 
-=item * RT: CPAN's request tracker
+=item * RT: CPAN's Request Tracker
 
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Test-Apocalypse>
 
@@ -326,13 +326,13 @@ L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Test-Apocalypse>
 
 L<http://cpants.perl.org/dist/overview/Test-Apocalypse>
 
-=item * CPAN Testers Matrix
-
-L<http://matrix.cpantesters.org/?dist=Test-Apocalypse>
-
 =item * CPAN Testers Results
 
 L<http://cpantesters.org/distro/T/Test-Apocalypse.html>
+
+=item * CPAN Testers Matrix
+
+L<http://matrix.cpantesters.org/?dist=Test-Apocalypse>
 
 =back
 
