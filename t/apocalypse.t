@@ -13,8 +13,6 @@ if ( $@ ) {
 		# Thanks to Regexp::Assemble for making this, ha!
 		# my $ra = Regexp::Assemble->new;
 		# $ra->add( '^Fixme$' );		# I use FIXMEs in this module as "ideas" and etc
-		# $ra->add( '^Pod_Coverage$' );		# I'm too lazy to document all plugin's methods... bah!
-		# $ra->add( '^Pod_Spelling$' );		# need to fix stopwords, they don't get loaded for some reason
 		# $ra->add( '^Strict$' );		# Test::Strict doesn't skip Makefile/Build file and complains about them...
 		# $ra->add( '^ModuleUsed$' );		# we use eval's to load our plugins' modules, dang!
 		# $ra->add( '^OutdatedPrereqs$' );	# we need to specify older 'version' module for Debian, and others...
@@ -22,6 +20,6 @@ if ( $@ ) {
 		# print $ra->as_string;
 
 		# Add PERL_APOCALYSPE env var so we can test everything when needed...
-		! $ENV{PERL_APOCALYPSE} ? ( deny => qr/^(?:(?:OutdatedPrereq|Dependencie)s|Pod_(?:Coverage|Spelling)|ModuleUsed|Strict|Fixme)$/, ) : (),
+		! $ENV{PERL_APOCALYPSE} ? ( deny => qr/^(?:(?:OutdatedPrereq|Dependencie)s|ModuleUsed|Strict|Fixme)$/, ) : (),
 	} );
 }

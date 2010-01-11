@@ -30,14 +30,13 @@ sub do_test {
 	# The reason why I didn't just use that module is because it doesn't print the kwalitee or consider extra metrics...
 
 	# init CPANTS with the latest tarball
-	my $tarball = get_tarball();
+	my $tarball = _get_tarball();
 	if ( ! defined $tarball ) {
 		plan skip_all => 'Distribution tarball not found, unable to run CPANTS Kwalitee tests.';
 		return;
 	}
-
 	my $analyzer = Module::CPANTS::Analyse->new({
-		'dist'	=> get_tarball(),
+		'dist'	=> $tarball,
 	});
 
 	# set the number of tests / run analyzer
@@ -66,15 +65,11 @@ sub do_test {
 				$type = 'EXTRA';
 			}
 
-			if ( $type eq 'CORE' ) {
+			# non-core tests PASS automatically
+			if ( $type eq 'CORE' or $result ) {
 				ok( $result, "[$type] $metric->{'name'}" );
 			} else {
-				# non-core tests PASS automatically
-				pass( "Ignoring test '$metric->{'name'}' because it is marked as $type" );
-
-				if ( ! $result ) {
-					diag( "Failed '$metric->{'name'}' $type test" );
-				}
+				pass( "[$type] $metric->{'name'} treated as PASS" );
 			}
 
 			# print more diag if it failed
@@ -103,12 +98,12 @@ sub do_test {
 	diag( "Kwalitee rating: " . sprintf( "%.2f%%", 100 * ( $kwalitee_points / $available_kwalitee ) ) . " [$kwalitee_points / $available_kwalitee]" );
 
 	# That piece of crap dumps files all over :(
-	cleanup_debian_files();
+	_cleanup_debian_files();
 
 	return;
 }
 
-sub get_tarball {
+sub _get_tarball {
 	# get our list of stuff, and try to find the latest tarball
 	opendir( my $dir, '.' ) or die "Unable to opendir: $!";
 	my @dirlist = readdir( $dir );
@@ -143,7 +138,7 @@ sub get_tarball {
 ## The following files are not named in the MANIFEST file: /home/apoc/workspace/VCS-perl-trunk/VCS-2.12.2/Debian_CPANTS.txt
 ## Looks like you failed 1 test of 1.
 #t/a_manifest.............. Dubious, test returned 1 (wstat 256, 0x100)
-sub cleanup_debian_files {
+sub _cleanup_debian_files {
 	foreach my $file ( qw( Debian_CPANTS.txt ../Debian_CPANTS.txt ) ) {
 		if ( -e $file and -f _ ) {
 			my $status = unlink( $file );
@@ -158,6 +153,9 @@ sub cleanup_debian_files {
 
 1;
 __END__
+
+=for stopwords kwalitee
+
 =head1 NAME
 
 Test::Apocalypse::Kwalitee - Plugin for Test::Kwalitee
@@ -173,6 +171,10 @@ Encapsulates Test::Kwalitee functionality.
 =head1 DESCRIPTION
 
 Encapsulates Test::Kwalitee functionality. This plugin also processes the extra metrics, and prints out the kwalitee as a diag() for info.
+
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
 
 =head1 SEE ALSO
 

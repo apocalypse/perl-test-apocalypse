@@ -111,6 +111,10 @@ Plugin to test for Devel::PPPort warnings.
 
 Plugin to test for Devel::PPPort warnings. It automatically updates your bundled ppport.h file to the latest provided by L<Devel::PPPort>!
 
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
+
 =head1 SEE ALSO
 
 L<Test::Apocalypse>

@@ -26,9 +26,10 @@ sub do_test {
 
 	# Run the test!
 	my @dirs = qw( lib t examples );
-	plan tests => scalar @dirs;
+	plan tests => scalar @dirs * 2;
 	foreach my $d ( @dirs ) {
-		dir_exists_ok( $d, "directory $d exists" );
+		dir_exists_ok( $d, "Directory '$d' exists" );
+		ok( -r $d, "Directory '$d' is readable" );
 	}
 
 	return;
@@ -54,6 +55,10 @@ Encapsulates Test::Dir functionality.
 =head1 DESCRIPTION
 
 Encapsulates Test::Dir functionality.
+
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
 
 =head1 SEE ALSO
 

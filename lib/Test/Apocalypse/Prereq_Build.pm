@@ -54,6 +54,10 @@ Encapsulates Test::Prereq::Build functionality.
 
 NOTE: This test normally takes FOREVER to run! Please set $ENV{PERL_TEST_PREREQ} = 1 in order to enable this test.
 
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
+
 =head1 SEE ALSO
 
 L<Test::Apocalypse>

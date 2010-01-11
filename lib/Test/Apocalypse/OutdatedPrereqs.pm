@@ -30,11 +30,11 @@ sub do_test {
 	# Run the test!
 	# does META.yml exist?
 	if ( -e 'META.yml' and -f _ ) {
-		load_yml( 'META.yml' );
+		_load_yml( 'META.yml' );
 	} else {
 		# maybe one directory up?
 		if ( -e '../META.yml' and -f _ ) {
-			load_yml( '../META.yml' );
+			_load_yml( '../META.yml' );
 		} else {
 			plan tests => 1;
 			fail( 'META.yml is missing, unable to process it!' );
@@ -44,8 +44,7 @@ sub do_test {
 	return;
 }
 
-# main entry point
-sub load_yml {
+sub _load_yml {
 	# we'll load a file
 	my $file = shift;
 
@@ -89,14 +88,14 @@ sub load_yml {
 
 	# analyze every one of them!
 	foreach my $prereq ( keys %$data ) {
-		check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
+		_check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
 	}
 
 	return;
 }
 
 # checks a prereq against CPAN
-sub check_cpan {
+sub _check_cpan {
 	my $backend = shift;
 	my $prereq = shift;
 	my $version = shift;
@@ -162,6 +161,10 @@ This plugin detects outdated prereqs in F<META.yml> specified relative to CPAN.
 =head1 DESCRIPTION
 
 This plugin detects outdated prereqs in F<META.yml> specified relative to CPAN.
+
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
 
 =head1 SEE ALSO
 

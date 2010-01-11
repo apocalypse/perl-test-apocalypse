@@ -48,6 +48,10 @@ Encapsulates Test::Perl::Critic functionality.
 
 Encapsulates Test::Perl::Critic functionality.
 
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
+
 =head1 SEE ALSO
 
 L<Test::Apocalypse>

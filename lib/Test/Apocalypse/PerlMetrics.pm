@@ -91,7 +91,11 @@ Encapsulates Perl::Metrics::Simple functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Perl::Metrics::Simple functionality.
+Encapsulates Perl::Metrics::Simple functionality. Enable TEST_VERBOSE to get a diag() output of some metrics.
+
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
 
 =head1 SEE ALSO
 

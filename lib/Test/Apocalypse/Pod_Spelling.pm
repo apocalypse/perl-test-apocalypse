@@ -12,6 +12,7 @@ sub do_test {
 	my %MODULES = (
 		'Test::Spelling'	=> '0.11',
 		'File::Spec'		=> '3.31',
+		'File::Which'		=> '1.09',
 	);
 
 	while (my ($module, $version) = each %MODULES) {
@@ -23,6 +24,15 @@ sub do_test {
 		} else {
 			plan skip_all => $module . ' not available for testing';
 		}
+	}
+	# Thanks to CPANTESTERS, not everyone have "spell" installed...
+	# FIXME pester Test::Spelling author to be more smarter about this failure mode!
+	my $binary = which( 'spell' );
+	if ( ! defined $binary ) {
+		plan skip_all => 'The binary "spell" is not found, unable to test spelling!';
+	} else {
+		# Set the spell path, to be sure!
+		set_spell_cmd( $binary );
 	}
 
 	# get our list of files, and add the "namespaces" as stopwords
@@ -38,7 +48,9 @@ sub do_test {
 
 	# Add our "common" perl crap that the spellchecker doesn't catch!
 	add_stopwords( qw( annocpan cpan http poe rt stdin todo xs yaml stdout yml fixme perl
-		csv db backpan lwp sqlite backend hardcode svn git cvs plugin unicode ppport ) );
+		csv db backpan lwp sqlite backend hardcode svn git cvs plugin unicode ppport
+		precompiled pm dist podcover cpants
+	) );
 
 	# Run the test!
 	all_pod_files_spelling_ok();
@@ -68,6 +80,10 @@ Encapsulates Test::Spelling functionality.
 Encapsulates Test::Spelling functionality. We also add each filename as a stopword, to reduce "noise" from the spellchecker.
 
 If you need to add stopwords, please look at L<Pod::Spell> for ways to add it to each .pm file!
+
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
 
 =head1 SEE ALSO
 

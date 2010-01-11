@@ -54,9 +54,11 @@ Encapsulates Test::Dependencies functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Dependencies functionality.
+Encapsulates Test::Dependencies functionality. We enable the "light" style of parsing. We also add some "standard" modules to exclude from the checks.
 
-We also add some "standard" modules to exclude from the checks.
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
 
 =head1 SEE ALSO
 

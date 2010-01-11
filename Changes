@@ -2,16 +2,18 @@ Revision history for Perl extension Test::Apocalypse
 
 * 0.06
 
-	Fixed OutdatedPrereqs.pm so it doesn't blow up on zero prereqs - thanks Ryan52!
+	Fixed OutdatedPrereqs test so it doesn't blow up on zero prereqs - thanks Ryan52!
 	Added $@ to the module load failure output, for better debugging - thanks Ryan52!
 	Minor POD tweaks
-	Added more common terms to the Pod_Spelling.pm test
+	Added more common terms to the Pod_Spelling test
 	Added Test::NoBreakpoints to the testsuite
 	Added Test::ConsistentVersion to the testsuite
 	Added Test::EOL to the testsuite
 	Added Test::AutoLoader to the testsuite
 	Modified is_apocalypse_here() to accept options, you can now enable/disable specific tests!
 	Test::Apocalypse now finally passes it's own testsuite under RELEASE_TESTING, ha! ( thanks to Debian guys for prodding me )
+	The Kwalitee test for EXPERIMENTAL/EXTRA metrics is not treated as a failure now
+	Oops, Module::Pluggable wasn't listed as a prereq!
 
 * 0.05
 

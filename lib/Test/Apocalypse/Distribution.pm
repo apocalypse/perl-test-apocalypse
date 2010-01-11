@@ -33,6 +33,9 @@ sub do_test {
 
 1;
 __END__
+
+=for stopwords distversion podcover
+
 =head1 NAME
 
 Test::Apocalypse::Distribution - Plugin for Test::Distribution
@@ -49,6 +52,10 @@ Encapsulates Test::Distribution functionality.
 
 Encapsulates Test::Distribution functionality. We disable the podcover test, as we already have a plugin for that. Also, we enable the
 distversion test.
+
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
 
 =head1 SEE ALSO
 

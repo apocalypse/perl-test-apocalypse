@@ -51,9 +51,11 @@ Encapsulates Test::Strict functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Strict functionality.
+Encapsulates Test::Strict functionality. We also enable the warnings check.
 
-We make sure that Test::Strict tests strict/warnings and exempts the Build.PL/Makefile.PL files from checks.
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
 
 =head1 SEE ALSO
 

@@ -67,6 +67,8 @@ my $build = Module::Build->new(
 		'CPANPLUS'			=> '0.90',
 		'Devel::PPPort'			=> '3.19',
 		'Module::CoreList'		=> '2.23',
+		'Module::Pluggable'		=> '3.9',
+		'File::Which'			=> '1.09',
 
 		# we need a recent perl
 		'perl'				=> '5.008',

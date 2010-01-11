@@ -28,11 +28,11 @@ sub do_test {
 	# Run the test!
 	# does META.yml exist?
 	if ( -e 'META.yml' and -f _ ) {
-		load_yml( 'META.yml' );
+		_load_yml( 'META.yml' );
 	} else {
 		# maybe one directory up?
 		if ( -e '../META.yml' and -f _ ) {
-			load_yml( '../META.yml' );
+			_load_yml( '../META.yml' );
 		} else {
 			plan tests => 1;
 			fail( 'META.yml is missing, unable to process it!' );
@@ -42,8 +42,8 @@ sub do_test {
 	return;
 }
 
-# main entry point
-sub load_yml {
+# loads a yml file
+sub _load_yml {
 	# we'll load a file
 	my $file = shift;
 
@@ -70,7 +70,7 @@ sub load_yml {
 
 	# analyze every one of them!
 	foreach my $module ( keys %$data ) {
-		if ( module_has_autoload( $module ) ) {
+		if ( _module_has_autoload( $module ) ) {
 			autoload_ok( $module );
 		} else {
 			pass( "Skipping '$module' because it has no autoloaded files" );
@@ -81,7 +81,7 @@ sub load_yml {
 }
 
 # basically ripped off from Test::AutoLoader so we don't get the annoying "unable to find autoload directory" failure
-sub module_has_autoload {
+sub _module_has_autoload {
 	my $pkg = shift;
 	my $dirname;
 
@@ -117,6 +117,10 @@ Encapsulates Test::AutoLoader functionality.
 =head1 DESCRIPTION
 
 Encapsulates Test::AutoLoader functionality.
+
+=head2 do_test()
+
+The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
 
 =head1 SEE ALSO
 

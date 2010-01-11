@@ -130,7 +130,7 @@ sub is_apocalypse_here {
 1;
 __END__
 
-=for stopwords APOCAL AUTHORs AnnoCPAN CPAN RT al backend debian distro distros dists env hackish plugins testsuite yml pm yay unicode blog
+=for stopwords APOCAL AUTHORs AnnoCPAN CPAN RT al backend debian distro distros dists env hackish plugins testsuite yml pm yay unicode blog precompiled CPANTS
 
 =head1 NAME
 
@@ -191,7 +191,8 @@ now it only supports two options. If you try to use allow and deny at the same t
 
 =head3 allow
 
-Setting "allow" to a string or a precompiled regex will run only the plugins that match the regex.
+Setting "allow" to a string or a precompiled regex will run only the plugins that match the regex. If passed a string, this module
+will compile it via C<qr/$str/i>.
 
 	# run only the EOL test and disable all other tests
 	is_apocalypse_here( {
@@ -205,7 +206,8 @@ Setting "allow" to a string or a precompiled regex will run only the plugins tha
 
 =head3 deny
 
-Setting "deny" to a string or a precompiled regex will not run the plugins that match the regex.
+Setting "deny" to a string or a precompiled regex will not run the plugins that match the regex. If passed a string, this module
+will compile it via C<qr/$str/i>.
 
 	# disable Pod_Coverage test and enable all other tests
 	is_apocalypse_here( {
@@ -304,6 +306,10 @@ You can find documentation for this module with the perldoc command.
 
 =over 4
 
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/Test-Apocalypse>
+
 =item * AnnoCPAN: Annotated CPAN documentation
 
 L<http://annocpan.org/dist/Test-Apocalypse>
@@ -316,13 +322,17 @@ L<http://cpanratings.perl.org/d/Test-Apocalypse>
 
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Test-Apocalypse>
 
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Test-Apocalypse>
-
-=item * CPAN Testing Service
+=item * CPANTS Kwalitee
 
 L<http://cpants.perl.org/dist/overview/Test-Apocalypse>
+
+=item * CPAN Testers Matrix
+
+L<http://matrix.cpantesters.org/?dist=Test-Apocalypse>
+
+=item * CPAN Testers Results
+
+L<http://cpantesters.org/distro/T/Test-Apocalypse.html>
 
 =back
 
