@@ -70,6 +70,9 @@ my $build = Module::Build->new(
 		'Module::Pluggable'		=> '3.9',
 		'File::Which'			=> '1.09',
 
+		# Perl::Critic extensions so we're sure we are testing every one of them, ha!
+		'Task::Perl::Critic'		=> '1.007',
+
 		# we need a recent perl
 		'perl'				=> '5.008',
 	},

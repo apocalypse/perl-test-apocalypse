@@ -14,6 +14,7 @@ Revision history for Perl extension Test::Apocalypse
 	Test::Apocalypse now finally passes it's own testsuite under RELEASE_TESTING, ha! ( thanks to Debian guys for prodding me )
 	The Kwalitee test for EXPERIMENTAL/EXTRA metrics is not treated as a failure now
 	Oops, Module::Pluggable wasn't listed as a prereq!
+	Sorry - added a lot of Perl::Critic extensions so you will not get failed tests because you missed to test an extension!
 
 * 0.05
 

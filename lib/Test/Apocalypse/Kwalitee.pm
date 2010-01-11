@@ -9,6 +9,8 @@ $VERSION = '0.06';
 use Test::More;
 
 sub do_test {
+	## no critic ( ProhibitAccessOfPrivateData )
+
 	my %MODULES = (
 		'Module::CPANTS::Analyse'	=> '0.85',
 		'version'			=> '0.77',
@@ -118,6 +120,7 @@ sub _get_tarball {
 	}
 
 	# get the versions
+	## no critic ( ProhibitAccessOfPrivateData )
 	@dirlist = map { [ $_, $_ ] } @dirlist;
 	for ( @dirlist ) {
 		$_->[0] =~ s/^.*\-([^\-]+)(?:tar(?:\.gz|\.bz2)?|tgz|zip)$/$1/;

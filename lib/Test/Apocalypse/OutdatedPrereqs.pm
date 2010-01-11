@@ -60,6 +60,7 @@ sub _load_yml {
 	}
 
 	# massage the data
+	## no critic ( ProhibitAccessOfPrivateData )
 	$data = $data->{'requires'};
 	delete $data->{'perl'} if exists $data->{'perl'};
 

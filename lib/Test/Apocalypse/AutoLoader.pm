@@ -59,7 +59,7 @@ sub _load_yml {
 	}
 
 	# massage the data
-	$data = $data->{'provides'};
+	$data = $data->{'provides'};	## no critic ( ProhibitAccessOfPrivateData )
 
 	# Okay, how many modules do we have?
 	if ( scalar keys %$data > 0 ) {

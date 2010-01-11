@@ -30,6 +30,7 @@ sub do_test {
 	my $analysis = $analzyer->analyze_files( 'lib/' );
 	my $numdisplay = 10;
 
+	## no critic ( ProhibitAccessOfPrivateData )
 	if ( ok( $analysis->file_count(), 'analyzed at least one file' ) ) {
 		# only print extra stuff if necessary
 		if ( $ENV{TEST_VERBOSE} ) {
