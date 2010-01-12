@@ -48,12 +48,14 @@ my $build = Module::Build->new(
 		'Test::Signature'		=> '1.10',
 		'Test::Portability::Files'	=> '0.05',
 		'Test::DistManifest'		=> '1.005',
-		'Test::Module::Used'		=> '0.1.2',
+#		'Test::Module::Used'		=> '0.1.2',	# FIXME M::B 0.36 doesn't like this!
+		'Test::Module::Used'		=> 0,
 		'Test::Synopsis'		=> '0.06',
 		'Test::CPAN::Meta'		=> '0.13',
 		'Test::NoBreakpoints'		=> '0.13',
 		'Test::EOL'			=> '0.3',
-		'Test::ConsistentVersion'	=> '0.2.2',
+#		'Test::ConsistentVersion'	=> '0.2.2',	# FIXME M::B 0.36 doesn't like this!
+		'Test::ConsistentVersion'	=> 0,
 		'Test::AutoLoader'		=> '0.03',
 
 		# handy tools
