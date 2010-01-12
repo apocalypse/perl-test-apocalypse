@@ -1,5 +1,10 @@
 Revision history for Perl extension Test::Apocalypse
 
+* 0.07
+
+	Fixed a issue with META.yml quoting causing parse failures when using tools that depend on it
+	Upgraded Module::Build to 0.3601, had to change prereq from '0.2.2' to '0.002002' to satisfy M::B::Compat :(
+
 * 0.06
 
 	Fixed OutdatedPrereqs test so it doesn't blow up on zero prereqs - thanks Ryan52!
