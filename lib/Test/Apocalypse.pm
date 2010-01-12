@@ -318,6 +318,10 @@ L<http://annocpan.org/dist/Test-Apocalypse>
 
 L<http://cpanratings.perl.org/d/Test-Apocalypse>
 
+=item * CPAN Forum
+
+L<http://cpanforum.com/dist/Test-Apocalypse>
+
 =item * RT: CPAN's Request Tracker
 
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Test-Apocalypse>
