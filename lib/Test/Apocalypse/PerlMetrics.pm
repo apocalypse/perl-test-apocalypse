@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.07';
+$VERSION = '0.08';
 
 use Test::More;
 
@@ -52,6 +52,8 @@ sub do_test {
 			diag( "-- Top$numdisplay subroutines by McCabe Complexity --" );
 			my @sorted_subs = sort { $b->{'mccabe_complexity'} <=> $a->{'mccabe_complexity'} } @{ $analysis->subs };
 			foreach my $i ( 0 .. ( $numdisplay - 1 ) ) {
+				last if ! defined $sorted_subs[$i];
+
 				diag( ' ' . $sorted_subs[$i]->{'path'} . ':' . $sorted_subs[$i]->{'name'} . ' ->' .
 					' McCabe(' . $sorted_subs[$i]->{'mccabe_complexity'} . ')' .
 					' lines(' . $sorted_subs[$i]->{'lines'} . ')'
@@ -61,6 +63,8 @@ sub do_test {
 			diag( "-- Top$numdisplay subroutines by lines --" );
 			@sorted_subs = sort { $b->{'lines'} <=> $a->{'lines'} } @sorted_subs;
 			foreach my $i ( 0 .. ( $numdisplay - 1 ) ) {
+				last if ! defined $sorted_subs[$i];
+
 				diag( ' ' . $sorted_subs[$i]->{'path'} . ':' . $sorted_subs[$i]->{'name'} . ' ->' .
 					' lines(' . $sorted_subs[$i]->{'lines'} . ')' .
 					' McCabe(' . $sorted_subs[$i]->{'mccabe_complexity'} . ')'
@@ -78,6 +82,7 @@ sub do_test {
 
 1;
 __END__
+
 =head1 NAME
 
 Test::Apocalypse::PerlMetrics - Plugin for Perl::Metrics::Simple

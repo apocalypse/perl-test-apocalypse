@@ -57,6 +57,7 @@ my $build = Module::Build->new(
 #		'Test::ConsistentVersion'	=> '0.2.2',	# M::B::Compat 0.36 doesn't like this!
 		'Test::ConsistentVersion'	=> '0.002002',
 		'Test::AutoLoader'		=> '0.03',
+		'Test::Pod::No404s'		=> '0.01',
 
 		# handy tools
 		'File::Spec'			=> '3.31',

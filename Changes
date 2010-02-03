@@ -1,5 +1,11 @@
 Revision history for Perl extension Test::Apocalypse
 
+* 0.08
+
+	Minor POD tweaks
+	Added Test::Pod::No404s to the testsuite
+	Fixed a warning in the PerlMetrics test so we don't cause FAILs with the Test::NoWarnings module :(
+
 * 0.07
 
 	Fixed a issue with META.yml quoting causing parse failures when using tools that depend on it

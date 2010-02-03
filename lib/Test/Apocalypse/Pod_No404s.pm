@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::PerlCritic;
+package Test::Apocalypse::Pod_No404s;
 use strict; use warnings;
 
 # Initialize our version
@@ -10,7 +10,7 @@ use Test::More;
 
 sub do_test {
 	my %MODULES = (
-		'Test::Perl::Critic'	=> '1.02',
+		'Test::Pod::No404s'	=> '0.01',
 	);
 
 	while (my ($module, $version) = each %MODULES) {
@@ -25,16 +25,17 @@ sub do_test {
 	}
 
 	# Run the test!
-	all_critic_ok();
+	all_pod_files_ok();
 
 	return;
 }
 
 1;
 __END__
+
 =head1 NAME
 
-Test::Apocalypse::PerlCritic - Plugin for Test::Perl::Critic
+Test::Apocalypse::Pod_No404s - Plugin for Test::Pod::No404s
 
 =head1 SYNOPSIS
 
@@ -42,11 +43,11 @@ Test::Apocalypse::PerlCritic - Plugin for Test::Perl::Critic
 
 =head1 ABSTRACT
 
-Encapsulates Test::Perl::Critic functionality.
+Encapsulates Test::Pod::No404s functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Perl::Critic functionality.
+Encapsulates Test::Pod::No404s functionality.
 
 =head2 do_test()
 
@@ -56,7 +57,7 @@ The main entry point for this plugin. Automatically called by L<Test::Apocalypse
 
 L<Test::Apocalypse>
 
-L<Test::Perl::Critic>
+L<Test::Pod::No404s>
 
 =head1 AUTHOR
 

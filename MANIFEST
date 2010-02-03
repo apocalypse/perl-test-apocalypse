@@ -41,6 +41,7 @@ lib/Test/Apocalypse/NoBreakpoints.pm
 lib/Test/Apocalypse/EOL.pm
 lib/Test/Apocalypse/ConsistentVersion.pm
 lib/Test/Apocalypse/AutoLoader.pm
+lib/Test/Apocalypse/Pod_No404s.pm
 
 examples/simple.pl
 
