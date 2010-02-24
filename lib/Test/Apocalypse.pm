@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.08';
+$VERSION = '0.09';
 
 # setup our tests and etc
 use Test::Block qw( $Plan );
@@ -66,24 +66,27 @@ sub is_apocalypse_here {
 		}
 	}
 
-	# loop through our plugins
-	foreach my $t ( __PACKAGE__->plugins() ) {	## no critic ( RequireExplicitInclusion )
+	# loop through our plugins ( in alphabetical order! )
+	foreach my $t ( sort { $a cmp $b } __PACKAGE__->plugins() ) {	## no critic ( RequireExplicitInclusion )
 		# localize the stuff
 		local $Plan;
 
 		# Do we want this test?
-		if ( exists $opt{'allow'} ) {
-			if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
-				if ( $1 !~ $opt{'allow'} ) {
-					diag( "Skipping '$t' tests..." );
-					next;
+		# PERL_APOCALYPSE=1 means run all tests, =0 means default behavior
+		if ( ! exists $ENV{PERL_APOCALYPSE} or ! $ENV{PERL_APOCALYPSE} ) {
+			if ( exists $opt{'allow'} ) {
+				if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
+					if ( $1 !~ $opt{'allow'} ) {
+						diag( "Skipping '$t' tests..." );
+						next;
+					}
 				}
-			}
-		} elsif ( exists $opt{'deny'} ) {
-			if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
-				if ( $1 =~ $opt{'deny'} ) {
-					diag( "Skipping '$t' tests..." );
-					next;
+			} elsif ( exists $opt{'deny'} ) {
+				if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
+					if ( $1 =~ $opt{'deny'} ) {
+						diag( "Skipping '$t' tests..." );
+						next;
+					}
 				}
 			}
 		}
@@ -130,7 +133,7 @@ sub is_apocalypse_here {
 1;
 __END__
 
-=for stopwords APOCAL AUTHORs AnnoCPAN CPAN RT al backend debian distro distros dists env hackish plugins testsuite yml pm yay unicode blog precompiled CPANTS
+=for stopwords APOCAL AUTHORs AnnoCPAN CPAN RT al backend debian distro distros dists env hackish plugins testsuite yml pm yay unicode blog precompiled CPANTS com diff github dist
 
 =head1 NAME
 
@@ -224,6 +227,8 @@ will compile it via C<qr/$str/i>.
 Since this module uses L<Module::Pluggable> you can use this method on the package to find out what plugins are available. Handy if you need
 to know what plugins to skip, for example.
 
+WARNING: We enable the "require" option to L<Module::Pluggable> so that means the plugins returned are objects.
+
 	my @tests = Test::Apocalypse->plugins;
 
 =head1 EXPORT
@@ -236,8 +241,6 @@ Automatically exports the "is_apocalypse_here" sub.
 
 =item * Document the way we do plugins so others can add to this testsuite :)
 
-=item * Per-plugin configuration for distros so we can override the default config
-
 =item * POD standards check
 
 Do we have SYNOPSIS, ABSTRACT, SUPPORT, etc sections? ( PerlCritic can do that! Need to investigate more... )
@@ -246,7 +249,7 @@ Do we have SYNOPSIS, ABSTRACT, SUPPORT, etc sections? ( PerlCritic can do that! 
 
 This little snippet helps a lot, I was wondering if I could integrate it into the testsuite hah!
 
-	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.08';/"
+	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.09';/"
 
 =item * Use Test::GreaterVersion to sanity check versions
 
@@ -298,10 +301,6 @@ This looks like a nice module, but I believe what it does is already covered by 
 
 This is a crazy test, but would help tremendously in finding regressions in your code!
 
-=item * Test::JSON::Meta
-
-Yet another META.* test!
-
 =back
 
 =head1 SEE ALSO
@@ -351,6 +350,10 @@ L<http://cpantesters.org/distro/T/Test-Apocalypse.html>
 L<http://matrix.cpantesters.org/?dist=Test-Apocalypse>
 
 =item * Git Source Code Repository
+
+This code is currently hosted on github.com under the account "apocalypse". Please feel free to browse it
+and pull from it, or whatever. If you want to contribute patches, please send me a diff or prod me to pull
+from your repository :)
 
 L<http://github.com/apocalypse/perl-test-apocalypse>
 

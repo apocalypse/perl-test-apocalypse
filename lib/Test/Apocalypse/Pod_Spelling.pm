@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.08';
+$VERSION = '0.09';
 
 use Test::More;
 
@@ -25,6 +25,7 @@ sub do_test {
 			plan skip_all => $module . ' not available for testing';
 		}
 	}
+
 	# Thanks to CPANTESTERS, not everyone have "spell" installed...
 	# FIXME pester Test::Spelling author to be more smarter about this failure mode!
 	my $binary = which( 'spell' );
@@ -45,12 +46,6 @@ sub do_test {
 			add_stopwords( $word );
 		}
 	}
-
-	# Add our "common" perl crap that the spellchecker doesn't catch!
-	add_stopwords( qw( annocpan cpan http poe rt stdin todo xs yaml stdout yml fixme perl
-		csv db backpan lwp sqlite backend hardcode svn git cvs plugin unicode ppport
-		precompiled pm dist podcover cpants
-	) );
 
 	# Run the test!
 	all_pod_files_spelling_ok();

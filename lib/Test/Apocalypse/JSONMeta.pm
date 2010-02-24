@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::EOL;
+package Test::Apocalypse::JSONMeta;
 use strict; use warnings;
 
 # Initialize our version
@@ -10,7 +10,7 @@ use Test::More;
 
 sub do_test {
 	my %MODULES = (
-		'Test::EOL'	=> '0.3',
+		'Test::JSON::Meta'	=> '0.04',
 	);
 
 	while (my ($module, $version) = each %MODULES) {
@@ -25,7 +25,16 @@ sub do_test {
 	}
 
 	# Run the test!
-	all_perl_files_ok();
+
+	# We need to make sure there's actually a JSON file in the dist!
+	if ( -e 'META.json' ) {
+		meta_json_ok();
+	} else {
+		plan tests => 1;
+		SKIP: {
+			skip( 'distro did not come with a META.json file', 1 );
+		}
+	}
 
 	return;
 }
@@ -34,7 +43,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::EOL - Plugin for Test::EOL
+Test::Apocalypse::JSONMeta - Plugin for Test::JSON::Meta
 
 =head1 SYNOPSIS
 
@@ -42,11 +51,11 @@ Test::Apocalypse::EOL - Plugin for Test::EOL
 
 =head1 ABSTRACT
 
-Encapsulates Test::EOL functionality.
+Encapsulates Test::JSON::Meta functionality.
 
 =head1 DESCRIPTION
 
-Encapsulates Test::EOL functionality.
+Encapsulates Test::JSON::Meta functionality.
 
 =head2 do_test()
 
@@ -56,7 +65,7 @@ The main entry point for this plugin. Automatically called by L<Test::Apocalypse
 
 L<Test::Apocalypse>
 
-L<Test::Pod>
+L<Test::JSON::Meta>
 
 =head1 AUTHOR
 

@@ -18,8 +18,6 @@ if ( $@ ) {
 		# $ra->add( '^OutdatedPrereqs$' );	# we need to specify older 'version' module for Debian, and others...
 		# $ra->add( '^Dependencies$' );		# same problem as ModuleUsed
 		# print $ra->as_string;
-
-		# Add PERL_APOCALYSPE env var so we can test everything when needed...
-		! $ENV{PERL_APOCALYPSE} ? ( deny => qr/^(?:(?:OutdatedPrereq|Dependencie)s|ModuleUsed|Strict|Fixme)$/, ) : (),
+		deny => qr/^(?:(?:OutdatedPrereq|Dependencie)s|ModuleUsed|Strict|Fixme|Pod_Spelling)$/,
 	} );
 }

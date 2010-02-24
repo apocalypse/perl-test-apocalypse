@@ -58,6 +58,7 @@ my $build = Module::Build->new(
 		'Test::ConsistentVersion'	=> '0.002002',
 		'Test::AutoLoader'		=> '0.03',
 		'Test::Pod::No404s'		=> '0.01',
+		'Test::JSON::Meta'		=> '0.04',
 
 		# handy tools
 		'File::Spec'			=> '3.31',

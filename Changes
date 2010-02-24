@@ -1,5 +1,12 @@
 Revision history for Perl extension Test::Apocalypse
 
+* 0.09
+
+	Added the PERL_APOCALYPSE env var to override test selection and test all plugins
+	Run the plugins in alphabetical order, which is prettier :)
+	Removed the crappy stopwords addition in Pod_Spelling test
+	Added Test::JSON::Meta to the testsuite
+
 * 0.08
 
 	Minor POD tweaks
