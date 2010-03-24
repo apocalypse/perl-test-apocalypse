@@ -4,28 +4,21 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 use Test::More;
 
-sub do_test {
-	my %MODULES = (
-		'version'	=> '0.77',
+# RELEASE test only!
+sub _do_automated { 0 }
+
+sub _load_prereqs {
+	return (
+		'version'	=> '0.77',	# TODO why do we need this?
 		'Devel::PPPort'	=> '3.19',
 	);
+}
 
-	while (my ($module, $version) = each %MODULES) {
-		eval "use $module $version";	## no critic ( ProhibitStringyEval )
-		next unless $@;
-
-		if ( $ENV{RELEASE_TESTING} ) {
-			die 'Could not load release-testing module ' . $module . " -> $@";
-		} else {
-			plan skip_all => $module . ' not available for testing';
-		}
-	}
-
-	# Run the test!
+sub do_test {
 	plan tests => 2;
 
 	# do we have an existing ppport.h file?

@@ -4,36 +4,22 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 use Test::More;
 
-sub do_test {
-	my %MODULES = (
+sub _load_prereqs {
+	return (
 		'Test::JSON::Meta'	=> '0.04',
 	);
+}
 
-	while (my ($module, $version) = each %MODULES) {
-		eval "use $module $version";	## no critic ( ProhibitStringyEval )
-		next unless $@;
-
-		if ( $ENV{RELEASE_TESTING} ) {
-			die 'Could not load release-testing module ' . $module . " -> $@";
-		} else {
-			plan skip_all => $module . ' not available for testing';
-		}
-	}
-
-	# Run the test!
-
+sub do_test {
 	# We need to make sure there's actually a JSON file in the dist!
 	if ( -e 'META.json' ) {
 		meta_json_ok();
 	} else {
-		plan tests => 1;
-		SKIP: {
-			skip( 'distro did not come with a META.json file', 1 );
-		}
+		plan skip_all => 'distro did not come with a META.json file';
 	}
 
 	return;

@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 # setup our tests and etc
 use Test::Block qw( $Plan );
@@ -77,17 +77,46 @@ sub is_apocalypse_here {
 			if ( exists $opt{'allow'} ) {
 				if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
 					if ( $1 !~ $opt{'allow'} ) {
-						diag( "Skipping '$t' tests..." );
+						diag( "Skipping '$t' tests ( allow policy )..." );
 						next;
 					}
 				}
 			} elsif ( exists $opt{'deny'} ) {
 				if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
 					if ( $1 =~ $opt{'deny'} ) {
-						diag( "Skipping '$t' tests..." );
+						diag( "Skipping '$t' tests ( deny policy )..." );
 						next;
 					}
 				}
+			}
+		}
+
+		# Check for AUTOMATED_TESTING
+		if ( $ENV{AUTOMATED_TESTING} and $t->can( '_do_automated' ) and ! $t->_do_automated() ) {
+			diag( "Skipping '$t' tests ( for RELEASE_TESTING only )..." );
+			next;
+		}
+
+		# Load the modules the plugin needs
+		if ( $t->can( '_load_prereqs' ) ) {
+			my %MODULES = $t->_load_prereqs;
+			my $load_fail = 0;
+
+			while (my ($module, $version) = each %MODULES) {
+				eval "package $t; use $module $version";	## no critic ( ProhibitStringyEval )
+				next unless $@;
+
+				if ( $ENV{RELEASE_TESTING} ) {
+					die 'Could not load release-testing module "' . $module . " v$version\" for '$t' -> $@";
+				} else {
+					$load_fail++;
+					last;
+				}
+			}
+
+			if ( $load_fail ) {
+				diag( "Skipping '$t' tests ( unable to load required modules )..." );
+				next;
 			}
 		}
 
@@ -108,6 +137,8 @@ sub is_apocalypse_here {
 			} elsif ( $cmd eq 'no_plan' ) {
 				# ignore it
 				$Plan = { $t => 0 };
+			} else {
+				die "Unknown cmd: $cmd";
 			}
 
 			return 1;
@@ -249,7 +280,7 @@ Do we have SYNOPSIS, ABSTRACT, SUPPORT, etc sections? ( PerlCritic can do that! 
 
 This little snippet helps a lot, I was wondering if I could integrate it into the testsuite hah!
 
-	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.09';/"
+	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.10';/"
 
 =item * Use Test::GreaterVersion to sanity check versions
 

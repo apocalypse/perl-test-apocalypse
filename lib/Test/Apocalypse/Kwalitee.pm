@@ -4,37 +4,31 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 use Test::More;
+
+# RELEASE test only!
+sub _do_automated { 0 }
+
+sub _load_prereqs {
+	return (
+		'Module::CPANTS::Analyse'	=> '0.85',
+		'version'			=> '0.77',
+	);
+}
 
 sub do_test {
 	## no critic ( ProhibitAccessOfPrivateData )
 
-	my %MODULES = (
-		'Module::CPANTS::Analyse'	=> '0.85',
-		'version'			=> '0.77',
-	);
-
-	while (my ($module, $version) = each %MODULES) {
-		eval "use $module $version";	## no critic ( ProhibitStringyEval )
-		next unless $@;
-
-		if ( $ENV{RELEASE_TESTING} ) {
-			die 'Could not load release-testing module ' . $module . " -> $@";
-		} else {
-			plan skip_all => $module . ' not available for testing';
-		}
-	}
-
-	# Run the test!
 	# the following code was copied/plagarized/transformed from Test::Kwalitee, thanks!
 	# The reason why I didn't just use that module is because it doesn't print the kwalitee or consider extra metrics...
 
 	# init CPANTS with the latest tarball
 	my $tarball = _get_tarball();
 	if ( ! defined $tarball ) {
-		plan skip_all => 'Distribution tarball not found, unable to run CPANTS Kwalitee tests.';
+		plan tests => 1;
+		fail( 'Distribution tarball not found, unable to run CPANTS Kwalitee tests!' );
 		return;
 	}
 	my $analyzer = Module::CPANTS::Analyse->new({

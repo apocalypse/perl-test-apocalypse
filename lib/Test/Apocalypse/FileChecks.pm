@@ -4,34 +4,29 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 use Test::More;
 
-sub do_test {
-	my %MODULES = (
+sub _load_prereqs {
+	return (
 		'File::Find::Rule'	=> '0.32',
 		'Test::File'		=> '1.29',
 	);
+}
 
-	while (my ($module, $version) = each %MODULES) {
-		eval "use $module $version";	## no critic ( ProhibitStringyEval )
-		next unless $@;
-
-		if ( $ENV{RELEASE_TESTING} ) {
-			die 'Could not load release-testing module ' . $module . " -> $@";
-		} else {
-			plan skip_all => $module . ' not available for testing';
-		}
-	}
-
-	# Run the test!
+sub do_test {
 	my @files = qw( Changes Build.PL Makefile.PL LICENSE MANIFEST MANIFEST.SKIP README META.yml );
 	my @pmfiles = File::Find::Rule->file()->name( '*.pm' )->in( 'lib' );
 
 	# check SIGNATURE if it's there
 	if ( -e 'SIGNATURE' ) {
 		push( @files, 'SIGNATURE' );
+	}
+
+	# check META.json if it's there
+	if ( -e 'META.json' ) {
+		push( @files, 'META.json' );
 	}
 
 	plan tests => ( ( scalar @files ) * 4 ) + ( ( scalar @pmfiles ) * 3 );

@@ -4,36 +4,26 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 use Test::More;
 
-sub do_test {
-	my %MODULES = (
+# RELEASE test only!
+# Various people have said SIGNATURE tests are INSANE on end-user install...
+sub _do_automated { 0 }
+
+sub _load_prereqs {
+	return (
 		'Test::Signature'	=> '1.10',
 	);
+}
 
-	while (my ($module, $version) = each %MODULES) {
-		eval "use $module $version";	## no critic ( ProhibitStringyEval )
-		next unless $@;
-
-		if ( $ENV{RELEASE_TESTING} ) {
-			die 'Could not load release-testing module ' . $module . " -> $@";
-		} else {
-			plan skip_all => $module . ' not available for testing';
-		}
-	}
-
-	# Run the test!
-	plan tests => 1;
-
+sub do_test {
 	# do we have a signature file?
-	SKIP: {
-		if ( -e 'SIGNATURE' ) {
-			signature_ok();
-		} else {
-			skip( 'no SIGNATURE file found', 1 );
-		}
+	if ( -e 'SIGNATURE' ) {
+		signature_ok();
+	} else {
+		plan skip_all => 'No SIGNATURE file found';
 	}
 
 	return;

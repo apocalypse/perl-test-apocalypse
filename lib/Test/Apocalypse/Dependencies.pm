@@ -4,26 +4,20 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 use Test::More;
 
-sub do_test {
-	my %MODULES = (
-		'Test::Dependencies'	=> '0.12',
+# RELEASE test only!
+sub _do_automated { 0 }
+
+sub _load_prereqs {
+	return (
+		'Test::Dependencies'	=> '0.12 ()',
 	);
+}
 
-	while (my ($module, $version) = each %MODULES) {
-		eval "use $module $version ()";	## no critic ( ProhibitStringyEval )
-		next unless $@;
-
-		if ( $ENV{RELEASE_TESTING} ) {
-			die 'Could not load release-testing module ' . $module . " -> $@";
-		} else {
-			plan skip_all => $module . ' not available for testing';
-		}
-	}
-
+sub do_test {
 	# build up our exclude list of usual installers that we never use() but T::D is stupid to detect :(
 	my @exclude = qw( Module::Build Module::Install ExtUtils::MakeMaker );
 
@@ -31,8 +25,7 @@ sub do_test {
 	# FIXME we need to figure out how to exclude 'perl' or pester T::D to ignore it!
 	push( @exclude, 'Test::More' );
 
-	# Run the test!
-	Test::Dependencies->import( 'exclude' => \@exclude, 'style' => 'light' );
+	Test::Dependencies->import( exclude => \@exclude, style => 'light' );
 	ok_dependencies();
 
 	return;

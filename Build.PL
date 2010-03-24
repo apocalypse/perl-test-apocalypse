@@ -19,8 +19,6 @@ my $build = Module::Build->new(
 
 	'test_files'		=> 't/*.t',
 
-	'add_to_cleanup'	=> [ 'META.yml', 'Makefile.PL', 'README', 'Makefile', 'LICENSE' ], # automatically generated
-
 	'requires'		=> {
 		# FIXME this sucks, I have to repeat the version here and in the Test::Apocalypse::XYZ module...
 
@@ -38,7 +36,7 @@ my $build = Module::Build->new(
 		'Test::Pod'			=> '1.40',
 		'Test::Prereq'			=> '1.037',
 		'Test::Prereq::Build'		=> '1.037',
-		'Test::Strict'			=> '0.13',
+		'Test::Strict'			=> '0.14',
 		'Test::UseAllModules'		=> '0.12',
 		'Test::YAML::Meta'		=> '0.14',
 		'Test::NoWarnings'		=> '0.084',

@@ -4,30 +4,23 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 use Test::More;
 
-sub do_test {
-	my %MODULES = (
+# RELEASE test only!
+sub _do_automated { 0 }
+
+sub _load_prereqs {
+	return (
 		'YAML'			=> '0.70',
 		'CPANPLUS'		=> '0.90',
 		'version'		=> '0.77',
 		'Module::CoreList'	=> '2.23',
 	);
+}
 
-	while (my ($module, $version) = each %MODULES) {
-		eval "use $module $version";	## no critic ( ProhibitStringyEval )
-		next unless $@;
-
-		if ( $ENV{RELEASE_TESTING} ) {
-			die 'Could not load release-testing module ' . $module . " -> $@";
-		} else {
-			plan skip_all => $module . ' not available for testing';
-		}
-	}
-
-	# Run the test!
+sub do_test {
 	# does META.yml exist?
 	if ( -e 'META.yml' and -f _ ) {
 		_load_yml( 'META.yml' );
@@ -63,6 +56,28 @@ sub _load_yml {
 	## no critic ( ProhibitAccessOfPrivateData )
 	$data = $data->{'requires'};
 	delete $data->{'perl'} if exists $data->{'perl'};
+
+# TODO silence this!
+#   Failed test 'no warnings'
+#   at /usr/local/share/perl/5.10.0/Test/NoWarnings.pm line 45.
+# There were 1 warning(s)
+# 	Previous test 189 'no breakpoint test of blib/lib/POE/Component/SSLify/ClientHandle.pm'
+# 	Key 'archive' (/home/apoc/.cpanplus/01mailrc.txt.gz) is of invalid type for 'Archive::Extract::new' provided by CPANPLUS::Internals::Source::__create_author_tree at /usr/share/perl/5.10/CPANPLUS/Internals/Source.pm line 539
+#  at /usr/share/perl/5.10/Params/Check.pm line 565
+# 	Params::Check::_store_error('Key \'archive\' (/home/apoc/.cpanplus/01mailrc.txt.gz) is of ...', 1) called at /usr/share/perl/5.10/Params/Check.pm line 345
+# 	Params::Check::check('HASH(0x3ce9f50)', 'HASH(0x3cf7b08)') called at /usr/share/perl/5.10/Archive/Extract.pm line 227
+# 	Archive::Extract::new('Archive::Extract', 'archive', '/home/apoc/.cpanplus/01mailrc.txt.gz') called at /usr/share/perl/5.10/CPANPLUS/Internals/Source.pm line 539
+# 	CPANPLUS::Internals::Source::__create_author_tree('CPANPLUS::Backend=HASH(0x431e4f8)', 'uptodate', 1, 'path', '/home/apoc/.cpanplus', 'verbose', 0) called at /usr/share/perl/5.10/CPANPLUS/Internals/Source.pm line 190
+# 	CPANPLUS::Internals::Source::_build_trees('CPANPLUS::Backend=HASH(0x431e4f8)', 'uptodate', 1) called at /usr/share/perl/5.10/CPANPLUS/Internals/Source.pm line 50
+# 	CPANPLUS::Internals::Source::_module_tree('CPANPLUS::Backend=HASH(0x431e4f8)') called at /usr/share/perl/5.10/CPANPLUS/Backend.pm line 131
+# 	CPANPLUS::Backend::module_tree('CPANPLUS::Backend=HASH(0x431e4f8)', 'Net::SSLeay') called at /usr/share/perl/5.10/CPANPLUS/Backend.pm line 491
+# 	CPANPLUS::Backend::parse_module('CPANPLUS::Backend=HASH(0x431e4f8)', 'module', 'Net::SSLeay') called at /usr/local/share/perl/5.10.0/Test/Apocalypse/OutdatedPrereqs.pm line 105
+# 	Test::Apocalypse::OutdatedPrereqs::_check_cpan('CPANPLUS::Backend=HASH(0x431e4f8)', 'Net::SSLeay', 1.36) called at /usr/local/share/perl/5.10.0/Test/Apocalypse/OutdatedPrereqs.pm line 92
+# 	Test::Apocalypse::OutdatedPrereqs::_load_yml('META.yml') called at /usr/local/share/perl/5.10.0/Test/Apocalypse/OutdatedPrereqs.pm line 32
+# 	Test::Apocalypse::OutdatedPrereqs::do_test('Test::Apocalypse::OutdatedPrereqs') called at /usr/local/share/perl/5.10.0/Test/Apocalypse.pm line 122
+# 	Test::Apocalypse::is_apocalypse_here('HASH(0x10385c8)') called at t/apocalypse.t line 11
+#
+
 
 	# init the backend ( and set some options )
 	require CPANPLUS::Configure;

@@ -4,30 +4,27 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.09';
+$VERSION = '0.10';
 
 use Test::More;
 
-sub do_test {
-	my %MODULES = (
-		'Test::Strict'	=> '0.13',
+sub _load_prereqs {
+	return (
+		'Test::Strict'	=> '0.14',
 	);
+}
 
-	while (my ($module, $version) = each %MODULES) {
-		eval "use $module $version";	## no critic ( ProhibitStringyEval )
-		next unless $@;
-
-		if ( $ENV{RELEASE_TESTING} ) {
-			die 'Could not load release-testing module ' . $module . " -> $@";
-		} else {
-			plan skip_all => $module . ' not available for testing';
-		}
-	}
+sub do_test {
+	# Argh, Test::Strict's TEST_SKIP requires full paths!
+	my @files = Test::Strict::_all_perl_files();
+	@files = grep { /(?:Build\.PL|Makefile\.PL|Build)$/ } @files;
 
 	# Set some useful stuff
 	local $Test::Strict::TEST_WARNINGS = 1;	# to silence "used only once typo warning"
+	local $Test::Strict::TEST_SKIP = \@files;
+
 	local $Test::Strict::TEST_WARNINGS = 1;
-#	local $Test::Strict::TEST_SKIP = [ 'Build.PL', 'Makefile.PL', 'Build' ]; # TODO ineffective... need to pester T::S author to fix!
+	local $Test::Strict::TEST_SKIP = \@files;
 
 	# Run the test!
 	all_perl_files_ok();
