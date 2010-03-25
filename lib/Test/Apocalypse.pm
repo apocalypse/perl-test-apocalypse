@@ -92,7 +92,7 @@ sub is_apocalypse_here {
 		}
 
 		# Check for AUTOMATED_TESTING
-		if ( $ENV{AUTOMATED_TESTING} and $t->can( '_do_automated' ) and ! $t->_do_automated() ) {
+		if ( $ENV{AUTOMATED_TESTING} and ! $ENV{PERL_APOCALYPSE} and $t->can( '_do_automated' ) and ! $t->_do_automated() ) {
 			diag( "Skipping '$t' tests ( for RELEASE_TESTING only )..." );
 			next;
 		}
