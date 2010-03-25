@@ -4,10 +4,11 @@ Revision history for Perl extension Test::Apocalypse
 
 	Added smart AUTOMATED_TESTING logic so we are now behaving in the same way as Alias envisaged
 		This means certain tests are disabled when AUTOMATED is set :)
-	Minor POD/Build.PL tweaks
+	Minor POD/Build.PL/test output tweaks
 	Added META.json to FileChecks test
 	Bumped Test::Strict prereq to 0.14 because now it works with Moose!
 	Tweaked the module loading logic so we have less duplication now + less bugs, yay!
+	Fixed a warning in the OutdatedPrereqs test so we don't cause FAILs with the Test::NoWarnings module :(
 
 * 0.09
 

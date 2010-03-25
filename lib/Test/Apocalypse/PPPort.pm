@@ -29,7 +29,7 @@ sub do_test {
 			# generate our own ppport.h file
 			Devel::PPPort::WriteFile( 'ppport.h' );
 
-			skip( 'distro did not come with a ppport.h file', 1 );
+			skip( 'Distro did not come with a ppport.h file', 1 );
 		}
 
 		$haveppport++;
@@ -44,7 +44,7 @@ sub do_test {
 		}
 
 		# remove it and create a new one so we have the latest one, always
-		unlink( 'ppport.h' ) or die "unable to unlink: $!";
+		unlink( 'ppport.h' ) or die "Unable to unlink 'ppport.h': $!";
 		Devel::PPPort::WriteFile( 'ppport.h' );
 	}
 
@@ -65,17 +65,17 @@ sub do_test {
 			}
 		}
 	} else {
-		die 'unable to run ppport.h and get the output';
+		die 'Unable to run ppport.h and get the output';
 	}
 
 	# remove our generated ppport.h file
 	if ( ! $haveppport ) {
-		unlink( 'ppport.h' ) or die "Unable to unlink: $!";
+		unlink( 'ppport.h' ) or die "Unable to unlink 'ppport.h': $!";
 	} else {
 		if ( $needstrip ) {
 			my @result = `$^X ppport.h --strip 2>&1`;
 			if ( scalar @result ) {
-				die 'unable to strip ppport.h file';
+				die 'Unable to strip ppport.h file';
 			}
 		}
 	}

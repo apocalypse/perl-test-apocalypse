@@ -14,7 +14,8 @@ sub _do_automated { 0 }
 sub _load_prereqs {
 	return (
 		'YAML'			=> '0.70',
-		'CPANPLUS'		=> '0.90',
+		'CPANPLUS::Configure'	=> '0.90',
+		'CPANPLUS::Backend'	=> '0.90',
 		'version'		=> '0.77',
 		'Module::CoreList'	=> '2.23',
 	);
@@ -57,7 +58,28 @@ sub _load_yml {
 	$data = $data->{'requires'};
 	delete $data->{'perl'} if exists $data->{'perl'};
 
-# TODO silence this!
+	# init the backend ( and set some options )
+	my $cpanconfig = CPANPLUS::Configure->new;
+	$cpanconfig->set_conf( 'verbose' => 0 );
+	$cpanconfig->set_conf( 'no_update' => 1 );
+	my $cpanplus = CPANPLUS::Backend->new( $cpanconfig );
+
+	# silence CPANPLUS!
+	{
+		# TODO do we need eval's here?
+		no warnings 'redefine';
+		## no critic ( ProhibitStringyEval )
+		eval "sub Log::Message::Handlers::cp_msg { return }";
+		eval "sub Log::Message::Handlers::cp_error { return }";
+	}
+
+	# Okay, how many prereqs do we have?
+	if ( scalar keys %$data == 0 ) {
+		plan skip_all => "No prereqs found in META.yml";
+		return;
+	}
+
+	# Argh, check for CPANPLUS sanity!
 #   Failed test 'no warnings'
 #   at /usr/local/share/perl/5.10.0/Test/NoWarnings.pm line 45.
 # There were 1 warning(s)
@@ -66,43 +88,18 @@ sub _load_yml {
 #  at /usr/share/perl/5.10/Params/Check.pm line 565
 # 	Params::Check::_store_error('Key \'archive\' (/home/apoc/.cpanplus/01mailrc.txt.gz) is of ...', 1) called at /usr/share/perl/5.10/Params/Check.pm line 345
 # 	Params::Check::check('HASH(0x3ce9f50)', 'HASH(0x3cf7b08)') called at /usr/share/perl/5.10/Archive/Extract.pm line 227
-# 	Archive::Extract::new('Archive::Extract', 'archive', '/home/apoc/.cpanplus/01mailrc.txt.gz') called at /usr/share/perl/5.10/CPANPLUS/Internals/Source.pm line 539
-# 	CPANPLUS::Internals::Source::__create_author_tree('CPANPLUS::Backend=HASH(0x431e4f8)', 'uptodate', 1, 'path', '/home/apoc/.cpanplus', 'verbose', 0) called at /usr/share/perl/5.10/CPANPLUS/Internals/Source.pm line 190
-# 	CPANPLUS::Internals::Source::_build_trees('CPANPLUS::Backend=HASH(0x431e4f8)', 'uptodate', 1) called at /usr/share/perl/5.10/CPANPLUS/Internals/Source.pm line 50
-# 	CPANPLUS::Internals::Source::_module_tree('CPANPLUS::Backend=HASH(0x431e4f8)') called at /usr/share/perl/5.10/CPANPLUS/Backend.pm line 131
-# 	CPANPLUS::Backend::module_tree('CPANPLUS::Backend=HASH(0x431e4f8)', 'Net::SSLeay') called at /usr/share/perl/5.10/CPANPLUS/Backend.pm line 491
-# 	CPANPLUS::Backend::parse_module('CPANPLUS::Backend=HASH(0x431e4f8)', 'module', 'Net::SSLeay') called at /usr/local/share/perl/5.10.0/Test/Apocalypse/OutdatedPrereqs.pm line 105
-# 	Test::Apocalypse::OutdatedPrereqs::_check_cpan('CPANPLUS::Backend=HASH(0x431e4f8)', 'Net::SSLeay', 1.36) called at /usr/local/share/perl/5.10.0/Test/Apocalypse/OutdatedPrereqs.pm line 92
-# 	Test::Apocalypse::OutdatedPrereqs::_load_yml('META.yml') called at /usr/local/share/perl/5.10.0/Test/Apocalypse/OutdatedPrereqs.pm line 32
-# 	Test::Apocalypse::OutdatedPrereqs::do_test('Test::Apocalypse::OutdatedPrereqs') called at /usr/local/share/perl/5.10.0/Test/Apocalypse.pm line 122
-# 	Test::Apocalypse::is_apocalypse_here('HASH(0x10385c8)') called at t/apocalypse.t line 11
-#
-
-
-	# init the backend ( and set some options )
-	require CPANPLUS::Configure;
-	require CPANPLUS::Backend;
-	my $cpanconfig = CPANPLUS::Configure->new;
-	$cpanconfig->set_conf( 'verbose' => 0 );
-	$cpanconfig->set_conf( 'no_update' => 1 );
-	my $cpanplus = CPANPLUS::Backend->new( $cpanconfig );
-
-	# silence CPANPLUS!
 	{
-		no warnings 'redefine';
-		## no critic ( ProhibitStringyEval )
-		eval "sub Log::Message::Handlers::cp_msg { return }";
-		eval "sub Log::Message::Handlers::cp_error { return }";
-	}
-
-	# Okay, how many prereqs do we have?
-	if ( scalar keys %$data > 0 ) {
-		plan tests => scalar keys %$data;
-	} else {
-		plan skip_all => "No prereqs found in META.yml";
+		my @warn;
+		local $SIG{'__WARN__'} = sub { push @warn, shift };
+		my $module = $cpanplus->parse_module( 'module' => 'Test::Apocalypse' );
+		if ( @warn ) {
+			plan skip_all => "Unable to sanely use CPANPLUS, aborting!";
+			return;
+		}
 	}
 
 	# analyze every one of them!
+	plan tests => scalar keys %$data;
 	foreach my $prereq ( keys %$data ) {
 		_check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
 	}

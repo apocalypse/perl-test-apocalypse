@@ -21,7 +21,7 @@ sub do_test {
 	my $numdisplay = 10;
 
 	## no critic ( ProhibitAccessOfPrivateData )
-	if ( ok( $analysis->file_count(), 'analyzed at least one file' ) ) {
+	if ( ok( $analysis->file_count(), 'Analyzed at least one file' ) ) {
 		# only print extra stuff if necessary
 		if ( $ENV{TEST_VERBOSE} ) {
 			diag( '-- Perl Metrics Summary --' );

@@ -100,7 +100,7 @@ sub is_apocalypse_here {
 		# Load the modules the plugin needs
 		if ( $t->can( '_load_prereqs' ) ) {
 			my %MODULES = $t->_load_prereqs;
-			my $load_fail = 0;
+			my $load_fail = undef;
 
 			while (my ($module, $version) = each %MODULES) {
 				eval "package $t; use $module $version";	## no critic ( ProhibitStringyEval )
@@ -109,15 +109,19 @@ sub is_apocalypse_here {
 				if ( $ENV{RELEASE_TESTING} ) {
 					die 'Could not load release-testing module "' . $module . " v$version\" for '$t' -> $@";
 				} else {
-					$load_fail++;
+					# TODO include $@ here somehow? I want to pretty-print it...
+					$load_fail = "$module v$version";
 					last;
 				}
 			}
 
-			if ( $load_fail ) {
-				diag( "Skipping '$t' tests ( unable to load required modules )..." );
+			if ( defined $load_fail ) {
+				diag( "Skipping '$t' tests ( unable to load required module: $load_fail )..." );
 				next;
 			}
+		} else {
+			diag( "Skipping '$t' tests ( unable to parse required modules - YELL AT THE AUTHOR! )..." );
+			next;
 		}
 
 		# do nasty override of Test::Builder::plan
@@ -130,7 +134,7 @@ sub is_apocalypse_here {
 			if ( $cmd eq 'skip_all' ) {
 				$Plan = { $t => 1 };
 				SKIP: {
-					$self->skip( "skipping $t", 1 );
+					$self->skip( "skipping $t - $arg", 1 );
 				}
 			} elsif ( $cmd eq 'tests' ) {
 				$Plan = { $t => $arg };
