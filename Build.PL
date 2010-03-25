@@ -21,6 +21,7 @@ my $build = Module::Build->new(
 
 	'requires'		=> {
 		# FIXME this sucks, I have to repeat the version here and in the Test::Apocalypse::XYZ module...
+		# Dist::Zilla will solve it! I need to switch someday :)
 
 		# Test stuff
 		'Test::More'			=> '0.94',
@@ -66,12 +67,18 @@ my $build = Module::Build->new(
 		'Test::Block'			=> '0.11',
 		'YAML'				=> '0.70',
 		'version'			=> '0.77',
-		'CPANPLUS::Configure'		=> '0.90',
-		'CPANPLUS::Backend'		=> '0.90',
 		'Devel::PPPort'			=> '3.19',
 		'Module::CoreList'		=> '2.23',
 		'Module::Pluggable'		=> '3.9',
 		'File::Which'			=> '1.09',
+
+		# We can't specify the CPANPLUS::Configure/Backend module because...
+#apoc@blackhole:~/mygit/perl-test-apocalypse$ perl Build.PL
+#Checking prerequisites...
+#  requires:
+#    !  CPANPLUS::Backend (0) is installed, but we need version >= 0.90
+#    !  CPANPLUS::Configure (0) is installed, but we need version >= 0.90
+		'CPANPLUS'			=> '0.90',
 
 		# Perl::Critic extensions so we're sure we are testing every one of them, ha!
 		'Task::Perl::Critic'		=> '1.007',

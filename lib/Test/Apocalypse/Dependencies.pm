@@ -22,7 +22,6 @@ sub do_test {
 	my @exclude = qw( Module::Build Module::Install ExtUtils::MakeMaker );
 
 	# Also, add some more stupid deps that T::D fucks up
-	# FIXME we need to figure out how to exclude 'perl' or pester T::D to ignore it!
 	push( @exclude, 'Test::More' );
 
 	Test::Dependencies->import( exclude => \@exclude, style => 'light' );
