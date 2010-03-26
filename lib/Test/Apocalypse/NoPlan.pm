@@ -10,7 +10,7 @@ use Test::More;
 
 sub _load_prereqs {
 	return (
-		'Test::NoPlan'	=> '0.0.3',	# TODO wait for new version that fixes Test::Builder::create() error
+		'Test::NoPlan'	=> '0.0.2',	# TODO wait for new version that fixes Test::Builder::create() error
 	);
 }
 
