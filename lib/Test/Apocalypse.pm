@@ -149,7 +149,7 @@ sub is_apocalypse_here {
 
 		# Same thing for Test::Builder::create - Test::NoPlan uses it, argh!
 		my $newcreate = sub {
-			diag( "ARGH! $t uses Test::Builder::create - go patch it!" ) if $ENV{RELEASE_TESTING};
+			diag( "ARGH! $t uses Test::Builder::create() - go patch it!" ) if $ENV{RELEASE_TESTING};
 			goto &Test::Builder::new;
 		};
 
