@@ -9,6 +9,7 @@ Revision history for Perl extension Test::Apocalypse
 	Bumped Test::Strict prereq to 0.14 because now it works with Moose!
 	Tweaked the module loading logic so we have less duplication now + less bugs, yay!
 	Fixed a warning in the OutdatedPrereqs test so we don't cause FAILs with the Test::NoWarnings module :(
+	Added Test::NoPlan to the testsuite
 
 * 0.09
 

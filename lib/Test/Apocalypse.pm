@@ -77,14 +77,14 @@ sub is_apocalypse_here {
 			if ( exists $opt{'allow'} ) {
 				if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
 					if ( $1 !~ $opt{'allow'} ) {
-						diag( "Skipping '$t' tests ( allow policy )..." );
+						diag( "Skipping $t ( via allow policy )..." );
 						next;
 					}
 				}
 			} elsif ( exists $opt{'deny'} ) {
 				if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
 					if ( $1 =~ $opt{'deny'} ) {
-						diag( "Skipping '$t' tests ( deny policy )..." );
+						diag( "Skipping $t ( via deny policy )..." );
 						next;
 					}
 				}
@@ -93,7 +93,7 @@ sub is_apocalypse_here {
 
 		# Check for AUTOMATED_TESTING
 		if ( $ENV{AUTOMATED_TESTING} and ! $ENV{PERL_APOCALYPSE} and $t->can( '_do_automated' ) and ! $t->_do_automated() ) {
-			diag( "Skipping '$t' tests ( for RELEASE_TESTING only )..." );
+			diag( "Skipping $t ( for RELEASE_TESTING only )..." );
 			next;
 		}
 
@@ -107,7 +107,7 @@ sub is_apocalypse_here {
 				next unless $@;
 
 				if ( $ENV{RELEASE_TESTING} ) {
-					die 'Could not load release-testing module "' . $module . " v$version\" for '$t' -> $@";
+					die 'Could not load release-testing module "' . $module . " v$version\" for $t -> $@";
 				} else {
 					# TODO include $@ here somehow? I want to pretty-print it...
 					$load_fail = "$module v$version";
@@ -116,16 +116,15 @@ sub is_apocalypse_here {
 			}
 
 			if ( defined $load_fail ) {
-				diag( "Skipping '$t' tests ( unable to load required module: $load_fail )..." );
+				diag( "Skipping $t ( unable to load required module: $load_fail )..." );
 				next;
 			}
 		} else {
-			diag( "Skipping '$t' tests ( unable to parse required modules - YELL AT THE AUTHOR! )..." );
+			diag( "Skipping $t ( unable to parse required modules - YELL AT THE AUTHOR! )..." );
 			next;
 		}
 
 		# do nasty override of Test::Builder::plan
-		my $oldplan = \&Test::Builder::plan;		## no critic ( ProhibitCallsToUnexportedSubs )
 		my $newplan = sub {
 			my( $self, $cmd, $arg ) = @_;
 			return unless $cmd;
@@ -148,17 +147,20 @@ sub is_apocalypse_here {
 			return 1;
 		};
 
+		# Same thing for Test::Builder::create - Test::NoPlan uses it, argh!
+		my $newcreate = sub {
+			diag( "ARGH! $t uses Test::Builder::create - go patch it!" ) if $ENV{RELEASE_TESTING};
+			goto &Test::Builder::new;
+		};
+
 		no warnings 'redefine'; no strict 'refs';	## no critic ( ProhibitNoStrict )
-		*{'Test::Builder::plan'} = $newplan;
+		local *{'Test::Builder::plan'} = $newplan;
+		local *{'Test::Builder::create'} = $newcreate;
 
 		# run it!
 		use warnings; use strict;
-		diag( "Running '$t' tests..." );
+		diag( "Running $t..." );
 		$t->do_test();
-
-		# revert the override
-		no warnings 'redefine'; no strict 'refs';	## no critic ( ProhibitNoStrict )
-		*{'Test::Builder::plan'} = $oldplan;
 	}
 
 	# done with testing

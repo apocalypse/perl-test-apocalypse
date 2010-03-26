@@ -43,6 +43,7 @@ lib/Test/Apocalypse/ConsistentVersion.pm
 lib/Test/Apocalypse/AutoLoader.pm
 lib/Test/Apocalypse/Pod_No404s.pm
 lib/Test/Apocalypse/JSONMeta.pm
+lib/Test/Apocalypse/NoPlan.pm
 
 examples/simple.pl
 
