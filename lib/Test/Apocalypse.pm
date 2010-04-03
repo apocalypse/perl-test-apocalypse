@@ -66,6 +66,13 @@ sub is_apocalypse_here {
 		}
 	}
 
+	# Print some basic debugging info, thanks POE::Test::Loops::00_info!
+	diag(
+		"Testing Test::Apocalypse v$Test::Apocalypse::VERSION, ",
+		"Perl $], ",
+		"$^X on $^O",
+	);
+
 	# loop through our plugins ( in alphabetical order! )
 	foreach my $t ( sort { $a cmp $b } __PACKAGE__->plugins() ) {	## no critic ( RequireExplicitInclusion )
 		# localize the stuff
