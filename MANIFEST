@@ -44,6 +44,8 @@ lib/Test/Apocalypse/AutoLoader.pm
 lib/Test/Apocalypse/Pod_No404s.pm
 lib/Test/Apocalypse/JSONMeta.pm
 lib/Test/Apocalypse/NoPlan.pm
+lib/Test/Apocalypse/UnusedVars.pm
+lib/Test/Apocalypse/Script.pm
 
 examples/simple.pl
 

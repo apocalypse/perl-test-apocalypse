@@ -59,6 +59,8 @@ my $build = Module::Build->new(
 		'Test::Pod::No404s'		=> '0.01',
 		'Test::JSON::Meta'		=> '0.04',
 		'Test::NoPlan'			=> '0.000002',	# Same M::B::Compat issue for 0.0.2
+		'Test::Vars'			=> '0.001',
+		'Test::Script'			=> '1.07',
 
 		# handy tools
 		'File::Spec'			=> '3.31',

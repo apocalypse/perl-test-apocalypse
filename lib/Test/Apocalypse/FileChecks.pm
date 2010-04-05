@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 use Test::More;
 
@@ -61,10 +61,6 @@ Test::Apocalypse::FileChecks - Plugin to test for file sanity
 =head1 SYNOPSIS
 
 	die "Don't use this module directly. Please use Test::Apocalypse instead.";
-
-=head1 ABSTRACT
-
-This plugin ensures basic sanity for the files in the dist.
 
 =head1 DESCRIPTION
 

@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 use Test::More;
 
@@ -29,10 +29,6 @@ Test::Apocalypse::METAyml - Plugin for Test::YAML::Meta
 =head1 SYNOPSIS
 
 	die "Don't use this module directly. Please use Test::Apocalypse instead.";
-
-=head1 ABSTRACT
-
-Encapsulates Test::YAML::Meta functionality.
 
 =head1 DESCRIPTION
 

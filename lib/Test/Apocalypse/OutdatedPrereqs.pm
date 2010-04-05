@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 use Test::More;
 
@@ -140,6 +140,13 @@ sub _check_cpan {
 		$version = version->new( $version ) if ! ref $version;
 		my $cpanversion = version->new( $module->version );
 
+		# TODO fix this bug
+#		#   Failed test 'Comparing 'Test::NoPlan' to CPAN version'
+#		#   at /home/apoc/mygit/perl-test-apocalypse/blib/lib/Test/Apocalypse/OutdatedPrereqs.pm line 144.
+#		#          got: 3e-06
+#		#     expected: 2e-06
+#		t/apocalypse.t .. 862/?
+
 		# check it!
 		cmp_ok( $cpanversion, '==', $version, "Comparing '$prereq' to CPAN version" );
 	} else {
@@ -166,10 +173,6 @@ Test::Apocalypse::OutdatedPrereqs - Plugin to detect outdated prereqs
 =head1 SYNOPSIS
 
 	die "Don't use this module directly. Please use Test::Apocalypse instead.";
-
-=head1 ABSTRACT
-
-This plugin detects outdated prereqs in F<META.yml> specified relative to CPAN.
 
 =head1 DESCRIPTION
 

@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::UseAllModules;
+package Test::Apocalypse::Script;
 use strict; use warnings;
 
 # Initialize our version
@@ -10,12 +10,26 @@ use Test::More;
 
 sub _load_prereqs {
 	return (
-		'Test::UseAllModules'	=> '0.12',
+		'Test::Script'		=> '1.07',
+		'File::Find::Rule'	=> '0.32',
 	);
 }
 
 sub do_test {
-	all_uses_ok();
+	# Find the number of tests
+	# TODO we need to search more locations/extensions/etc?
+	my @files = File::Find::Rule->file->name( '*.pl' )->in( qw( examples bin scripts ) );
+
+	# Skip if no scripts
+	if ( ! scalar @files ) {
+		plan tests => 1;
+		pass( 'No script files found in the distribution' );
+	} else {
+		plan tests => scalar @files;
+		foreach my $f ( @files ) {
+			script_compiles( $f );
+		}
+	}
 
 	return;
 }
@@ -24,7 +38,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::UseAllModules - Plugin for Test::UseAllModules
+Test::Apocalypse::Script - Plugin for Test::Script
 
 =head1 SYNOPSIS
 
@@ -32,7 +46,7 @@ Test::Apocalypse::UseAllModules - Plugin for Test::UseAllModules
 
 =head1 DESCRIPTION
 
-Encapsulates Test::UseAllModules functionality.
+Encapsulates Test::Script functionality.
 
 =head2 do_test()
 
@@ -42,7 +56,7 @@ The main entry point for this plugin. Automatically called by L<Test::Apocalypse
 
 L<Test::Apocalypse>
 
-L<Test::UseAllModules>
+L<Test::Script>
 
 =head1 AUTHOR
 

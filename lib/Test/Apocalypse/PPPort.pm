@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 use Test::More;
 
@@ -95,10 +95,6 @@ Test::Apocalypse::PPPort - Plugin to test for Devel::PPPort warnings
 =head1 SYNOPSIS
 
 	die "Don't use this module directly. Please use Test::Apocalypse instead.";
-
-=head1 ABSTRACT
-
-Plugin to test for Devel::PPPort warnings.
 
 =head1 DESCRIPTION
 

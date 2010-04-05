@@ -4,7 +4,7 @@ use strict; use warnings;
 
 # Initialize our version
 use vars qw( $VERSION );
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 # setup our tests and etc
 use Test::Block qw( $Plan );
@@ -75,8 +75,11 @@ sub is_apocalypse_here {
 
 	# loop through our plugins ( in alphabetical order! )
 	foreach my $t ( sort { $a cmp $b } __PACKAGE__->plugins() ) {	## no critic ( RequireExplicitInclusion )
-		# localize the stuff
-		local $Plan;
+		# Is this plugin disabled?
+		if ( $t->can( '_is_disabled' ) and $t->_is_disabled ) {
+			diag( "Skipping $t ( plugin is DISABLED )..." );
+			next;
+		}
 
 		# Do we want this test?
 		# PERL_APOCALYPSE=1 means run all tests, =0 means default behavior
@@ -132,6 +135,7 @@ sub is_apocalypse_here {
 		}
 
 		# do nasty override of Test::Builder::plan
+		local $Plan;
 		my $newplan = sub {
 			my( $self, $cmd, $arg ) = @_;
 			return unless $cmd;
@@ -156,7 +160,7 @@ sub is_apocalypse_here {
 
 		# Same thing for Test::Builder::create - Test::NoPlan uses it, argh!
 		my $newcreate = sub {
-			diag( "ARGH! $t uses Test::Builder::create() - go patch it!" ) if $ENV{RELEASE_TESTING};
+			diag( "ARGH! $t uses Test::Builder::create() - go patch it!" );
 			goto &Test::Builder::new;
 		};
 
@@ -168,6 +172,12 @@ sub is_apocalypse_here {
 		use warnings; use strict;
 		diag( "Running $t..." );
 		$t->do_test();
+
+#		# TODO oh, I wish it was this easy...
+#		subtest $t => sub {
+#			$t->do_test();
+#		};
+#		ok( 1, "done with $t" );
 	}
 
 	# done with testing
@@ -197,10 +207,6 @@ Test::Apocalypse - Apocalypse's favorite tests bundled into a simple interface
 		require Test::NoWarnings; require Test::Pod; require Test::Pod::Coverage;
 		is_apocalypse_here();
 	}
-
-=head1 ABSTRACT
-
-Using this test module simplifies/bundles common distribution tests favored by the CPAN id APOCAL.
 
 =head1 DESCRIPTION
 
@@ -293,7 +299,7 @@ Do we have SYNOPSIS, ABSTRACT, SUPPORT, etc sections? ( PerlCritic can do that! 
 
 This little snippet helps a lot, I was wondering if I could integrate it into the testsuite hah!
 
-	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.10';/"
+	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.11';/"
 
 =item * Integrate Test::UniqueTestNames into the testsuite
 
@@ -323,10 +329,6 @@ This is a crazy test, but would help tremendously in finding regressions in your
 =item * Test::CleanNamespaces
 
 I don't exclusively code in Moose, but this could be useful...
-
-=item * Test::Vars
-
-This looks useful to detect unused vars ( copy/paste errors? heh )
 
 =back
 

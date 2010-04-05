@@ -1,5 +1,5 @@
 # Declare our package
-package Test::Apocalypse::UseAllModules;
+package Test::Apocalypse::UnusedVars;
 use strict; use warnings;
 
 # Initialize our version
@@ -8,14 +8,21 @@ $VERSION = '0.11';
 
 use Test::More;
 
+# TODO Disabled because Test::Vars doesn't like running under a Test::Block :(
+# I think I got it to work using Test::More::subtest() but need to test more...
+sub _is_disabled { 1 }
+
+# RELEASE test only!
+sub _do_automated { 0 }
+
 sub _load_prereqs {
 	return (
-		'Test::UseAllModules'	=> '0.12',
+		'Test::Vars'	=> '0.001',
 	);
 }
 
 sub do_test {
-	all_uses_ok();
+	all_vars_ok();
 
 	return;
 }
@@ -24,7 +31,7 @@ sub do_test {
 __END__
 =head1 NAME
 
-Test::Apocalypse::UseAllModules - Plugin for Test::UseAllModules
+Test::Apocalypse::UnusedVars - Plugin for Test::Vars
 
 =head1 SYNOPSIS
 
@@ -32,7 +39,7 @@ Test::Apocalypse::UseAllModules - Plugin for Test::UseAllModules
 
 =head1 DESCRIPTION
 
-Encapsulates Test::UseAllModules functionality.
+Encapsulates Test::Vars functionality.
 
 =head2 do_test()
 
@@ -42,7 +49,7 @@ The main entry point for this plugin. Automatically called by L<Test::Apocalypse
 
 L<Test::Apocalypse>
 
-L<Test::UseAllModules>
+L<Test::Vars>
 
 =head1 AUTHOR
 
