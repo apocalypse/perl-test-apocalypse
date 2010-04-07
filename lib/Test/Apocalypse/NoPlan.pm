@@ -10,7 +10,7 @@ use Test::More;
 
 sub _load_prereqs {
 	return (
-		'Test::NoPlan'	=> '0.0.4',
+		'Test::NoPlan'	=> '0.0.4',	# TODO still need an updated version because method doesn't work in 0.0.4!
 	);
 }
 
