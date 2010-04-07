@@ -37,9 +37,9 @@ sub do_test {
 		foreach my $word ( File::Spec->splitdir( $p ) ) {
 			next if ! length $word;
 			if ( $word eq 'lib' or $word eq 'blib' ) { next }
-			if ( $word =~ /^(.+)\.pm$/ ) { $word = $1 }
-
-			add_stopwords( $word );
+			if ( $word =~ /^(.+)\.pm$/ ) {
+				add_stopwords( $word );
+			}
 		}
 	}
 
