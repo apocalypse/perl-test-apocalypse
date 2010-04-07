@@ -10,7 +10,7 @@ use Test::More;
 
 sub _load_prereqs {
 	return (
-		'Test::NoPlan'	=> '0.0.2',	# TODO wait for new version that fixes Test::Builder::create() error
+		'Test::NoPlan'	=> '0.0.4',
 	);
 }
 
@@ -18,6 +18,7 @@ sub do_test {
 	all_plans_ok( {
 		'topdir'	=> 't',
 		'recurse'	=> 1,
+		'method'	=> 'new',	# needed so it doesn't use create() and bomb out
 	} );
 
 	return;

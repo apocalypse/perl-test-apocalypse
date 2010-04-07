@@ -5,6 +5,7 @@ Revision history for Perl extension Test::Apocalypse
 	Added Test::Vars to the testsuite
 	Added Test::Script to the testsuite
 	More POD tweaks
+	Bumped Test::NoPlan prereq to 0.0.4 so it works properly under Test::Block
 
 * 0.10
 
