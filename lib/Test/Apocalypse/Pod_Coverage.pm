@@ -8,6 +8,9 @@ $VERSION = '0.11';
 
 use Test::More;
 
+# RELEASE test only!
+sub _do_automated { 0 }
+
 sub _load_prereqs {
 	return (
 		'Test::Pod::Coverage'	=> '1.08',
