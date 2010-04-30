@@ -62,15 +62,20 @@ sub _load_yml {
 	my $cpanconfig = CPANPLUS::Configure->new;
 	$cpanconfig->set_conf( 'verbose' => 0 );
 	$cpanconfig->set_conf( 'no_update' => 1 );
+
+	# ARGH, CPANIDX doesn't work well with this kind of search...
+	if ( $cpanconfig->get_conf( 'source_engine' ) =~ /CPANIDX/ ) {
+		diag( "Disabling CPANIDX for CPANPLUS" );
+		$cpanconfig->set_conf( 'source_engine' => 'CPANPLUS::Internals::Source::Memory' );
+	}
+
 	my $cpanplus = CPANPLUS::Backend->new( $cpanconfig );
 
 	# silence CPANPLUS!
 	{
-		# TODO do we need eval's here?
 		no warnings 'redefine';
-		## no critic ( ProhibitStringyEval )
-		eval "sub Log::Message::Handlers::cp_msg { return }";
-		eval "sub Log::Message::Handlers::cp_error { return }";
+		sub Log::Message::Handlers::cp_msg { return };
+		sub Log::Message::Handlers::cp_error { return };
 	}
 
 	# Okay, how many prereqs do we have?
