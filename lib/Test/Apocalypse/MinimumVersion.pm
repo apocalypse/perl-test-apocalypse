@@ -10,7 +10,7 @@ use Test::More;
 
 sub _load_prereqs {
 	return (
-		'Test::MinimumVersion'	=> '0.011',
+		'Test::MinimumVersion'	=> '0.101080',
 	);
 }
 
