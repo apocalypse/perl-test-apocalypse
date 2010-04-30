@@ -68,7 +68,7 @@ sub is_apocalypse_here {
 
 	# Print some basic debugging info, thanks POE::Test::Loops::00_info!
 	diag(
-		"Testing Test::Apocalypse v$Test::Apocalypse::VERSION, ",
+		"Testing with Test::Apocalypse v$Test::Apocalypse::VERSION, ",
 		"Perl $], ",
 		"$^X on $^O",
 	);
