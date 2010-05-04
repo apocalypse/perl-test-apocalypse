@@ -10,7 +10,7 @@ use Test::More;
 
 sub _load_prereqs {
 	return (
-		'Test::Pod'	=> '1.40',
+		'Test::Pod'	=> '1.41',
 	);
 }
 

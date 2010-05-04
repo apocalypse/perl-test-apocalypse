@@ -6,6 +6,7 @@ Revision history for Perl extension Test::Apocalypse
 	Added Test::Script to the testsuite
 	More POD tweaks
 	Bumped Test::NoPlan prereq to 0.0.4 so it works properly under Test::Block
+	Bumped Test::Pod prereq to 1.41 so it doesn't complain about L<text|scheme> being invalid
 
 * 0.10
 
