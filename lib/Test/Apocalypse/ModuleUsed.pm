@@ -13,12 +13,16 @@ sub _do_automated { 0 }
 
 sub _load_prereqs {
 	return (
-		'Test::Module::Used'	=> '0.1.2',
+		'Test::Module::Used'	=> '0.1.9',
 	);
 }
 
 sub do_test {
-	Test::Module::Used->new->ok;
+	Test::Module::Used->new(
+		# Ignore the usual builders, this module often screws them up for some reason...
+		exclude_in_build_requires => [ qw( Module::Build Module::Install ExtUtils::MakeMaker ) ],
+		exclude_in_requires => [ qw( Module::Build Module::Install ExtUtils::MakeMaker ) ],
+	)->ok;
 
 	return;
 }

@@ -7,6 +7,7 @@ Revision history for Perl extension Test::Apocalypse
 	More POD tweaks
 	Bumped Test::NoPlan prereq to 0.0.4 so it works properly under Test::Block
 	Bumped Test::Pod prereq to 1.41 so it doesn't complain about L<text|scheme> being invalid
+	Bumped Test::Module::Used prereq to 0.1.9 so we can use excluded modules properly
 
 * 0.10
 
