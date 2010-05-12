@@ -330,6 +330,32 @@ This is a crazy test, but would help tremendously in finding regressions in your
 
 I don't exclusively code in Moose, but this could be useful...
 
+=item * no internet?
+
+It would be nice to signal INTERNET_TESTING=0 or something zany like that so this testsuite will skip the tests that need internet access...
+
+	<Apocalypse> Is there a convention that signals no internet access? Similar to RELEASE_TESTING, AUTOMATED_TESTING, and etc?
+	<@rjbs> No.
+	<Apocalypse> mmm I ain't in the mood to invent it so I'll just bench it for now :(
+	<Apocalypse> however, if I was to invent it I would call it something like INTERNET_TESTING=0
+	<Apocalypse> Also, why does ILYAZ keep re-inventing the stuff? Use of uninitialized value $ENV{"PERL_RL_TEST_PROMPT_MINLEN"} in bitwise or (|) at test.pl line 33.
+	<@Alias> use LWP::Online ':skip_all';
+	<@Alias> Whack that in the relevant test scripts
+	<Apocalypse> Alias: Hmm, how can I control that at a distance? i.e. disabling inet if I had inet access?
+	<@Alias> You can't
+	<@Alias> It's a pragmatic test, tries to pull some huge site front pages and looks for copyright statements
+	<Apocalypse> At least it's a good start - thanks!
+	<@Alias> So it deals with proxies and airport wireless hijacking etc properly
+	<Apocalypse> Hah yeah I had to do the same thing at $work in the past, we put up a "special" page then had our software try to read it and if the content didn't match it complained :)
+	<@Alias> right
+	<@Alias> So yeah, it automates that
+	<@Alias> I wrote it while in an airport annoyed that something I wrote wasn't falling back on a minicpan properly
+	<Apocalypse> At least it'll be an improvement, but I still need to force no inet for testing... ohwell
+	<Apocalypse> Heh, it seems like us perl hackers do a lot of work while stranded at airports :)
+	<@Alias> If you can break LWP from the environment, that would work
+	<@Alias> Setting a proxy ENVthat is illegal etc
+	<Apocalypse> ah good thinking, I'll read up on the fine points of LWP env vars and try to screw it up
+
 =back
 
 =head2 Modules that I considered but decided against using

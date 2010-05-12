@@ -58,9 +58,10 @@ my $build = Module::Build->new(
 		'Test::AutoLoader'		=> '0.03',
 		'Test::Pod::No404s'		=> '0.01',
 		'Test::JSON::Meta'		=> '0.04',
-		'Test::NoPlan'			=> '0.000004',	# Same M::B::Compat issue for 0.0.2
+		'Test::NoPlan'			=> '0.000006',	# Same M::B::Compat issue
 		'Test::Vars'			=> '0.001',
 		'Test::Script'			=> '1.07',
+		'Pod::Coverage::TrustPod'	=> '0.092830',
 
 		# handy tools
 		'File::Spec'			=> '3.31',

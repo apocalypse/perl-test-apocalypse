@@ -38,7 +38,7 @@ sub do_test {
 			next if ! length $word;
 			if ( $word eq 'lib' or $word eq 'blib' ) { next }
 			if ( $word =~ /^(.+)\.pm$/ ) {
-				add_stopwords( $word );
+				add_stopwords( $1 );
 			}
 		}
 	}

@@ -13,12 +13,15 @@ sub _do_automated { 0 }
 
 sub _load_prereqs {
 	return (
-		'Test::Pod::Coverage'	=> '1.08',
+		'Test::Pod::Coverage'		=> '1.08',
+		'Pod::Coverage::TrustPod'	=> '0.092830',
 	);
 }
 
 sub do_test {
-	all_pod_coverage_ok( 'lib/');
+	all_pod_coverage_ok( {
+		coverage_class => 'Pod::Coverage::TrustPod',
+	} );
 
 	return;
 }
@@ -35,7 +38,7 @@ Test::Apocalypse::Pod_Coverage - Plugin for Test::Pod::Coverage
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Pod::Coverage functionality.
+Encapsulates Test::Pod::Coverage functionality. Automatically uses the L<Pod::Coverage::TrustPod> class.
 
 =head2 do_test()
 
