@@ -9,7 +9,6 @@ $VERSION = '0.11';
 use Test::More;
 
 # RELEASE test only!
-# TODO because goddamn spelling test almost always FAILs even with stopwords added to it...
 sub _do_automated { 0 }
 
 sub _load_prereqs {
@@ -36,9 +35,10 @@ sub do_test {
 	foreach my $p ( Test::Spelling::all_pod_files() ) {
 		foreach my $word ( File::Spec->splitdir( $p ) ) {
 			next if ! length $word;
-			if ( $word eq 'lib' or $word eq 'blib' ) { next }
-			if ( $word =~ /^(.+)\.pm$/ ) {
+			if ( $word =~ /^(.+)\.\w+$/ ) {
 				add_stopwords( $1 );
+			} else {
+				add_stopwords( $word );
 			}
 		}
 	}

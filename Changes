@@ -9,6 +9,8 @@ Revision history for Perl extension Test::Apocalypse
 	Bumped Test::Pod prereq to 1.41 so it doesn't complain about L<text|scheme> being invalid
 	Bumped Test::Module::Used prereq to 0.1.9 so we can use excluded modules properly
 	Added Pod::Coverage::TrustPod as the coverage class for Test::Pod::Coverage
+	Fixed a bug in Test::Spelling where the file stopwords weren't added right
+	Fixed a bug in OutdatedPrereqs where it complained if the CPAN version was older than what was specified.
 
 * 0.10
 

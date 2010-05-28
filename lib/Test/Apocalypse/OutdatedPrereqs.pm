@@ -72,11 +72,7 @@ sub _load_yml {
 	my $cpanplus = CPANPLUS::Backend->new( $cpanconfig );
 
 	# silence CPANPLUS!
-	{
-		no warnings 'redefine';
-		sub Log::Message::Handlers::cp_msg { return };
-		sub Log::Message::Handlers::cp_error { return };
-	}
+	eval "no warnings; sub Log::Message::store { return }";
 
 	# Okay, how many prereqs do we have?
 	if ( scalar keys %$data == 0 ) {
@@ -152,8 +148,8 @@ sub _check_cpan {
 #		#     expected: 2e-06
 #		t/apocalypse.t .. 862/?
 
-		# check it!
-		cmp_ok( $cpanversion, '==', $version, "Comparing '$prereq' to CPAN version" );
+		# check it! ( use <= instead of == so we ignore old CPAN versions )
+		cmp_ok( $cpanversion, '<=', $version, "Comparing '$prereq' to CPAN version" );
 	} else {
 		my $release = Module::CoreList->first_release( $prereq );
 		if ( defined $release ) {
