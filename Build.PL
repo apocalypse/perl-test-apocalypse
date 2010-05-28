@@ -62,6 +62,7 @@ my $build = Module::Build->new(
 		'Test::Vars'			=> '0.001',
 		'Test::Script'			=> '1.07',
 		'Pod::Coverage::TrustPod'	=> '0.092830',
+		'Test::Pod::LinkCheck'		=> '0.004',
 
 		# handy tools
 		'File::Spec'			=> '3.31',
