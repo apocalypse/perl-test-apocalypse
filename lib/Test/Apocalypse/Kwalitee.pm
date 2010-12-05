@@ -25,11 +25,16 @@ sub do_test {
 	# The reason why I didn't just use that module is because it doesn't print the kwalitee or consider extra metrics...
 
 	# init CPANTS with the latest tarball
-	my $tarball = _get_tarball();
+	my $tarball = _get_tarball( '.' );
 	if ( ! defined $tarball ) {
-		plan tests => 1;
-		fail( 'Distribution tarball not found, unable to run CPANTS Kwalitee tests!' );
-		return;
+		# Dist::Zilla-specific code, the tarball we want is 3 levels up
+		# [@Apocalyptic/TestRelease] Extracting /home/apoc/mygit/perl-pod-weaver-pluginbundle-apocalyptic/Pod-Weaver-PluginBundle-Apocalyptic-0.001.tar.gz to .build/MiNXla4CY7
+		$tarball = _get_tarball( '../../..' );
+		if ( ! defined $tarball ) {
+			plan tests => 1;
+			fail( 'Distribution tarball not found, unable to run CPANTS Kwalitee tests!' );
+			return;
+		}
 	}
 	my $analyzer = Module::CPANTS::Analyse->new({
 		'dist'	=> $tarball,
@@ -100,8 +105,10 @@ sub do_test {
 }
 
 sub _get_tarball {
+	my $path = shift;
+
 	# get our list of stuff, and try to find the latest tarball
-	opendir( my $dir, '.' ) or die "Unable to opendir: $!";
+	opendir( my $dir, $path ) or die "Unable to opendir: $!";
 	my @dirlist = readdir( $dir );
 	closedir( $dir ) or die "Unable to closedir: $!";
 
@@ -124,7 +131,7 @@ sub _get_tarball {
 	# sort by version
 	@dirlist = sort { $b->[0] <=> $a->[0] } @dirlist;
 
-	return $dirlist[0]->[1];
+	return $path . '/' . $dirlist[0]->[1];
 }
 
 # Module::CPANTS::Kwalitee::Distros suck!
