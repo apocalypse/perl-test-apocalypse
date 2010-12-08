@@ -27,7 +27,6 @@ my $build = Module::Build->new(
 		'Test::More'			=> '0.94',
 		'Test::Compile'			=> '0.11',
 		'Test::Perl::Critic'		=> '1.02',
-		'Test::Dependencies'		=> '0.12',
 		'Test::Distribution'		=> '2.00',
 		'Test::Fixme'			=> '0.04',
 		'Test::HasVersion'		=> '0.012',
@@ -47,8 +46,6 @@ my $build = Module::Build->new(
 		'Test::Signature'		=> '1.10',
 		'Test::Portability::Files'	=> '0.05',
 		'Test::DistManifest'		=> '1.005',
-#		'Test::Module::Used'		=> '0.1.2',	# M::B::Compat 0.36 doesn't like this!
-		'Test::Module::Used'		=> '0.001009',
 		'Test::Synopsis'		=> '0.06',
 		'Test::CPAN::Meta'		=> '0.13',
 		'Test::NoBreakpoints'		=> '0.13',
@@ -63,6 +60,7 @@ my $build = Module::Build->new(
 		'Test::Script'			=> '1.07',
 		'Pod::Coverage::TrustPod'	=> '0.092830',
 		'Test::Pod::LinkCheck'		=> '0.004',
+		'Test::Deep'			=> '0.108',
 
 		# handy tools
 		'File::Spec'			=> '3.31',
@@ -76,6 +74,10 @@ my $build = Module::Build->new(
 		'Module::CoreList'		=> '2.23',
 		'Module::Pluggable'		=> '3.9',
 		'File::Which'			=> '1.09',
+		'File::Slurp'			=> '9999.13',
+		'YAML::Any'			=> '0.72',
+		'JSON::Any'			=> '1.25',
+		'Perl::PrereqScanner'		=> '1.000',
 
 		# We can't specify the CPANPLUS::Configure/Backend module because...
 #apoc@blackhole:~/mygit/perl-test-apocalypse$ perl Build.PL
