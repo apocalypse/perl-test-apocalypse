@@ -22,9 +22,7 @@ sub do_test {
 	plan tests => 1;
 
 	# generate the file list
-	my $rule = File::Find::Rule->new;
-	$rule->grep( qr/\r\n/ );
-	my @files = $rule->in( '.' );
+	my @files = File::Find::Rule->grep( qr/\r\n/ )->in( '.' );
 
 	# for now, we skip SVN + git stuff
 	# also skip any tarballs

@@ -34,7 +34,6 @@ lib/Test/Apocalypse/DirChecks.pm
 lib/Test/Apocalypse/Signature.pm
 lib/Test/Apocalypse/FilePortability.pm
 lib/Test/Apocalypse/DistManifest.pm
-lib/Test/Apocalypse/ModuleUsed.pm
 lib/Test/Apocalypse/CPANMeta.pm
 lib/Test/Apocalypse/Synopsis.pm
 lib/Test/Apocalypse/NoBreakpoints.pm

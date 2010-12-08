@@ -18,7 +18,7 @@ sub _load_prereqs {
 sub do_test {
 	# Find the number of tests
 	# TODO we need to search more locations/extensions/etc?
-	my @files = File::Find::Rule->file->name( '*.pl' )->in( qw( examples bin scripts ) );
+	my @files = File::Find::Rule->file->name( qr/\.pl$/ )->in( qw( examples bin scripts ) );
 
 	# Skip if no scripts
 	if ( ! scalar @files ) {

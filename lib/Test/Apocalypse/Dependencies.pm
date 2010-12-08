@@ -8,33 +8,75 @@ $VERSION = '0.11';
 
 use Test::More;
 
-# RELEASE test only!
-sub _do_automated { 0 }
-
 sub _load_prereqs {
 	return (
-		'Test::Dependencies'	=> '0.12 ()',
+		'File::Slurp'		=> '9999.13',
+		'YAML::Any'		=> '0.72',
+		'JSON::Any'		=> '1.25',
+		'File::Find::Rule'	=> '0.32',
+		'Perl::PrereqScanner'	=> '1.000',
+		'Test::Deep'		=> '0.108',
 	);
 }
 
 sub do_test {
-	# build up our exclude list of usual installers that we never use() but T::D is stupid to detect :(
-	my @exclude = qw( Module::Build Module::Install ExtUtils::MakeMaker );
+	# load the metadata
+	my $runtime_req;
+	my $test_req;
+	if ( -e 'META.json' ) {
+		my $file = read_file( 'META.json' );
+		my $metadata = JSON::Any->new->Load( $file );
+		$runtime_req = $metadata->{'prereqs'}{'runtime'}{'requires'};
+		$test_req = $metadata->{'prereqs'}{'test'}{'requires'};
+	} elsif ( -e 'META.yml' ) {
+		my $file = read_file( 'META.yml' );
+		my $metadata = Load( $file );
+		$runtime_req = $metadata->{'requires'};
+	} else {
+		die 'No META.(json|yml) found!';
+	}
 
-	# Also, add some more stupid deps that T::D fucks up
-	push( @exclude, 'Test::More' );
+	# remove 'perl' dep
+	# TODO should we use Perl::MinimumVersion to scan for perl ver to sanity check?
+	delete $runtime_req->{'perl'} if exists $runtime_req->{'perl'};
+	delete $test_req->{'perl'} if defined $test_req and exists $test_req->{'perl'};
 
-	Test::Dependencies->import( exclude => \@exclude, style => 'light' );
-	ok_dependencies();
+
+	# Okay, scan the files
+	my $req_runtime = Version::Requirements->new;
+	my $req_test = Version::Requirements->new;
+	foreach my $file ( File::Find::Rule->file()->name( qr/\.pm$/ )->in( 'lib' ) ) {
+		$req_runtime->add_requirements( Perl::PrereqScanner->new->scan_file( $file ) );
+	}
+
+	# scan the test dir only if we have test metadata
+	if ( defined $test_req ) {
+		foreach my $file ( File::Find::Rule->file()->name( qr/\.(pm|t|pl)$/ )->in( 't' ) ) {
+			$req_test->add_requirements( Perl::PrereqScanner->new->scan_file( $file ) );
+		}
+	}
+
+	# Do the actual comparison!
+	if ( defined $test_req ) {
+		plan tests => 2;
+	} else {
+		plan tests => 1;
+	}
+
+	cmp_deeply( $req_runtime->as_string_hash, $runtime_req, "Runtime requires" );
+	cmp_deeply( $req_test->as_string_hash, $test_req, "Test requires" ) if defined $test_req;
 
 	return;
 }
 
 1;
 __END__
+
+=for stopwords metadata
+
 =head1 NAME
 
-Test::Apocalypse::Dependencies - Plugin for Test::Dependencies
+Test::Apocalypse::Dependencies - Plugin to check for metadata dependencies
 
 =head1 SYNOPSIS
 
@@ -42,7 +84,7 @@ Test::Apocalypse::Dependencies - Plugin for Test::Dependencies
 
 =head1 DESCRIPTION
 
-Encapsulates Test::Dependencies functionality. We enable the "light" style of parsing. We also add some "standard" modules to exclude from the checks.
+Loads the metadata and uses L<Perl::PrereqScanner> to look for dependencies and compares the lists.
 
 =head2 do_test()
 
@@ -51,8 +93,6 @@ The main entry point for this plugin. Automatically called by L<Test::Apocalypse
 =head1 SEE ALSO
 
 L<Test::Apocalypse>
-
-L<Test::Dependencies>
 
 =head1 AUTHOR
 

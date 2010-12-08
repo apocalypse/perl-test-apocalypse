@@ -362,61 +362,66 @@ It would be nice to signal INTERNET_TESTING=0 or something zany like that so thi
 
 =over 4
 
-=item * Test::MyDeps
+=item * L<Test::Module::Used> and L<Test::Dependencies>
 
-Superseded by Test::DependentModules
+They were plugins in this testsuite but since I started coding with L<Moose>, they don't work! I've switched to my homebrew solution
+utilizing L<Perl::PrereqScanner> which works nicely for me.
 
-=item * Test::NoTabs
+=item * L<Test::MyDeps>
+
+Superseded by L<Test::DependentModules>. Also, I don't want to waste a lot of time on each testrun testing other modules!
+
+=item * L<Test::NoTabs>
 
 I always use tabs! :(
 
-=item * Test::CheckManifest
+=item * L<Test::CheckManifest>
 
-This was a buggy dist that I dropped and is now using Test::DistManifest
+This was a buggy dist that I dropped and is now using L<Test::DistManifest>
 
-=item * Test::Dist
+=item * L<Test::Dist>
 
 This is pretty much the same thing as this dist ;)
 
-=item * Test::PureASCII
+=item * L<Test::PureASCII>
 
 This rocks, as I don't care about unicode in my perl! ;)
 
-=item * Test::LatestPrereqs
+=item * L<Test::LatestPrereqs>
 
 This looks cool but we need to fiddle with config files? My OutdatedPrereqs test already covers it pretty well...
 
-=item * Test::Pod::Content
+=item * L<Test::Pod::Content>
 
 This is useful, but not everyone has the same POD layout. It would be too much work to try and generalize this...
 
-=item * Test::GreaterVersion
+=item * L<Test::GreaterVersion>
 
 Since I never use CPAN, this is non-functional for me. However, it might be useful for someone?
 
-=item * Test::Kwalitee
+=item * L<Test::Kwalitee>
 
 This dist rocks, but it doesn't print the info nor utilize the extra metrics. My homebrew solution actually copied
 a lot of code from this, so I have to give it props!
 
-=item * Test::LoadAllModules
+=item * L<Test::LoadAllModules>
 
-This is very similar to Test::UseAllModules but looks more complicated. Also, I already have enough tests that do that ;)
+This is very similar to L<Test::UseAllModules> but looks more complicated. Also, I already have enough tests that do that ;)
 
-=item * Test::ModuleReady
+=item * L<Test::ModuleReady>
 
 This looks like a nice module, but what it does is already covered by the numerous tests in this dist...
 
-=item * Test::PerlTidy
+=item * L<Test::PerlTidy>
 
 Br0ken install at this time... ( PerlCritic can do that! Need to investigate more... ) Also, all it does is... run your module
 through perltidy and compare the outputs. Not that useful imo because I never could get perltidy to match my prefs :(
 
-=item * Test::Install::METArequires
+=item * L<Test::Install::METArequires>
 
 This looks like a lazy way to do auto_install and potentially dangerous! Better to just use the prereq logic in Build.PL/Makefile.PL
 
-=item * Test::Perl::Metrics::Simple
+=item * L<Test::Perl::Metrics::Simple>
 
 This just tests your Cyclomatic complexity and was the starting point for my homebrew solution.
 

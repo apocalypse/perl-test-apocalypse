@@ -17,7 +17,7 @@ sub _load_prereqs {
 
 sub do_test {
 	my @files = qw( Changes Build.PL Makefile.PL LICENSE MANIFEST MANIFEST.SKIP README META.yml );
-	my @pmfiles = File::Find::Rule->file()->name( '*.pm' )->in( 'lib' );
+	my @pmfiles = File::Find::Rule->file()->name( qr/\.pm$/ )->in( 'lib' );
 
 	# check SIGNATURE if it's there
 	if ( -e 'SIGNATURE' ) {
