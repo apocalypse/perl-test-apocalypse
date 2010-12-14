@@ -1,6 +1,12 @@
 Revision history for Perl extension Test::Apocalypse
 
-* 0.11
+{{$NEXT}}
+
+	Converted to Dist::Zilla for the release process!
+	Tweaked the internals to cleanup automated issues
+	Tweaked the internals to skip TODO tests
+
+0.11
 
 	Added Test::Vars to the testsuite
 	Added Test::Script to the testsuite
@@ -13,7 +19,7 @@ Revision history for Perl extension Test::Apocalypse
 	Fixed a bug in OutdatedPrereqs where it complained if the CPAN version was older than what was specified.
 	Added Test::Pod::LinkCheck to the testsuite
 
-* 0.10
+0.10
 
 	Added smart AUTOMATED_TESTING logic so we are now behaving in the same way as Alias envisaged
 		This means certain tests are disabled when AUTOMATED is set :)
@@ -25,25 +31,25 @@ Revision history for Perl extension Test::Apocalypse
 	Added Test::NoPlan to the testsuite
 	Added debugging of test info, thanks POE::Test::Loops!
 
-* 0.09
+0.09
 
 	Added the PERL_APOCALYPSE env var to override test selection and test all plugins
 	Run the plugins in alphabetical order, which is prettier :)
 	Removed the crappy stopwords addition in Pod_Spelling test
 	Added Test::JSON::Meta to the testsuite
 
-* 0.08
+0.08
 
 	Minor POD tweaks
 	Added Test::Pod::No404s to the testsuite
 	Fixed a warning in the PerlMetrics test so we don't cause FAILs with the Test::NoWarnings module :(
 
-* 0.07
+0.07
 
 	Fixed a issue with META.yml quoting causing parse failures when using tools that depend on it
 	Upgraded Module::Build to 0.3601, had to change prereq from '0.2.2' to '0.002002' to satisfy M::B::Compat :(
 
-* 0.06
+0.06
 
 	Fixed OutdatedPrereqs test so it doesn't blow up on zero prereqs - thanks Ryan52!
 	Added $@ to the module load failure output, for better debugging - thanks Ryan52!
@@ -59,26 +65,26 @@ Revision history for Perl extension Test::Apocalypse
 	Oops, Module::Pluggable wasn't listed as a prereq!
 	Sorry - added a lot of Perl::Critic extensions so you will not get failed tests because you missed to test an extension!
 
-* 0.05
+0.05
 
 	Added Test::Module::Used to the testsuite
 	Added Test::Synopsis to the testsuite
 	Enabled the Test::Pod::Coverage test, it was previously disabled by mistake!
 	Changed to the new ENV var scheme, proposed by Alias ( and thanks to JAWNSY for prodding me )
 
-* 0.04
+0.04
 
 	Removed Test::CheckManifest and replaced with Test::DistManifest, thanks JAWNSY!
 	Various POD cleanups and additions
 
-* 0.03
+0.03
 
 	Added more tests :)
 
-* 0.02
+0.02
 
 	fix bad test
 
-* 0.01
+0.01
 
 	initial release
