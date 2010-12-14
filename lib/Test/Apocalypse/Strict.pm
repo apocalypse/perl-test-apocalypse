@@ -2,8 +2,6 @@ package Test::Apocalypse::Strict;
 
 # ABSTRACT: Plugin for Test::Strict
 
-use Test::More;
-
 use Test::Strict 0.14;
 
 sub do_test {

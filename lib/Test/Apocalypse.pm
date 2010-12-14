@@ -335,6 +335,10 @@ It would be nice to signal INTERNET_TESTING=0 or something zany like that so thi
 
 =over 4
 
+=item * L<Test::Distribution>
+
+This module was a plugin in this testsuite but I don't need it. All the functionality in it is already replicated in the plugins :)
+
 =item * L<Test::Module::Used> and L<Test::Dependencies>
 
 They were plugins in this testsuite but since I started coding with L<Moose>, they don't work! I've switched to my homebrew solution
@@ -350,7 +354,7 @@ I always use tabs! :(
 
 =item * L<Test::CheckManifest>
 
-This was a buggy dist that I dropped and is now using L<Test::DistManifest>
+This was a buggy module that I dropped and is now using L<Test::DistManifest>
 
 =item * L<Test::Dist>
 

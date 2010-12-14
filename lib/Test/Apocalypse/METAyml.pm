@@ -2,8 +2,6 @@ package Test::Apocalypse::METAyml;
 
 # ABSTRACT: Plugin for Test::YAML::Meta
 
-use Test::More;
-
 use Test::YAML::Meta 0.14;
 
 sub do_test {

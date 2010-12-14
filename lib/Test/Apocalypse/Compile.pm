@@ -2,8 +2,6 @@ package Test::Apocalypse::Compile;
 
 # ABSTRACT: Plugin for Test::Compile
 
-use Test::More;
-
 use Test::Compile 0.11;
 
 sub do_test {

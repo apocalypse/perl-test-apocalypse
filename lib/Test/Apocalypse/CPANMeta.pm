@@ -2,8 +2,6 @@ package Test::Apocalypse::CPANMeta;
 
 # ABSTRACT: Plugin for Test::CPAN::Meta
 
-use Test::More;
-
 use Test::CPAN::Meta 0.13;
 
 sub do_test {

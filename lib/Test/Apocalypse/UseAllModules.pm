@@ -2,8 +2,6 @@ package Test::Apocalypse::UseAllModules;
 
 # ABSTRACT: Plugin for Test::UseAllModules
 
-use Test::More;
-
 use Test::UseAllModules 0.12;
 
 sub do_test {

@@ -2,8 +2,6 @@ package Test::Apocalypse::HasVersion;
 
 # ABSTRACT: Plugin for Test::HasVersion
 
-use Test::More;
-
 use Test::HasVersion 0.012;
 
 sub do_test {

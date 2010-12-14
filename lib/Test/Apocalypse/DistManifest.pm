@@ -2,8 +2,6 @@ package Test::Apocalypse::DistManifest;
 
 # ABSTRACT: Plugin for Test::DistManifest
 
-use Test::More;
-
 use Test::DistManifest 1.005;
 
 sub do_test {

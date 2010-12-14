@@ -7,8 +7,8 @@ use Test::More;
 sub _is_release { 1 }
 
 use YAML 0.70;
-use CPANPLUS::Configure 0.90;
-use CPANPLUS::Backend 0.90;
+use CPANPLUS::Configure;
+use CPANPLUS::Backend; # TODO I want 0.90 but it doesn't specify a ver?
 use version 0.77;
 use Module::CoreList 2.23;
 

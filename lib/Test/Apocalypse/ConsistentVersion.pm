@@ -2,8 +2,6 @@ package Test::Apocalypse::ConsistentVersion;
 
 # ABSTRACT: Plugin for Test::ConsistentVersion
 
-use Test::More;
-
 use Test::ConsistentVersion 0.2.2;
 
 sub do_test {

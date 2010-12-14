@@ -2,8 +2,6 @@ package Test::Apocalypse::Synopsis;
 
 # ABSTRACT: Plugin for Test::Synopsis
 
-use Test::More;
-
 use Test::Synopsis 0.06;
 
 sub do_test {

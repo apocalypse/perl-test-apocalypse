@@ -2,8 +2,6 @@ package Test::Apocalypse::MinimumVersion;
 
 # ABSTRACT: Plugin for Test::MinimumVersion
 
-use Test::More;
-
 use Test::MinimumVersion 0.101080;
 
 sub do_test {

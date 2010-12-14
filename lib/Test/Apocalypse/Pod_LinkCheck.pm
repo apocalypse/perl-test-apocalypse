@@ -2,8 +2,6 @@ package Test::Apocalypse::Pod_LinkCheck;
 
 # ABSTRACT: Plugin for Test::Pod::LinkCheck
 
-use Test::More;
-
 sub _is_release { 1 }
 
 use Test::Pod::LinkCheck 0.004;

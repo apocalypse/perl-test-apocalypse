@@ -2,8 +2,6 @@ package Test::Apocalypse::Pod_Coverage;
 
 # ABSTRACT: Plugin for Test::Pod::Coverage
 
-use Test::More;
-
 sub _is_release { 1 }
 
 use Test::Pod::Coverage 1.08;

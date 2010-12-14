@@ -2,12 +2,20 @@ package Test::Apocalypse::CheckChanges;
 
 # ABSTRACT: Plugin for Test::CheckChanges
 
-use Test::More;
+# TODO oh please don't set plan in import!
+#use Test::CheckChanges 0.08;
 
-use Test::CheckChanges 0.08;
+# TODO pester upstream about this hunk of code:
+#END {
+#    if (!defined $test->has_plan()) {
+#       $test->done_testing(1);
+#    }
+#}
 
 sub do_test {
-	ok_changes();
+	require Test::CheckChanges;
+	Test::CheckChanges->import;
+	Test::CheckChanges::ok_changes();
 
 	return;
 }

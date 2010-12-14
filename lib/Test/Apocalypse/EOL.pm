@@ -2,8 +2,6 @@ package Test::Apocalypse::EOL;
 
 # ABSTRACT: Plugin for Test::EOL
 
-use Test::More;
-
 sub _is_release { 1 }
 
 use Test::EOL 0.3;

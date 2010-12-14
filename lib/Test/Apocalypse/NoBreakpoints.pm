@@ -2,8 +2,6 @@ package Test::Apocalypse::NoBreakpoints;
 
 # ABSTRACT: Plugin for Test::NoBreakpoints
 
-use Test::More;
-
 use Test::NoBreakpoints 0.13;
 
 sub do_test {

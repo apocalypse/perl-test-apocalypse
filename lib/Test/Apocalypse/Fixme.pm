@@ -2,8 +2,6 @@ package Test::Apocalypse::Fixme;
 
 # ABSTRACT: Plugin for Test::Fixme
 
-use Test::More;
-
 # RELEASE test only!
 sub _is_release { 1 }
 

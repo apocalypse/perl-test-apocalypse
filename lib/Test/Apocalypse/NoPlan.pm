@@ -2,8 +2,6 @@ package Test::Apocalypse::NoPlan;
 
 # ABSTRACT: Plugin for Test::NoPlan
 
-use Test::More;
-
 use Test::NoPlan 0.0.6;
 
 sub do_test {
