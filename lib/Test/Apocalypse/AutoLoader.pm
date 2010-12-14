@@ -1,19 +1,11 @@
-# Declare our package
 package Test::Apocalypse::AutoLoader;
-use strict; use warnings;
 
-# Initialize our version
-use vars qw( $VERSION );
-$VERSION = '0.11';
+# ABSTRACT: Plugin for Test::AutoLoader
 
 use Test::More;
 
-sub _load_prereqs {
-	return (
-		'Test::AutoLoader'	=> '0.03',
-		'YAML'			=> '0.70',
-	);
-}
+use Test::AutoLoader 0.03;
+use YAML 0.70;
 
 sub do_test {
 	# does META.yml exist?
@@ -91,38 +83,13 @@ sub _module_has_autoload {
 }
 
 1;
-__END__
-=head1 NAME
 
-Test::Apocalypse::AutoLoader - Plugin for Test::AutoLoader
+=pod
 
-=head1 SYNOPSIS
-
-	die "Don't use this module directly. Please use Test::Apocalypse instead.";
+=for Pod::Coverage do_test
 
 =head1 DESCRIPTION
 
-Encapsulates Test::AutoLoader functionality.
-
-=head2 do_test()
-
-The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
-
-=head1 SEE ALSO
-
-L<Test::Apocalypse>
-
-L<Test::AutoLoader>
-
-=head1 AUTHOR
-
-Apocalypse E<lt>apocal@cpan.orgE<gt>
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 2010 by Apocalypse
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+Encapsulates L<Test::AutoLoader> functionality.
 
 =cut

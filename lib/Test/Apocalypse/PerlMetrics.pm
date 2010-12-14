@@ -1,18 +1,10 @@
-# Declare our package
 package Test::Apocalypse::PerlMetrics;
-use strict; use warnings;
 
-# Initialize our version
-use vars qw( $VERSION );
-$VERSION = '0.11';
+# ABSTRACT: Plugin for Perl::Metrics::Simple
 
 use Test::More;
 
-sub _load_prereqs {
-	return (
-		'Perl::Metrics::Simple'	=> '0.13',
-	);
-}
+use Perl::Metrics::Simple 0.13;
 
 sub do_test {
 	plan tests => 1;
@@ -71,39 +63,13 @@ sub do_test {
 }
 
 1;
-__END__
 
-=head1 NAME
+=pod
 
-Test::Apocalypse::PerlMetrics - Plugin for Perl::Metrics::Simple
-
-=head1 SYNOPSIS
-
-	die "Don't use this module directly. Please use Test::Apocalypse instead.";
+=for Pod::Coverage do_test
 
 =head1 DESCRIPTION
 
-Encapsulates Perl::Metrics::Simple functionality. Enable TEST_VERBOSE to get a diag() output of some metrics.
-
-=head2 do_test()
-
-The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
-
-=head1 SEE ALSO
-
-L<Test::Apocalypse>
-
-L<Perl::Metrics::Simple>
-
-=head1 AUTHOR
-
-Apocalypse E<lt>apocal@cpan.orgE<gt>
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 2010 by Apocalypse
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+Encapsulates L<Perl::Metrics::Simple> functionality. Enable TEST_VERBOSE to get a diag() output of some metrics.
 
 =cut

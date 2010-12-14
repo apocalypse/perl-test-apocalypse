@@ -1,16 +1,12 @@
-# Declare our package
 package Test::Apocalypse;
-use strict; use warnings;
 
-# Initialize our version
-use vars qw( $VERSION );
-$VERSION = '0.11';
+# ABSTRACT: Apocalypse's favorite tests bundled into a simple interface
 
 # setup our tests and etc
-use Test::Block qw( $Plan );
-use Test::More;
-use Test::Builder;
-use Module::Pluggable require => 1, search_path => [ __PACKAGE__ ];
+use Test::Block 0.11 qw( $Plan );
+use Test::More 0.96;
+use Test::Builder 0.96;
+use Module::Pluggable 3.9 search_path => [ __PACKAGE__ ];
 
 # auto-export the only sub we have
 use base qw( Exporter );
@@ -75,9 +71,26 @@ sub is_apocalypse_here {
 
 	# loop through our plugins ( in alphabetical order! )
 	foreach my $t ( sort { $a cmp $b } __PACKAGE__->plugins() ) {	## no critic ( RequireExplicitInclusion )
+		my $plugin = $t;
+		$plugin =~ s/^Test::Apocalypse:://;
+		# Load it, and look for errors
+		eval "use $t";
+		if ( $@ ) {
+			# TODO smarter error detection - missing module, bla bla
+			my $error = "Unable to load $plugin -> $@";
+
+			if ( $ENV{RELEASE_TESTING} ) {
+				die $error;
+			} else {
+				diag( $error );
+			}
+
+			next;
+		}
+
 		# Is this plugin disabled?
 		if ( $t->can( '_is_disabled' ) and $t->_is_disabled ) {
-			diag( "Skipping $t ( plugin is DISABLED )..." );
+			diag( "Skipping $plugin ( plugin is DISABLED )..." );
 			next;
 		}
 
@@ -87,14 +100,14 @@ sub is_apocalypse_here {
 			if ( exists $opt{'allow'} ) {
 				if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
 					if ( $1 !~ $opt{'allow'} ) {
-						diag( "Skipping $t ( via allow policy )..." );
+						diag( "Skipping $plugin ( via allow policy )..." );
 						next;
 					}
 				}
 			} elsif ( exists $opt{'deny'} ) {
 				if ( $t =~ /^Test::Apocalypse::(.+)$/ ) {
 					if ( $1 =~ $opt{'deny'} ) {
-						diag( "Skipping $t ( via deny policy )..." );
+						diag( "Skipping $plugin ( via deny policy )..." );
 						next;
 					}
 				}
@@ -102,35 +115,8 @@ sub is_apocalypse_here {
 		}
 
 		# Check for AUTOMATED_TESTING
-		if ( $ENV{AUTOMATED_TESTING} and ! $ENV{PERL_APOCALYPSE} and $t->can( '_do_automated' ) and ! $t->_do_automated() ) {
-			diag( "Skipping $t ( for RELEASE_TESTING only )..." );
-			next;
-		}
-
-		# Load the modules the plugin needs
-		if ( $t->can( '_load_prereqs' ) ) {
-			my %MODULES = $t->_load_prereqs;
-			my $load_fail = undef;
-
-			while (my ($module, $version) = each %MODULES) {
-				eval "package $t; use $module $version";	## no critic ( ProhibitStringyEval )
-				next unless $@;
-
-				if ( $ENV{RELEASE_TESTING} ) {
-					die 'Could not load release-testing module "' . $module . " v$version\" for $t -> $@";
-				} else {
-					# TODO include $@ here somehow? I want to pretty-print it...
-					$load_fail = "$module v$version";
-					last;
-				}
-			}
-
-			if ( defined $load_fail ) {
-				diag( "Skipping $t ( unable to load required module: $load_fail )..." );
-				next;
-			}
-		} else {
-			diag( "Skipping $t ( unable to parse required modules - YELL AT THE AUTHOR! )..." );
+		if ( $ENV{AUTOMATED_TESTING} and ! $ENV{PERL_APOCALYPSE} and $t->can( '_is_release' ) and $t->_is_release ) {
+			diag( "Skipping $plugin ( for RELEASE_TESTING only )..." );
 			next;
 		}
 
@@ -142,15 +128,15 @@ sub is_apocalypse_here {
 
 			# handle the cmds
 			if ( $cmd eq 'skip_all' ) {
-				$Plan = { $t => 1 };
+				$Plan = { $plugin => 1 };
 				SKIP: {
-					$self->skip( "skipping $t - $arg", 1 );
+					$self->skip( "skipping $plugin - $arg", 1 );
 				}
 			} elsif ( $cmd eq 'tests' ) {
-				$Plan = { $t => $arg };
+				$Plan = { $plugin => $arg };
 			} elsif ( $cmd eq 'no_plan' ) {
 				# ignore it
-				$Plan = { $t => 0 };
+				$Plan = { $plugin => 0 };
 			} else {
 				die "Unknown cmd: $cmd";
 			}
@@ -160,7 +146,7 @@ sub is_apocalypse_here {
 
 		# Same thing for Test::Builder::create - Test::NoPlan uses it, argh!
 		my $newcreate = sub {
-			diag( "ARGH! $t uses Test::Builder::create() - go patch it!" );
+			diag( "ARGH! $plugin uses Test::Builder::create() - go patch it!" );
 			goto &Test::Builder::new;
 		};
 
@@ -170,7 +156,7 @@ sub is_apocalypse_here {
 
 		# run it!
 		use warnings; use strict;
-		diag( "Running $t..." );
+		diag( "Running $plugin..." );
 		$t->do_test();
 
 #		# TODO oh, I wish it was this easy...
@@ -185,13 +171,10 @@ sub is_apocalypse_here {
 }
 
 1;
-__END__
 
-=for stopwords APOCAL AUTHORs AnnoCPAN CPAN RT al backend debian distro distros dists env hackish plugins testsuite yml pm yay unicode blog precompiled CPANTS com diff github dist
+=pod
 
-=head1 NAME
-
-Test::Apocalypse - Apocalypse's favorite tests bundled into a simple interface
+=for stopwords APOCAL AUTHORs al backend debian distro distros dists env hackish plugins testsuite yml pm yay unicode blog precompiled
 
 =head1 SYNOPSIS
 
@@ -203,8 +186,6 @@ Test::Apocalypse - Apocalypse's favorite tests bundled into a simple interface
 	if ( $@ ) {
 		plan skip_all => 'Test::Apocalypse required for validating the distribution';
 	} else {
-		# lousy hack for kwalitee
-		require Test::NoWarnings; require Test::Pod; require Test::Pod::Coverage;
 		is_apocalypse_here();
 	}
 
@@ -277,8 +258,6 @@ will compile it via C<qr/$str/i>.
 Since this module uses L<Module::Pluggable> you can use this method on the package to find out what plugins are available. Handy if you need
 to know what plugins to skip, for example.
 
-WARNING: We enable the "require" option to L<Module::Pluggable> so that means the plugins returned are objects.
-
 	my @tests = Test::Apocalypse->plugins;
 
 =head1 EXPORT
@@ -294,12 +273,6 @@ Automatically exports the "is_apocalypse_here" sub.
 =item * POD standards check
 
 Do we have SYNOPSIS, ABSTRACT, SUPPORT, etc sections? ( PerlCritic can do that! Need to investigate more... )
-
-=item * Help with version updates automatically
-
-This little snippet helps a lot, I was wondering if I could integrate it into the testsuite hah!
-
-	find -name '*.pm' | grep -v /blib/ | xargs sed -i "s/\$VERSION = '[^']\+\?';/\$VERSION = '0.11';/"
 
 =item * Integrate Test::UniqueTestNames into the testsuite
 
@@ -427,81 +400,8 @@ This just tests your Cyclomatic complexity and was the starting point for my hom
 
 =back
 
-=head1 SEE ALSO
-
-None.
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Test::Apocalypse
-
-=head2 Websites
-
-=over 4
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Test-Apocalypse>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Test-Apocalypse>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Test-Apocalypse>
-
-=item * CPAN Forum
-
-L<http://cpanforum.com/dist/Test-Apocalypse>
-
-=item * RT: CPAN's Request Tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Test-Apocalypse>
-
-=item * CPANTS Kwalitee
-
-L<http://cpants.perl.org/dist/overview/Test-Apocalypse>
-
-=item * CPAN Testers Results
-
-L<http://cpantesters.org/distro/T/Test-Apocalypse.html>
-
-=item * CPAN Testers Matrix
-
-L<http://matrix.cpantesters.org/?dist=Test-Apocalypse>
-
-=item * Git Source Code Repository
-
-This code is currently hosted on github.com under the account "apocalypse". Please feel free to browse it
-and pull from it, or whatever. If you want to contribute patches, please send me a diff or prod me to pull
-from your repository :)
-
-L<http://github.com/apocalypse/perl-test-apocalypse>
-
-=back
-
-=head2 Bugs
-
-Please report any bugs or feature requests to C<bug-test-apocalypse at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Test-Apocalypse>.  I will be
-notified, and then you'll automatically be notified of progress on your bug as I make changes.
-
-=head1 AUTHOR
-
-Apocalypse E<lt>apocal@cpan.orgE<gt>
+=head1 ACKNOWLEDGEMENTS
 
 Thanks to jawnsy@cpan.org for the prodding and help in getting this package ready to be bundled into debian!
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 2010 by Apocalypse
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-The full text of the license can be found in the LICENSE file included with this module.
 
 =cut

@@ -1,22 +1,12 @@
-# Declare our package
 package Test::Apocalypse::PPPort;
-use strict; use warnings;
 
-# Initialize our version
-use vars qw( $VERSION );
-$VERSION = '0.11';
+# ABSTRACT: Plugin to test for Devel::PPPort warnings
 
 use Test::More;
 
-# RELEASE test only!
-sub _do_automated { 0 }
+sub _is_release { 1 }
 
-sub _load_prereqs {
-	return (
-		'version'	=> '0.77',	# TODO why do we need this?
-		'Devel::PPPort'	=> '3.19',
-	);
-}
+use Devel::PPPort 3.19;
 
 sub do_test {
 	plan tests => 2;
@@ -84,41 +74,16 @@ sub do_test {
 }
 
 1;
-__END__
+
+=pod
+
+=for Pod::Coverage do_test
 
 =for stopwords ppport
 
-=head1 NAME
-
-Test::Apocalypse::PPPort - Plugin to test for Devel::PPPort warnings
-
-=head1 SYNOPSIS
-
-	die "Don't use this module directly. Please use Test::Apocalypse instead.";
-
 =head1 DESCRIPTION
 
-Plugin to test for Devel::PPPort warnings. It automatically updates your bundled ppport.h file to the latest provided by L<Devel::PPPort>!
-
-=head2 do_test()
-
-The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
-
-=head1 SEE ALSO
-
-L<Test::Apocalypse>
-
-L<Devel::PPPort>
-
-=head1 AUTHOR
-
-Apocalypse E<lt>apocal@cpan.orgE<gt>
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 2010 by Apocalypse
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+Plugin to test for L<Devel::PPPort> warnings. It automatically updates your bundled F<ppport.h> file to the latest provided by L<Devel::PPPort>!
+Also, it will strip the F<ppport.h> file to make it smaller.
 
 =cut

@@ -1,23 +1,14 @@
-# Declare our package
 package Test::Apocalypse::Pod_Spelling;
-use strict; use warnings;
 
-# Initialize our version
-use vars qw( $VERSION );
-$VERSION = '0.11';
+# ABSTRACT: Plugin for Test::Spelling
 
 use Test::More;
 
-# RELEASE test only!
-sub _do_automated { 0 }
+sub _is_release { 1 }
 
-sub _load_prereqs {
-	return (
-		'Test::Spelling'	=> '0.11',
-		'File::Spec'		=> '3.31',
-		'File::Which'		=> '1.09',
-	);
-}
+use Test::Spelling 0.11;
+use File::Spec 3.31;
+use File::Which 1.09;
 
 sub do_test {
 	# Thanks to CPANTESTERS, not everyone have "spell" installed...
@@ -50,43 +41,17 @@ sub do_test {
 }
 
 1;
-__END__
+
+=pod
+
+=for Pod::Coverage do_test
 
 =for stopwords spellchecker stopword stopwords pm
 
-=head1 NAME
-
-Test::Apocalypse::Pod_Spelling - Plugin for Test::Spelling
-
-=head1 SYNOPSIS
-
-	die "Don't use this module directly. Please use Test::Apocalypse instead.";
-
 =head1 DESCRIPTION
 
-Encapsulates Test::Spelling functionality. We also add each filename as a stopword, to reduce "noise" from the spellchecker.
+Encapsulates L<Test::Spelling> functionality. We also add each filename as a stopword, to reduce "noise" from the spellchecker.
 
 If you need to add stopwords, please look at L<Pod::Spell> for ways to add it to each .pm file!
-
-=head2 do_test()
-
-The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
-
-=head1 SEE ALSO
-
-L<Test::Apocalypse>
-
-L<Test::Spelling>
-
-=head1 AUTHOR
-
-Apocalypse E<lt>apocal@cpan.orgE<gt>
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 2010 by Apocalypse
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
 
 =cut

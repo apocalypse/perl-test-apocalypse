@@ -1,23 +1,15 @@
-# Declare our package
 package Test::Apocalypse::Dependencies;
-use strict; use warnings;
 
-# Initialize our version
-use vars qw( $VERSION );
-$VERSION = '0.11';
+# ABSTRACT: Plugin to check for metadata dependencies
 
 use Test::More;
 
-sub _load_prereqs {
-	return (
-		'File::Slurp'		=> '9999.13',
-		'YAML::Any'		=> '0.72',
-		'JSON::Any'		=> '1.25',
-		'File::Find::Rule'	=> '0.32',
-		'Perl::PrereqScanner'	=> '1.000',
-		'Test::Deep'		=> '0.108',
-	);
-}
+use File::Slurp 9999.13;
+use YAML::Any 0.72;
+use JSON::Any 1.25;
+use File::Find::Rule 0.32;
+use Perl::PrereqScanner 1.000;
+use Test::Deep 0.108;
 
 sub do_test {
 	# load the metadata
@@ -40,7 +32,6 @@ sub do_test {
 	# TODO should we use Perl::MinimumVersion to scan for perl ver to sanity check?
 	delete $runtime_req->{'perl'} if exists $runtime_req->{'perl'};
 	delete $test_req->{'perl'} if defined $test_req and exists $test_req->{'perl'};
-
 
 	# Okay, scan the files
 	my $req_runtime = Version::Requirements->new;
@@ -70,39 +61,15 @@ sub do_test {
 }
 
 1;
-__END__
+
+=pod
+
+=for Pod::Coverage do_test
 
 =for stopwords metadata
-
-=head1 NAME
-
-Test::Apocalypse::Dependencies - Plugin to check for metadata dependencies
-
-=head1 SYNOPSIS
-
-	die "Don't use this module directly. Please use Test::Apocalypse instead.";
 
 =head1 DESCRIPTION
 
 Loads the metadata and uses L<Perl::PrereqScanner> to look for dependencies and compares the lists.
-
-=head2 do_test()
-
-The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
-
-=head1 SEE ALSO
-
-L<Test::Apocalypse>
-
-=head1 AUTHOR
-
-Apocalypse E<lt>apocal@cpan.orgE<gt>
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 2010 by Apocalypse
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
 
 =cut

@@ -1,25 +1,16 @@
-# Declare our package
 package Test::Apocalypse::OutdatedPrereqs;
-use strict; use warnings;
 
-# Initialize our version
-use vars qw( $VERSION );
-$VERSION = '0.11';
+# ABSTRACT: Plugin to detect outdated prereqs
 
 use Test::More;
 
-# RELEASE test only!
-sub _do_automated { 0 }
+sub _is_release { 1 }
 
-sub _load_prereqs {
-	return (
-		'YAML'			=> '0.70',
-		'CPANPLUS::Configure'	=> '0.90',
-		'CPANPLUS::Backend'	=> '0.90',
-		'version'		=> '0.77',
-		'Module::CoreList'	=> '2.23',
-	);
-}
+use YAML 0.70;
+use CPANPLUS::Configure 0.90;
+use CPANPLUS::Backend 0.90;
+use version 0.77;
+use Module::CoreList 2.23;
 
 sub do_test {
 	# does META.yml exist?
@@ -163,39 +154,15 @@ sub _check_cpan {
 }
 
 1;
-__END__
+
+=pod
+
+=for Pod::Coverage do_test
 
 =for stopwords CPAN prereq prereqs
 
-=head1 NAME
-
-Test::Apocalypse::OutdatedPrereqs - Plugin to detect outdated prereqs
-
-=head1 SYNOPSIS
-
-	die "Don't use this module directly. Please use Test::Apocalypse instead.";
-
 =head1 DESCRIPTION
 
-This plugin detects outdated prereqs in F<META.yml> specified relative to CPAN.
-
-=head2 do_test()
-
-The main entry point for this plugin. Automatically called by L<Test::Apocalypse>, you don't need to know anything more :)
-
-=head1 SEE ALSO
-
-L<Test::Apocalypse>
-
-=head1 AUTHOR
-
-Apocalypse E<lt>apocal@cpan.orgE<gt>
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 2010 by Apocalypse
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+This plugin detects outdated prereqs in F<META.yml> specified relative to CPAN. It uses L<CPANPLUS> as the backend.
 
 =cut
