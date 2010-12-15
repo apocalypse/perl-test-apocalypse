@@ -2,10 +2,10 @@ package Test::Apocalypse::Pod_Coverage;
 
 # ABSTRACT: Plugin for Test::Pod::Coverage
 
-sub _is_release { 1 }
-
 use Test::Pod::Coverage 1.08;
 use Pod::Coverage::TrustPod 0.092830;
+
+sub _is_release { 1 }
 
 sub do_test {
 	all_pod_coverage_ok( {

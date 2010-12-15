@@ -3,10 +3,9 @@ package Test::Apocalypse::PPPort;
 # ABSTRACT: Plugin to test for Devel::PPPort warnings
 
 use Test::More;
+use Devel::PPPort 3.19;
 
 sub _is_release { 1 }
-
-use Devel::PPPort 3.19;
 
 sub do_test {
 	plan tests => 2;

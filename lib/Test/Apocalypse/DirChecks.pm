@@ -3,7 +3,6 @@ package Test::Apocalypse::DirChecks;
 # ABSTRACT: Plugin for Test::Dir
 
 use Test::More;
-
 use Test::Dir 1.006;
 
 sub do_test {

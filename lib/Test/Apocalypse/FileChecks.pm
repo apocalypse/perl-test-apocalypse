@@ -3,7 +3,6 @@ package Test::Apocalypse::FileChecks;
 # ABSTRACT: Plugin to test for file sanity
 
 use Test::More;
-
 use File::Find::Rule 0.32;
 use Test::File 1.29;
 

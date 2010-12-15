@@ -3,7 +3,6 @@ package Test::Apocalypse::PerlMetrics;
 # ABSTRACT: Plugin for Perl::Metrics::Simple
 
 use Test::More;
-
 use Perl::Metrics::Simple 0.13;
 
 sub do_test {

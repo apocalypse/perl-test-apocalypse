@@ -3,7 +3,6 @@ package Test::Apocalypse::Script;
 # ABSTRACT: Plugin for Test::Script
 
 use Test::More;
-
 use Test::Script 1.07;
 use File::Find::Rule 0.32;
 

@@ -3,7 +3,6 @@ package Test::Apocalypse::JSONMeta;
 # ABSTRACT: Plugin for Test::JSON::Meta
 
 use Test::More;
-
 use Test::JSON::Meta 0.04;
 
 sub do_test {

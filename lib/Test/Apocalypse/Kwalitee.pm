@@ -3,11 +3,10 @@ package Test::Apocalypse::Kwalitee;
 # ABSTRACT: Plugin for Test::Kwalitee
 
 use Test::More;
-
-sub _is_release { 1 }
-
 use Module::CPANTS::Analyse 0.85;
 use version 0.77;
+
+sub _is_release { 1 }
 
 sub do_test {
 	## no critic ( ProhibitAccessOfPrivateData )

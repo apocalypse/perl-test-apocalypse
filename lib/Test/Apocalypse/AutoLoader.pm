@@ -3,7 +3,6 @@ package Test::Apocalypse::AutoLoader;
 # ABSTRACT: Plugin for Test::AutoLoader
 
 use Test::More;
-
 use Test::AutoLoader 0.03;
 use YAML 0.70;
 

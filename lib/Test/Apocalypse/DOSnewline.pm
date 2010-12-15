@@ -3,10 +3,9 @@ package Test::Apocalypse::DOSnewline;
 # ABSTRACT: Plugin to detect presence of DOS newlines
 
 use Test::More;
+use File::Find::Rule 0.32;
 
 sub _is_release { 1 }
-
-use File::Find::Rule 0.32;
 
 sub do_test {
 	plan tests => 1;

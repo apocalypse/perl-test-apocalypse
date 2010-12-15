@@ -3,12 +3,11 @@ package Test::Apocalypse::Pod_Spelling;
 # ABSTRACT: Plugin for Test::Spelling
 
 use Test::More;
-
-sub _is_release { 1 }
-
 use Test::Spelling 0.11;
 use File::Spec 3.31;
 use File::Which 1.09;
+
+sub _is_release { 1 }
 
 sub do_test {
 	# Thanks to CPANTESTERS, not everyone have "spell" installed...

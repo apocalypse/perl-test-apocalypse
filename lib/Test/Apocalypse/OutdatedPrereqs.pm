@@ -3,14 +3,15 @@ package Test::Apocalypse::OutdatedPrereqs;
 # ABSTRACT: Plugin to detect outdated prereqs
 
 use Test::More;
-
-sub _is_release { 1 }
-
 use YAML 0.70;
+use CPANPLUS 0.90;
 use CPANPLUS::Configure;
-use CPANPLUS::Backend; # TODO I want 0.90 but it doesn't specify a ver?
+use CPANPLUS::Backend;
 use version 0.77;
 use Module::CoreList 2.23;
+
+sub _is_release { 1 }
+sub _is_todo { 1 }
 
 sub do_test {
 	# does META.yml exist?
@@ -90,14 +91,10 @@ sub _load_yml {
 		}
 	}
 
-	TODO: {
-		local $TODO = $TODO = "This is an 'informational' test and shouldn't FAIL";
-
-		# analyze every one of them!
-		plan tests => scalar keys %$data;
-		foreach my $prereq ( keys %$data ) {
-			_check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
-		}
+	# analyze every one of them!
+	plan tests => scalar keys %$data;
+	foreach my $prereq ( keys %$data ) {
+		_check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
 	}
 
 	return;

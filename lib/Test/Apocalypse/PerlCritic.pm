@@ -2,16 +2,12 @@ package Test::Apocalypse::PerlCritic;
 
 # ABSTRACT: Plugin for Test::Perl::Critic
 
-sub _is_release { 1 }
-
 use Test::Perl::Critic 1.02;
 
-sub do_test {
-	TODO: {
-		local $TODO = $TODO = "This is an 'informational' test and shouldn't FAIL";
+sub _is_release { 1 }
 
-		all_critic_ok();
-	}
+sub do_test {
+	all_critic_ok();
 
 	return;
 }

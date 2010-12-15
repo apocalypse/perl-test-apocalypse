@@ -3,10 +3,9 @@ package Test::Apocalypse::Prereq_Build;
 # ABSTRACT: Plugin for Test::Prereq::Build
 
 use Test::More;
+use Test::Prereq::Build 1.037;
 
 sub _is_release { 1 }
-
-use Test::Prereq::Build 1.037;
 
 sub do_test {
 	if ( not $ENV{PERL_TEST_PREREQ} ) {

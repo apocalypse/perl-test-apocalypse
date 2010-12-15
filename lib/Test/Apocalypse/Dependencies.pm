@@ -3,7 +3,6 @@ package Test::Apocalypse::Dependencies;
 # ABSTRACT: Plugin to check for metadata dependencies
 
 use Test::More;
-
 use File::Slurp 9999.13;
 use YAML::Any 0.72;
 use JSON::Any 1.25;
