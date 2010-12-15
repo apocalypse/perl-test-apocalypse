@@ -49,7 +49,7 @@ sub do_test {
 
 =for Pod::Coverage do_test
 
-=for :stopwords spellchecker stopword stopwords pm
+=for stopwords spellchecker stopword stopwords pm
 
 =head1 DESCRIPTION
 
