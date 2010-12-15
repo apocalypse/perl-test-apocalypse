@@ -5,6 +5,8 @@ Revision history for Perl extension Test::Apocalypse
 	Converted to Dist::Zilla for the release process!
 	Tweaked the internals to cleanup automated issues
 	Changed some plugins so they execute tests as TODO, to not cause spurious FAILs
+	Replaced Test::Dependencies with homebrew solution utilizing Perl::PrereqScanner
+	Removed Test::Module::Used plugin ( see above )
 
 0.11
 
