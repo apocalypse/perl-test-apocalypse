@@ -90,10 +90,14 @@ sub _load_yml {
 		}
 	}
 
-	# analyze every one of them!
-	plan tests => scalar keys %$data;
-	foreach my $prereq ( keys %$data ) {
-		_check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
+	TODO: {
+		local $TODO = $TODO = "This is an 'informational' test and shouldn't FAIL";
+
+		# analyze every one of them!
+		plan tests => scalar keys %$data;
+		foreach my $prereq ( keys %$data ) {
+			_check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
+		}
 	}
 
 	return;
