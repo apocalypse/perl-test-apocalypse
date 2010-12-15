@@ -94,7 +94,10 @@ sub _load_yml {
 	# analyze every one of them!
 	plan tests => scalar keys %$data;
 	foreach my $prereq ( keys %$data ) {
-		_check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
+		TODO: {
+			local $TODO = "OutdatedPrereqs";
+			_check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
+		}
 	}
 
 	return;
@@ -160,7 +163,7 @@ sub _check_cpan {
 
 =for Pod::Coverage do_test
 
-=for stopwords CPAN prereq prereqs
+=for stopwords CPAN prereq prereqs backend
 
 =head1 DESCRIPTION
 

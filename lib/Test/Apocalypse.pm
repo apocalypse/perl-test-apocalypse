@@ -150,9 +150,20 @@ sub is_apocalypse_here {
 			goto &Test::Builder::new;
 		};
 
+		# Transform fail TODO tests to diag()
+		my $oldok = \&Test::Builder::ok;
+		my $newok = sub {
+			my( $self, $test, $name ) = @_;
+			if ( ! $test and $t->can( '_is_todo' ) and $t->_is_todo ) {
+				diag( "TODO($plugin): $name" );
+			}
+			goto &$oldok;
+		};
+
 		no warnings 'redefine'; no strict 'refs';	## no critic ( ProhibitNoStrict )
 		local *{'Test::Builder::plan'} = $newplan;
 		local *{'Test::Builder::create'} = $newcreate;
+		local *{'Test::Builder::ok'} = $newok;
 
 		# run it!
 		use warnings; use strict;
@@ -174,7 +185,7 @@ sub is_apocalypse_here {
 
 =pod
 
-=for stopwords APOCAL AUTHORs al backend debian distro distros dists env hackish plugins testsuite yml pm yay unicode blog precompiled
+=for stopwords apocal CPAN AUTHORs al backend debian distro distros dists env hackish plugins testsuite yml pm yay unicode blog precompiled
 
 =head1 SYNOPSIS
 

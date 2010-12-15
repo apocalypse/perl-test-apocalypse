@@ -8,6 +8,7 @@ use File::Spec 3.31;
 use File::Which 1.09;
 
 sub _is_release { 1 }
+sub _is_todo { 1 }
 
 sub do_test {
 	# Thanks to CPANTESTERS, not everyone have "spell" installed...
@@ -34,7 +35,10 @@ sub do_test {
 	}
 
 	# Run the test!
-	all_pod_files_spelling_ok();
+	TODO: {
+		local $TODO = "Pod_Spelling";
+		all_pod_files_spelling_ok();
+	}
 
 	return;
 }
@@ -45,7 +49,7 @@ sub do_test {
 
 =for Pod::Coverage do_test
 
-=for stopwords spellchecker stopword stopwords pm
+=for :stopwords spellchecker stopword stopwords pm
 
 =head1 DESCRIPTION
 

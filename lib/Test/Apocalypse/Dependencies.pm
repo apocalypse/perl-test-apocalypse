@@ -32,17 +32,33 @@ sub do_test {
 	delete $runtime_req->{'perl'} if exists $runtime_req->{'perl'};
 	delete $test_req->{'perl'} if defined $test_req and exists $test_req->{'perl'};
 
+	# Convert version objects to regular
+	$runtime_req->{ $_ } =~ s/^v// for keys %$runtime_req;
+	$test_req->{ $_ } =~ s/^v// for keys %$test_req;
+
 	# Okay, scan the files
-	my $req_runtime = Version::Requirements->new;
-	my $req_test = Version::Requirements->new;
+	my $found_runtime = Version::Requirements->new;
+	my $found_test = Version::Requirements->new;
 	foreach my $file ( File::Find::Rule->file()->name( qr/\.pm$/ )->in( 'lib' ) ) {
-		$req_runtime->add_requirements( Perl::PrereqScanner->new->scan_file( $file ) );
+		$found_runtime->add_requirements( Perl::PrereqScanner->new->scan_file( $file ) );
 	}
 
 	# scan the test dir only if we have test metadata
 	if ( defined $test_req ) {
 		foreach my $file ( File::Find::Rule->file()->name( qr/\.(pm|t|pl)$/ )->in( 't' ) ) {
-			$req_test->add_requirements( Perl::PrereqScanner->new->scan_file( $file ) );
+			$found_test->add_requirements( Perl::PrereqScanner->new->scan_file( $file ) );
+		}
+	}
+
+	# Okay, the spec says that anything already in the runtime req shouldn't be listed in test req
+	# That means we need to "fake" the prereq and make sure the comparison is OK
+	if ( defined $test_req ) {
+		my %temp = %{ $found_test->as_string_hash };
+		foreach my $mod ( keys %temp ) {
+			if ( ! exists $test_req->{ $mod } and exists $runtime_req->{ $mod } ) {
+				# don't copy runtime_req's version because it might be different and cmp_deeply will complain!
+				$test_req->{ $mod } = $temp{ $mod };
+			}
 		}
 	}
 
@@ -53,8 +69,8 @@ sub do_test {
 		plan tests => 1;
 	}
 
-	cmp_deeply( $req_runtime->as_string_hash, $runtime_req, "Runtime requires" );
-	cmp_deeply( $req_test->as_string_hash, $test_req, "Test requires" ) if defined $test_req;
+	cmp_deeply( $found_runtime->as_string_hash, $runtime_req, "Runtime requires" );
+	cmp_deeply( $found_test->as_string_hash, $test_req, "Test requires" ) if defined $test_req;
 
 	return;
 }
