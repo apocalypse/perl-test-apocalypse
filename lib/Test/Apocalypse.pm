@@ -186,6 +186,7 @@ sub is_apocalypse_here {
 =pod
 
 =for stopwords apocal CPAN AUTHORs al backend debian distro distros dists env hackish plugins testsuite yml pm yay unicode blog precompiled
+=for stopwords ap cyclomatic cal dist homebrew imo internet perltidy prefs prereq testrun
 
 =head1 SYNOPSIS
 
