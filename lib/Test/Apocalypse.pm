@@ -280,6 +280,11 @@ Automatically exports the "is_apocalypse_here" sub.
 
 =over 4
 
+=item * CPAN RT check?
+
+I want a test that checks the CPAN RT for any tickets, and display it when running the test. That would be helpful to remind me to be punctual
+with my tickets, ha!
+
 =item * Document the way we do plugins so others can add to this testsuite :)
 
 =item * POD standards check
