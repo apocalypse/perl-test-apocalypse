@@ -346,6 +346,10 @@ It would be nice to signal INTERNET_TESTING=0 or something zany like that so thi
 	<@Alias> Setting a proxy ENVthat is illegal etc
 	<Apocalypse> ah good thinking, I'll read up on the fine points of LWP env vars and try to screw it up
 
+=item * Test::CPAN::Changes
+
+Use the newfangled CPAN Changes spec :)
+
 =back
 
 =head2 Modules that I considered but decided against using
