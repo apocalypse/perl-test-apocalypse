@@ -61,100 +61,98 @@ sub _default_perlcriticrc {
 # editor/style stuff that is too strict
 # ---------------------------------------------
 
+[-Bangs::ProhibitCommentedOutCode]
+[-Bangs::ProhibitFlagComments]
+[-Bangs::ProhibitVagueNames]
+[-CodeLayout::ProhibitHardTabs]
+[-CodeLayout::ProhibitParensWithBuiltins]
 [-CodeLayout::RequireTidyCode]
 [-CodeLayout::RequireUseUTF8]
+[-Documentation::RequirePodLinksIncludeText]
+[-Documentation::RequirePODUseEncodingUTF8]
 [-Editor::RequireEmacsFileVariables]
 [-Miscellanea::RequireRcsKeywords]
-[-Tics::ProhibitLongLines]
-[-Subroutines::ProhibitExcessComplexity]
-[-Bangs::ProhibitFlagComments]
-[-Bangs::ProhibitCommentedOutCode]
-[-Documentation::RequirePODUseEncodingUTF8]
-[-Documentation::RequirePodLinksIncludeText]
-[-CodeLayout::ProhibitHardTabs]
-[-ValuesAndExpressions::ProhibitNoisyQuotes]
 [-NamingConventions::Capitalization]
 [-NamingConventions::ProhibitMixedCaseVars]
-[-Bangs::ProhibitVagueNames]
-[-CodeLayout::ProhibitParensWithBuiltins]
+[-Subroutines::ProhibitExcessComplexity]
+[-Tics::ProhibitLongLines]
 [-ValuesAndExpressions::ProhibitMagicNumbers]
+[-ValuesAndExpressions::ProhibitNoisyQuotes]
+
 
 # ---------------------------------------------
 # miscellaneous policies that is just plain annoying
 # ---------------------------------------------
 
-[-ErrorHandling::RequireCarping]
-[-ErrorHandling::RequireUseOfExceptions]
-[-ErrorHandling::RequireCheckingReturnValueOfEval]
-[-Modules::RequireExplicitPackage]
-[-Modules::ProhibitAutomaticExportation]
-[-Subroutines::ProhibitCallsToUndeclaredSubs]
-[-ValuesAndExpressions::RequireInterpolationOfMetachars]
-[-ValuesAndExpressions::ProhibitInterpolationOfLiterals]
 [-BuiltinFunctions::ProhibitStringyEval]
-[-TestingAndDebugging::ProhibitNoWarnings]
-[-ValuesAndExpressions::ProhibitFiletest_f]
-[-Variables::ProhibitPunctuationVars]
-[-References::ProhibitDoubleSigils]
-[-RegularExpressions::RequireExtendedFormatting]
-[-RegularExpressions::ProhibitEscapedMetacharacters]
-[-RegularExpressions::RequireLineBoundaryMatching]
-[-RegularExpressions::RequireDotMatchAnything]
-[-Subroutines::RequireArgUnpacking]
-[-ControlStructures::ProhibitPostfixControls]
-[-Variables::ProhibitLocalVars]
-[-Subroutines::ProhibitCallsToUnexportedSubs]
-[-ValuesAndExpressions::ProhibitAccessOfPrivateData]
-[-Compatibility::ProhibitThreeArgumentOpen]
-[-InputOutput::RequireCheckedSyscalls]
-[-InputOutput::RequireBracedFileHandleWithPrint]
-[-Lax::ProhibitEmptyQuotes::ExceptAsFallback]
-[-ValuesAndExpressions::ProhibitEmptyQuotes]
-[-Subroutines::ProhibitUnusedPrivateSubroutines]
-[-Subroutines::RequireFinalReturn]
-[-Subroutines::ProtectPrivateSubs]
-[-Variables::RequireInitializationForLocalVars]
-[-TestingAndDebugging::ProhibitNoStrict]
-[-RegularExpressions::ProhibitFixedStringMatches]
-[-Lax::ProhibitStringyEval::ExceptForRequire]
 [-BuiltinFunctions::ProhibitStringySplit]
+[-Compatibility::ProhibitThreeArgumentOpen]
+[-ControlStructures::ProhibitPostfixControls]
+[-ErrorHandling::RequireCarping]
+[-ErrorHandling::RequireCheckingReturnValueOfEval]
+[-ErrorHandling::RequireUseOfExceptions]
+[-InputOutput::RequireBracedFileHandleWithPrint]
+[-InputOutput::RequireCheckedSyscalls]
+[-Lax::ProhibitEmptyQuotes::ExceptAsFallback]
+[-Lax::ProhibitStringyEval::ExceptForRequire]
+[-Modules::ProhibitAutomaticExportation]
+[-Modules::RequireExplicitPackage]
+[-References::ProhibitDoubleSigils]
+[-RegularExpressions::ProhibitEscapedMetacharacters]
+[-RegularExpressions::ProhibitFixedStringMatches]
+[-RegularExpressions::RequireDotMatchAnything]
+[-RegularExpressions::RequireExtendedFormatting]
+[-RegularExpressions::RequireLineBoundaryMatching]
+[-Subroutines::ProhibitCallsToUndeclaredSubs]
+[-Subroutines::ProhibitCallsToUnexportedSubs]
+[-Subroutines::ProhibitUnusedPrivateSubroutines]
+[-Subroutines::ProtectPrivateSubs]
+[-Subroutines::RequireArgUnpacking]
+[-Subroutines::RequireFinalReturn]
+[-TestingAndDebugging::ProhibitNoStrict]
+[-TestingAndDebugging::ProhibitNoWarnings]
+[-ValuesAndExpressions::ProhibitAccessOfPrivateData]
+[-ValuesAndExpressions::ProhibitEmptyQuotes]
+[-ValuesAndExpressions::ProhibitFiletest_f]
+[-ValuesAndExpressions::ProhibitInterpolationOfLiterals]
+[-ValuesAndExpressions::RequireInterpolationOfMetachars]
+[-Variables::ProhibitLocalVars]
+[-Variables::ProhibitPunctuationVars]
+[-Variables::RequireInitializationForLocalVars]
 
 # ---------------------------------------------
 # TODO probably sane policies but need to do a lot of work to fix them...
 # ---------------------------------------------
 
-[-Tics::ProhibitUseBase]
-# what is the preferred workaround?
-
 [-CodeLayout::ProhibitHashBarewords]
 # sometimes we're lazy!
-
-[-Documentation::RequirePodSections]
-# what is the "default" list? Obviously not PBP because it requires way too much sections!
 
 [-Compatibility::PodMinimumVersion]
 # there should be a Test::Apocalypse check for that!
 
-[-RegularExpressions::ProhibitUnusualDelimiters]
-# sometimes we like other delims...
-
 [-ControlStructures::ProhibitUnlessBlocks]
 # it's so easy to be lazy!
+
+[-Documentation::RequirePodSections]
+# what is the "default" list? Obviously not PBP because it requires way too much sections!
 
 [-Miscellanea::ProhibitUselessNoCritic]
 # I don't want to go through my old code and clean them up... laziness again!
 
-[-ValuesAndExpressions::ProhibitMixedBooleanOperators]
-# sometimes it feels "natural" to code in that style...
-
 [-Modules::RequireExplicitInclusion]
 # while this makes sense sometimes it's a drag to list the modules that you *know* a prereq will pull in...
 
+[-RegularExpressions::ProhibitUnusualDelimiters]
+# sometimes we like other delims...
+
+[-Tics::ProhibitUseBase]
+# what is the preferred workaround?
+
+[-ValuesAndExpressions::ProhibitMixedBooleanOperators]
+# sometimes it feels "natural" to code in that style...
+
 [-ValuesAndExpressions::ProhibitVersionStrings]
 # is this really a problem? If so, it's still a lot of work to go through code and figure out the proper string...
-
-[-InputOutput::ProhibitBacktickOperators]
-# sometimes it's handy to use it instead of a full-blown IPC module...
 
 EOF
 
