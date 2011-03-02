@@ -1,9 +1,9 @@
-package Test::Apocalypse::JSONMeta;
+package Test::Apocalypse::CPANMeta_JSON;
 
-# ABSTRACT: Plugin for Test::JSON::Meta
+# ABSTRACT: Plugin for Test::CPAN::Meta
 
 use Test::More;
-use Test::JSON::Meta 0.04;
+use Test::CPAN::Meta::JSON 0.10;
 
 sub do_test {
 	# We need to make sure there's actually a JSON file in the dist!
@@ -24,6 +24,6 @@ sub do_test {
 
 =head1 DESCRIPTION
 
-Encapsulates L<Test::JSON::Meta> functionality.
+Encapsulates L<Test::CPAN::Meta::JSON> functionality.
 
 =cut

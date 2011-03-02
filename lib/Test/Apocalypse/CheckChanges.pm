@@ -5,12 +5,7 @@ package Test::Apocalypse::CheckChanges;
 # TODO oh please don't set plan in import!
 #use Test::CheckChanges 0.08;
 
-# TODO pester upstream about this hunk of code:
-#END {
-#    if (!defined $test->has_plan()) {
-#       $test->done_testing(1);
-#    }
-#}
+# TODO wait for this bug to be fixed: RT#63914
 
 sub do_test {
 	require Test::CheckChanges;

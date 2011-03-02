@@ -7,9 +7,6 @@ use Test::Spelling 0.11;
 use File::Spec 3.31;
 use File::Which 1.09;
 
-sub _is_release { 1 }
-sub _is_todo { 1 }
-
 sub do_test {
 	# Thanks to CPANTESTERS, not everyone have "spell" installed...
 	# FIXME pester Test::Spelling author to be more smarter about this failure mode!

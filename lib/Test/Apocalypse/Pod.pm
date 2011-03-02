@@ -4,8 +4,6 @@ package Test::Apocalypse::Pod;
 
 use Test::Pod 1.41;
 
-sub _is_release { 1 }
-
 sub do_test {
 	all_pod_files_ok();
 

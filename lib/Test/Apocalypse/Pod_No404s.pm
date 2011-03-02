@@ -2,12 +2,14 @@ package Test::Apocalypse::Pod_No404s;
 
 # ABSTRACT: Plugin for Test::Pod::No404s
 
+use Test::More;
 use Test::Pod::No404s 0.01;
 
-sub _is_release { 1 }
-
 sub do_test {
-	all_pod_files_ok();
+	TODO: {
+		local $TODO = "Pod_No404s";
+		all_pod_files_ok();
+	}
 
 	return;
 }

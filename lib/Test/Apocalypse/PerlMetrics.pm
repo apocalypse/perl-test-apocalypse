@@ -11,7 +11,6 @@ sub do_test {
 	my $analysis = $analzyer->analyze_files( 'lib/' );
 	my $numdisplay = 10;
 
-	## no critic ( ProhibitAccessOfPrivateData )
 	if ( ok( $analysis->file_count(), 'Analyzed at least one file' ) ) {
 		# only print extra stuff if necessary
 		if ( $ENV{TEST_VERBOSE} ) {
@@ -31,7 +30,7 @@ sub do_test {
 			diag( ' Median: lines(' . $summary_stats->{sub_length}->{median} . ') McCabe(' . $summary_stats->{sub_complexity}->{median} . ')' );
 
 			diag( "-- Top$numdisplay subroutines by McCabe Complexity --" );
-			my @sorted_subs = sort { $b->{'mccabe_complexity'} <=> $a->{'mccabe_complexity'} } @{ $analysis->subs };
+			my @sorted_subs = reverse sort { $a->{'mccabe_complexity'} <=> $b->{'mccabe_complexity'} } @{ $analysis->subs };
 			foreach my $i ( 0 .. ( $numdisplay - 1 ) ) {
 				last if ! defined $sorted_subs[$i];
 
@@ -42,7 +41,7 @@ sub do_test {
 			}
 
 			diag( "-- Top$numdisplay subroutines by lines --" );
-			@sorted_subs = sort { $b->{'lines'} <=> $a->{'lines'} } @sorted_subs;
+			@sorted_subs = reverse sort { $a->{'lines'} <=> $b->{'lines'} } @sorted_subs;
 			foreach my $i ( 0 .. ( $numdisplay - 1 ) ) {
 				last if ! defined $sorted_subs[$i];
 

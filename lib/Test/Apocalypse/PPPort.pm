@@ -4,8 +4,7 @@ package Test::Apocalypse::PPPort;
 
 use Test::More;
 use Devel::PPPort 3.19;
-
-sub _is_release { 1 }
+use Capture::Tiny 0.10 qw( capture_merged );
 
 sub do_test {
 	plan tests => 2;
@@ -13,58 +12,76 @@ sub do_test {
 	# do we have an existing ppport.h file?
 	my $haveppport = 0;
 	my $needstrip = 0;
+	my $ppp = 'ppport.h';
 	SKIP: {
-		if ( ! -f 'ppport.h' ) {
+		if ( ! -f $ppp ) {
 			# generate our own ppport.h file
-			Devel::PPPort::WriteFile( 'ppport.h' );
+			Devel::PPPort::WriteFile( $ppp );
 
-			skip( 'Distro did not come with a ppport.h file', 1 );
+			skip( "Distro did not come with a $ppp file", 1 );
 		}
 
 		$haveppport++;
 
 		# was it already stripped or not?
-		my $oldver = `$^X ppport.h --version`;
-		if ( $oldver =~ /^This is ppport\.h ([\d\.]+)$/ ) {
-			fail( 'ppport.h file needs to be stripped' );
+		my $oldver = capture_merged { system( $^X, $ppp, '--version' ) };
+		if ( length $oldver ) {
+			if ( $oldver =~ /^This is ppport\.h ([\d\.]+)$/ms ) {
+				fail( "$ppp file needs to be stripped" );
+			} else {
+				$needstrip++;
+				pass( "$ppp file was already stripped" );
+			}
 		} else {
-			$needstrip++;
-			pass( 'ppport.h file was already stripped' );
+			die "Unable to run $ppp and get the output";
 		}
 
 		# remove it and create a new one so we have the latest one, always
-		unlink( 'ppport.h' ) or die "Unable to unlink 'ppport.h': $!";
-		Devel::PPPort::WriteFile( 'ppport.h' );
+		unlink( $ppp ) or die "Unable to unlink '$ppp': $!";
+		Devel::PPPort::WriteFile( $ppp );
 	}
 
 	# Then, we run it :)
-	my @result = `$^X ppport.h 2>&1`;
+	my $result = capture_merged { system( $^X, $ppp ) };
 
-	if ( scalar @result ) {
+	if ( length $result ) {
 		# Did we have any xs files?
-		if ( $result[0] =~ /^No input files given/ ) {
+		if ( $result =~ /^No input files given/m ) {
 			pass( 'No XS files detected' );
 		} else {
 			# is the last line saying "OK" ?
-			if ( $result[-1] =~ /^Looks good/ ) {
-				pass( 'ppport.h says you are good to go' );
+			if ( $result =~ /Looks good$/m ) {
+				# Did we get any warnings? Display them in case they're useful...
+				my @warns;
+				foreach my $l ( split( "\n", $result ) ) {
+					if ( $l =~ /^\*\*\*\s+WARNING:\s+/s ) {
+						push( @warns, $l );
+					}
+				}
+
+				if ( @warns ) {
+					pass( "$ppp says you are good to go with some warnings" );
+					diag( $_ ) for @warns;
+				} else {
+					pass( "$ppp says you are good to go" );
+				}
 			} else {
-				fail( 'ppport.h caught some errors' );
-				diag( @result );
+				fail( "$ppp caught some errors" );
+				diag( $result );
 			}
 		}
 	} else {
-		die 'Unable to run ppport.h and get the output';
+		die "Unable to run $ppp and get the output";
 	}
 
 	# remove our generated ppport.h file
 	if ( ! $haveppport ) {
-		unlink( 'ppport.h' ) or die "Unable to unlink 'ppport.h': $!";
+		unlink( $ppp ) or die "Unable to unlink '$ppp': $!";
 	} else {
 		if ( $needstrip ) {
-			my @result = `$^X ppport.h --strip 2>&1`;
-			if ( scalar @result ) {
-				die 'Unable to strip ppport.h file';
+			$result = capture_merged { system( $^X, $ppp, '--strip' ) };
+			if ( length $result ) {
+				die "Unable to strip $ppp file: $result";
 			}
 		}
 	}

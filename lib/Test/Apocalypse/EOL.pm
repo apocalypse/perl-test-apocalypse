@@ -4,8 +4,6 @@ package Test::Apocalypse::EOL;
 
 use Test::EOL 0.3;
 
-sub _is_release { 1 }
-
 sub do_test {
 	all_perl_files_ok();
 

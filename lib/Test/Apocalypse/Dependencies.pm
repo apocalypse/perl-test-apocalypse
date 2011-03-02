@@ -27,8 +27,7 @@ sub do_test {
 		die 'No META.(json|yml) found!';
 	}
 
-	# remove 'perl' dep
-	# TODO should we use Perl::MinimumVersion to scan for perl ver to sanity check?
+	# remove 'perl' dep - we check it in MinimumVersion anyway
 	delete $runtime_req->{'perl'} if exists $runtime_req->{'perl'};
 	delete $test_req->{'perl'} if defined $test_req and exists $test_req->{'perl'};
 

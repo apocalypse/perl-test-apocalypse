@@ -6,9 +6,6 @@ use Test::More;
 use Test::Pod::Coverage 1.08;
 use Pod::Coverage::TrustPod 0.092830;
 
-sub _is_release { 1 }
-sub _is_todo { 1 }
-
 sub do_test {
 	TODO: {
 		local $TODO = "Pod_Coverage";

@@ -10,9 +10,6 @@ use CPANPLUS::Backend;
 use version 0.77;
 use Module::CoreList 2.23;
 
-sub _is_release { 1 }
-sub _is_todo { 1 }
-
 sub do_test {
 	# does META.yml exist?
 	if ( -e 'META.yml' and -f _ ) {
@@ -46,7 +43,6 @@ sub _load_yml {
 	}
 
 	# massage the data
-	## no critic ( ProhibitAccessOfPrivateData )
 	$data = $data->{'requires'};
 	delete $data->{'perl'} if exists $data->{'perl'};
 
@@ -82,10 +78,10 @@ sub _load_yml {
 # 	Params::Check::_store_error('Key \'archive\' (/home/apoc/.cpanplus/01mailrc.txt.gz) is of ...', 1) called at /usr/share/perl/5.10/Params/Check.pm line 345
 # 	Params::Check::check('HASH(0x3ce9f50)', 'HASH(0x3cf7b08)') called at /usr/share/perl/5.10/Archive/Extract.pm line 227
 	{
-		my @warn;
-		local $SIG{'__WARN__'} = sub { push @warn, shift };
-		my $module = $cpanplus->parse_module( 'module' => 'Test::Apocalypse' );
-		if ( @warn ) {
+		my $warn_seen = 0;
+		local $SIG{'__WARN__'} = sub { $warn_seen = 1; return; };
+		my $module = $cpanplus->parse_module( 'module' => 'Test::More' );
+		if ( $warn_seen ) {
 			plan skip_all => "Unable to sanely use CPANPLUS, aborting!";
 			return;
 		}
@@ -93,9 +89,9 @@ sub _load_yml {
 
 	# analyze every one of them!
 	plan tests => scalar keys %$data;
-	foreach my $prereq ( keys %$data ) {
-		TODO: {
-			local $TODO = "OutdatedPrereqs";
+	TODO: {
+		local $TODO = "OutdatedPrereqs";
+		foreach my $prereq ( keys %$data ) {
 			_check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
 		}
 	}
@@ -125,7 +121,7 @@ sub _check_cpan {
 
 			# sort them by version, descending
 			s/[\s<>=!]+// for @versions;
-			@versions = sort { $b <=> $a }
+			@versions = reverse sort { $a <=> $b }
 				map { version->new( $_ ) } @versions;
 
 			# pick the highest version to use as comparison

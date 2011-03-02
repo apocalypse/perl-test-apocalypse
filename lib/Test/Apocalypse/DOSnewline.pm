@@ -5,8 +5,6 @@ package Test::Apocalypse::DOSnewline;
 use Test::More;
 use File::Find::Rule 0.32;
 
-sub _is_release { 1 }
-
 sub do_test {
 	plan tests => 1;
 

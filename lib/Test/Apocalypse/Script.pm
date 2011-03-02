@@ -13,8 +13,7 @@ sub do_test {
 
 	# Skip if no scripts
 	if ( ! scalar @files ) {
-		plan tests => 1;
-		pass( 'No script files found in the distribution' );
+		plan skip_all => 'No script files found in the distribution';
 	} else {
 		plan tests => scalar @files;
 		foreach my $f ( @files ) {

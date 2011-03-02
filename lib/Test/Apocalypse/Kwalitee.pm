@@ -6,12 +6,7 @@ use Test::More;
 use Module::CPANTS::Analyse 0.85;
 use version 0.77;
 
-sub _is_release { 1 }
-sub _is_todo { 1 }
-
 sub do_test {
-	## no critic ( ProhibitAccessOfPrivateData )
-
 	# the following code was copied/plagarized/transformed from Test::Kwalitee, thanks!
 	# The reason why I didn't just use that module is because it doesn't print the kwalitee or consider extra metrics...
 
@@ -22,14 +17,19 @@ sub do_test {
 		# [@Apocalyptic/TestRelease] Extracting /home/apoc/mygit/perl-pod-weaver-pluginbundle-apocalyptic/Pod-Weaver-PluginBundle-Apocalyptic-0.001.tar.gz to .build/MiNXla4CY7
 		$tarball = _get_tarball( '../../..' );
 		if ( ! defined $tarball ) {
-			plan tests => 1;
-			TODO: {
-				local $TODO = "Kwalitee";
-				fail( 'Distribution tarball not found, unable to run CPANTS Kwalitee tests!' );
-			}
+			plan skip_all => 'Distribution tarball not found, unable to run CPANTS Kwalitee tests!';
 			return;
 		}
 	}
+
+	_analyze( $tarball ) if defined $tarball;
+
+	return;
+}
+
+sub _analyze {
+	my $tarball = shift;
+
 	my $analyzer = Module::CPANTS::Analyse->new({
 		'dist'	=> $tarball,
 	});
@@ -115,7 +115,6 @@ sub _get_tarball {
 	}
 
 	# get the versions
-	## no critic ( ProhibitAccessOfPrivateData )
 	@dirlist = map { [ $_, $_ ] } @dirlist;
 	for ( @dirlist ) {
 		$_->[0] =~ s/^.*\-([^\-]+)(?:tar(?:\.gz|\.bz2)?|tgz|zip)$/$1/;
@@ -123,7 +122,7 @@ sub _get_tarball {
 	}
 
 	# sort by version
-	@dirlist = sort { $b->[0] <=> $a->[0] } @dirlist;
+	@dirlist = reverse sort { $a->[0] <=> $b->[0] } @dirlist;
 
 	return $path . '/' . $dirlist[0]->[1];
 }

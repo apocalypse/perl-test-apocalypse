@@ -10,7 +10,7 @@ use Module::Pluggable 3.9 search_path => [ __PACKAGE__ ];
 
 # auto-export the only sub we have
 use base qw( Exporter );
-our @EXPORT = qw( is_apocalypse_here ); ## no critic ( ProhibitAutomaticExportation )
+our @EXPORT = qw( is_apocalypse_here );
 
 sub is_apocalypse_here {
 	# should we even run those tests?
@@ -20,7 +20,7 @@ sub is_apocalypse_here {
 		plan 'no_plan';
 
 		# load our nifty "catch-all" tests
-		eval "use Test::NoWarnings";		## no critic ( ProhibitStringyEval )
+		eval "use Test::NoWarnings";
 	}
 
 	# The options hash
@@ -70,29 +70,9 @@ sub is_apocalypse_here {
 	);
 
 	# loop through our plugins ( in alphabetical order! )
-	foreach my $t ( sort { $a cmp $b } __PACKAGE__->plugins() ) {	## no critic ( RequireExplicitInclusion )
+	foreach my $t ( sort { $a cmp $b } __PACKAGE__->plugins() ) {
 		my $plugin = $t;
 		$plugin =~ s/^Test::Apocalypse:://;
-		# Load it, and look for errors
-		eval "use $t";
-		if ( $@ ) {
-			# TODO smarter error detection - missing module, bla bla
-			my $error = "Unable to load $plugin -> $@";
-
-			if ( $ENV{RELEASE_TESTING} ) {
-				die $error;
-			} else {
-				diag( $error );
-			}
-
-			next;
-		}
-
-		# Is this plugin disabled?
-		if ( $t->can( '_is_disabled' ) and $t->_is_disabled ) {
-			diag( "Skipping $plugin ( plugin is DISABLED )..." );
-			next;
-		}
 
 		# Do we want this test?
 		# PERL_APOCALYPSE=1 means run all tests, =0 means default behavior
@@ -114,9 +94,24 @@ sub is_apocalypse_here {
 			}
 		}
 
-		# Check for AUTOMATED_TESTING
-		if ( $ENV{AUTOMATED_TESTING} and ! $ENV{PERL_APOCALYPSE} and $t->can( '_is_release' ) and $t->_is_release ) {
-			diag( "Skipping $plugin ( for RELEASE_TESTING only )..." );
+		# Load it, and look for errors
+		eval "use $t";
+		if ( $@ ) {
+			# TODO smarter error detection - missing module, bla bla
+			my $error = "Unable to load $plugin -> $@";
+
+			if ( $ENV{RELEASE_TESTING} ) {
+				die $error;
+			} else {
+				diag( $error );
+			}
+
+			next;
+		}
+
+		# Is this plugin disabled?
+		if ( $t->can( '_is_disabled' ) and $t->_is_disabled ) {
+			diag( "Skipping $plugin ( plugin is DISABLED )..." );
 			next;
 		}
 
@@ -130,7 +125,7 @@ sub is_apocalypse_here {
 			if ( $cmd eq 'skip_all' ) {
 				$Plan = { $plugin => 1 };
 				SKIP: {
-					$self->skip( "skipping $plugin - $arg", 1 );
+					$self->skip( "$plugin - $arg", 1 );
 				}
 			} elsif ( $cmd eq 'tests' ) {
 				$Plan = { $plugin => $arg };
@@ -150,20 +145,9 @@ sub is_apocalypse_here {
 			goto &Test::Builder::new;
 		};
 
-		# Transform fail TODO tests to diag()
-		my $oldok = \&Test::Builder::ok;
-		my $newok = sub {
-			my( $self, $test, $name ) = @_;
-			if ( ! $test and $t->can( '_is_todo' ) and $t->_is_todo ) {
-				diag( "TODO($plugin): $name" );
-			}
-			goto &$oldok;
-		};
-
-		no warnings 'redefine'; no strict 'refs';	## no critic ( ProhibitNoStrict )
+		no warnings 'redefine'; no strict 'refs';
 		local *{'Test::Builder::plan'} = $newplan;
 		local *{'Test::Builder::create'} = $newcreate;
-		local *{'Test::Builder::ok'} = $newok;
 
 		# run it!
 		use warnings; use strict;

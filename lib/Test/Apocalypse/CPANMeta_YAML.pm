@@ -1,8 +1,8 @@
-package Test::Apocalypse::CPANMeta;
+package Test::Apocalypse::CPANMeta_YAML;
 
 # ABSTRACT: Plugin for Test::CPAN::Meta
 
-use Test::CPAN::Meta 0.18;
+use Test::CPAN::Meta::YAML 0.17;
 
 sub do_test {
 	meta_yaml_ok();
@@ -18,6 +18,6 @@ sub do_test {
 
 =head1 DESCRIPTION
 
-Encapsulates L<Test::CPAN::Meta> functionality.
+Encapsulates L<Test::CPAN::Meta::YAML> functionality.
 
 =cut

@@ -7,6 +7,9 @@ Revision history for Perl extension Test::Apocalypse
 	Changed some plugins so they execute tests as TODO, to not cause spurious FAILs
 	Replaced Test::Dependencies with homebrew solution utilizing Perl::PrereqScanner
 	Removed Test::Module::Used plugin ( see above )
+	Removed the Test::Prereq plugin because it never worked reliably and we already have a plugin for it ( see above )
+	Removed the Test::UseAllModules plugin because we have other plugins that do the same thing
+	Ported the META.(yml|json) tests to the new Test::CPAN::Meta infrastructure, thanks JAWNSY! ( RT#66215 )
 
 0.11
 
