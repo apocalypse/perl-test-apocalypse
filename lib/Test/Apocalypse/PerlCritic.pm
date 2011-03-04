@@ -9,24 +9,33 @@ use File::Spec 3.31;
 sub do_test {
 	# set default opts
 	require Perl::Critic::Utils::Constants;
-	my $rcfile = File::Spec->catfile( 't', 'perlcriticrc' );
-	my $default_rcfile; # did we generate a default?
 	my %opts = (
 		'-verbose' => 8, # sets "[%p] %m at line %l, column %c.  (Severity: %s)\n"
 		'-severity' => 'brutal',
-		'-profile' => $rcfile,
 		'-profile-strictness' => $Perl::Critic::Utils::Constants::PROFILE_STRICTNESS_FATAL,
 	);
 
 	# Do we have a perlcriticrc?
+	my $rcfile = File::Spec->catfile( 't', 'perlcriticrc' );
+	my $default_rcfile; # did we generate a default?
 	if ( ! -e $rcfile ) {
-		# Generate it using the default!
-		open( my $rc, '>', $rcfile ) or die "Unable to open $rcfile for writing: $!";
-		print $rc _default_perlcriticrc();
-		close $rc or die "Unable to close $rcfile: $!";
-		$default_rcfile = 1;
+		# Maybe it's in the CWD?
+		if ( ! -e 'perlcriticrc' ) {
+			# Generate it using the default!
+			if ( ! -d 't' ) {
+				# We're already in the test dir
+				$rcfile = 'perlcriticrc';
+			}
+
+			open( my $rc, '>', $rcfile ) or die "Unable to open $rcfile for writing: $!";
+			print $rc _default_perlcriticrc();
+			close $rc or die "Unable to close $rcfile: $!";
+			$default_rcfile = 1;
+		} else {
+			$rcfile = 'perlcriticrc';
+		}
 	}
-	Test::Perl::Critic->import( %opts );
+	Test::Perl::Critic->import( %opts, '-profile' => $rcfile );
 
 	TODO: {
 		local $TODO = "PerlCritic";
