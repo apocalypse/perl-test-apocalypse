@@ -2,27 +2,28 @@ Revision history for Perl extension Test::Apocalypse
 
 {{$NEXT}}
 
+1.000
+	Released: 2011-03-04 23:37:23 UTC
+
 	Converted to Dist::Zilla for the release process!
 	Tweaked the internals to cleanup automated issues
+	Ported the META.(yml|json) tests to the new Test::CPAN::Meta infrastructure, thanks JAWNSY! ( RT#66215 )
 	Changed some plugins so they execute tests as TODO, to not cause spurious FAILs
+	Added Test::Vars to the testsuite
+	Added Test::Script to the testsuite
+	Added Test::Pod::LinkCheck to the testsuite
+	Added Test::Pod::Spelling::CommonMistakes to the testsuite
+	Added debugging of test info, thanks POE::Test::Loops!
 	Replaced Test::Dependencies with homebrew solution utilizing Perl::PrereqScanner
 	Removed Test::Module::Used plugin ( see above )
 	Removed the Test::Prereq plugin because it never worked reliably and we already have a plugin for it ( see above )
 	Removed the Test::UseAllModules plugin because we have other plugins that do the same thing
-	Ported the META.(yml|json) tests to the new Test::CPAN::Meta infrastructure, thanks JAWNSY! ( RT#66215 )
-
-0.11
-
-	Added Test::Vars to the testsuite
-	Added Test::Script to the testsuite
-	More POD tweaks
 	Bumped Test::NoPlan prereq to 0.0.6 so it works properly under Test::Block
 	Bumped Test::Pod prereq to 1.41 so it doesn't complain about L<text|scheme> being invalid
-	Bumped Test::Module::Used prereq to 0.1.9 so we can use excluded modules properly
 	Added Pod::Coverage::TrustPod as the coverage class for Test::Pod::Coverage
 	Fixed a bug in Test::Spelling where the file stopwords weren't added right
-	Fixed a bug in OutdatedPrereqs where it complained if the CPAN version was older than what was specified.
-	Added Test::Pod::LinkCheck to the testsuite
+	Fixed a bug in OutdatedPrereqs where it complained if the CPAN version was older than what was specified
+	Revamped the Perl::Critic test to automatically use a default config if one wasn't found in t/perlcriticrc
 
 0.10
 
@@ -34,7 +35,6 @@ Revision history for Perl extension Test::Apocalypse
 	Tweaked the module loading logic so we have less duplication now + less bugs, yay!
 	Fixed a warning in the OutdatedPrereqs test so we don't cause FAILs with the Test::NoWarnings module :(
 	Added Test::NoPlan to the testsuite
-	Added debugging of test info, thanks POE::Test::Loops!
 
 0.09
 
