@@ -5,6 +5,9 @@ package Test::Apocalypse::Signature;
 use Test::More;
 use Test::Signature 1.10;
 
+# Various people have said SIGNATURE tests are INSANE on end-user install...
+sub _do_automated { 0 }
+
 sub do_test {
 	# do we have a signature file?
 	if ( -e 'SIGNATURE' ) {

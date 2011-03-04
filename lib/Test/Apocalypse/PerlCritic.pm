@@ -6,6 +6,11 @@ use Test::More;
 use Test::Perl::Critic 1.02;
 use File::Spec 3.31;
 
+# This is so we always have all PerlCritic plugins installed, yay!
+use Task::Perl::Critic 1.007;
+
+sub _do_automated { 0 }
+
 sub do_test {
 	# set default opts
 	require Perl::Critic::Utils::Constants;

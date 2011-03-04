@@ -5,6 +5,8 @@ package Test::Apocalypse::Fixme;
 use Test::More;
 use Test::Fixme 0.04;
 
+sub _do_automated { 0 }
+
 sub do_test {
 	TODO: {
 		local $TODO = "Fixme";

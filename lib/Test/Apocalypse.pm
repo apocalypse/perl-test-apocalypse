@@ -20,6 +20,7 @@ sub is_apocalypse_here {
 		plan 'no_plan';
 
 		# load our nifty "catch-all" tests
+		# TODO should this be required?
 		eval "use Test::NoWarnings";
 	}
 
@@ -100,7 +101,7 @@ sub is_apocalypse_here {
 			# TODO smarter error detection - missing module, bla bla
 			my $error = "Unable to load $plugin -> $@";
 
-			if ( $ENV{RELEASE_TESTING} ) {
+			if ( $ENV{RELEASE_TESTING} or $ENV{PERL_APOCALYPSE} ) {
 				die $error;
 			} else {
 				diag( $error );
@@ -112,6 +113,12 @@ sub is_apocalypse_here {
 		# Is this plugin disabled?
 		if ( $t->can( '_is_disabled' ) and $t->_is_disabled ) {
 			diag( "Skipping $plugin ( plugin is DISABLED )..." );
+			next;
+		}
+
+		# Check for AUTOMATED_TESTING
+		if ( $ENV{AUTOMATED_TESTING} and ! $ENV{PERL_APOCALYPSE} and $t->can( '_do_automated' ) and ! $t->_do_automated() ) {
+			diag( "Skipping $t ( for RELEASE_TESTING only )..." );
 			next;
 		}
 
@@ -263,6 +270,10 @@ Automatically exports the "is_apocalypse_here" sub.
 =head1 MORE IDEAS
 
 =over 4
+
+=item * Better POD spelling checker?
+
+Test::Spelling is ancient, and often blows up. There's a Test::Pod::Spelling on CPAN but it is flaky too :(
 
 =item * CPAN RT check?
 

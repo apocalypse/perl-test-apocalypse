@@ -4,6 +4,9 @@ package Test::Apocalypse::Pod_LinkCheck;
 
 use Test::Pod::LinkCheck 0.004;
 
+# LinkCheck often FAILs on misconfigured machines
+sub _do_automated { 0 }
+
 sub do_test {
 	Test::Pod::LinkCheck->new->all_pod_ok();
 

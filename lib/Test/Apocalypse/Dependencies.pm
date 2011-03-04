@@ -10,6 +10,8 @@ use File::Find::Rule 0.32;
 use Perl::PrereqScanner 1.000;
 use Test::Deep 0.108;
 
+sub _do_automated { 0 }
+
 sub do_test {
 	# load the metadata
 	my $runtime_req;

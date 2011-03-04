@@ -5,10 +5,12 @@ package Test::Apocalypse::OutdatedPrereqs;
 use Test::More;
 use YAML 0.70;
 use CPANPLUS 0.90;
-use CPANPLUS::Configure;
+use CPANPLUS::Configure; # TODO no version here, so we added CPANPLUS 0.90, ( should we use CPANPLUS::Internals instead? )
 use CPANPLUS::Backend;
 use version 0.77;
 use Module::CoreList 2.23;
+
+sub _do_automated { 0 }
 
 sub do_test {
 	# does META.yml exist?
@@ -131,13 +133,6 @@ sub _check_cpan {
 		# convert both objects to version objects so we can compare
 		$version = version->new( $version ) if ! ref $version;
 		my $cpanversion = version->new( $module->version );
-
-		# TODO fix this bug
-#		#   Failed test 'Comparing 'Test::NoPlan' to CPAN version'
-#		#   at /home/apoc/mygit/perl-test-apocalypse/blib/lib/Test/Apocalypse/OutdatedPrereqs.pm line 144.
-#		#          got: 3e-06
-#		#     expected: 2e-06
-#		t/apocalypse.t .. 862/?
 
 		# check it! ( use <= instead of == so we ignore old CPAN versions )
 		cmp_ok( $cpanversion, '<=', $version, "Comparing '$prereq' to CPAN version" );

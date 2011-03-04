@@ -4,6 +4,9 @@ package Test::Apocalypse::EOL;
 
 use Test::EOL 0.3;
 
+# TODO If a win32 user downloads the tarball, it will have DOS newlines in it?
+sub _do_automated { 0 }
+
 sub do_test {
 	all_perl_files_ok();
 

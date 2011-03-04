@@ -6,6 +6,8 @@ use Test::More;
 use Devel::PPPort 3.19;
 use Capture::Tiny 0.10 qw( capture_merged );
 
+sub _do_automated { 0 }
+
 sub do_test {
 	plan tests => 2;
 

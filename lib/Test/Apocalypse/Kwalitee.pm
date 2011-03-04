@@ -6,6 +6,8 @@ use Test::More;
 use Module::CPANTS::Analyse 0.85;
 use version 0.77;
 
+sub _do_automated { 0 }
+
 sub do_test {
 	# the following code was copied/plagarized/transformed from Test::Kwalitee, thanks!
 	# The reason why I didn't just use that module is because it doesn't print the kwalitee or consider extra metrics...
@@ -13,7 +15,7 @@ sub do_test {
 	# init CPANTS with the latest tarball
 	my $tarball = _get_tarball( '.' );
 	if ( ! defined $tarball ) {
-		# Dist::Zilla-specific code, the tarball we want is 3 levels up
+		# Dist::Zilla-specific code, the tarball we want is 3 levels up ( when using dzp::TestRelease :)
 		# [@Apocalyptic/TestRelease] Extracting /home/apoc/mygit/perl-pod-weaver-pluginbundle-apocalyptic/Pod-Weaver-PluginBundle-Apocalyptic-0.001.tar.gz to .build/MiNXla4CY7
 		$tarball = _get_tarball( '../../..' );
 		if ( ! defined $tarball ) {
@@ -124,6 +126,7 @@ sub _get_tarball {
 	# sort by version
 	@dirlist = reverse sort { $a->[0] <=> $b->[0] } @dirlist;
 
+	# TODO should we use file::spec and stuff here?
 	return $path . '/' . $dirlist[0]->[1];
 }
 

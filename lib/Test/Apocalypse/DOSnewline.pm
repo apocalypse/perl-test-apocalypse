@@ -5,6 +5,9 @@ package Test::Apocalypse::DOSnewline;
 use Test::More;
 use File::Find::Rule 0.32;
 
+# TODO If a win32 user downloads the tarball, it will have DOS newlines in it?
+sub _do_automated { 0 }
+
 sub do_test {
 	plan tests => 1;
 
