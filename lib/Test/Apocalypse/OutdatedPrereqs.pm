@@ -91,11 +91,8 @@ sub _load_yml {
 
 	# analyze every one of them!
 	plan tests => scalar keys %$data;
-	TODO: {
-		local $TODO = "OutdatedPrereqs";
-		foreach my $prereq ( keys %$data ) {
-			_check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
-		}
+	foreach my $prereq ( keys %$data ) {
+		_check_cpan( $cpanplus, $prereq, $data->{ $prereq } );
 	}
 
 	return;
@@ -135,7 +132,10 @@ sub _check_cpan {
 		my $cpanversion = version->new( $module->version );
 
 		# check it! ( use <= instead of == so we ignore old CPAN versions )
-		cmp_ok( $cpanversion, '<=', $version, "Comparing '$prereq' to CPAN version" );
+		TODO: {
+			local $TODO = "OutdatedPrereqs";
+			cmp_ok( $cpanversion, '<=', $version, "Comparing '$prereq' to CPAN version" );
+		}
 	} else {
 		my $release = Module::CoreList->first_release( $prereq );
 		if ( defined $release ) {
