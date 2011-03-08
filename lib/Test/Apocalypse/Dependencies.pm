@@ -16,15 +16,18 @@ sub do_test {
 	# load the metadata
 	my $runtime_req;
 	my $test_req;
+	my $provides;
 	if ( -e 'META.json' ) {
 		my $file = read_file( 'META.json' );
 		my $metadata = JSON::Any->new->Load( $file );
 		$runtime_req = $metadata->{'prereqs'}{'runtime'}{'requires'};
 		$test_req = $metadata->{'prereqs'}{'test'}{'requires'};
+		$provides = $metadata->{'provides'} if exists $metadata->{'provides'};
 	} elsif ( -e 'META.yml' ) {
 		my $file = read_file( 'META.yml' );
 		my $metadata = Load( $file );
 		$runtime_req = $metadata->{'requires'};
+		$provides = $metadata->{'provides'} if exists $metadata->{'provides'};
 	} else {
 		die 'No META.(json|yml) found!';
 	}
@@ -63,6 +66,14 @@ sub do_test {
 		}
 	}
 
+	# We remove any prereqs that we provided in the package
+	if ( defined $provides ) {
+		foreach my $p ( keys %$provides ) {
+			$found_runtime->clear_requirement( $p );
+			$found_test->clear_requirement( $p );
+		}
+	}
+
 	# Do the actual comparison!
 	if ( defined $test_req ) {
 		plan tests => 2;
@@ -70,17 +81,8 @@ sub do_test {
 		plan tests => 1;
 	}
 
-	my( $ok, $stack ) = cmp_details( $found_runtime->as_string_hash, $runtime_req );
-	unless( ok( $ok, "Runtime requires" ) ) {
-		diag( deep_diag( $stack ) );
-	}
-
-	if ( defined $test_req ) {
-		( $ok, $stack ) = cmp_details( $found_test->as_string_hash, $test_req );
-		unless( ok( $ok, "Test requires" ) ) {
-			diag( deep_diag( $stack ) );
-		}
-	}
+	cmp_deeply( $found_runtime->as_string_hash, $runtime_req, "Runtime requires" );
+	cmp_deeply( $found_test->as_string_hash, $test_req, "Test requires" ) if defined $test_req;
 
 	return;
 }
