@@ -102,6 +102,7 @@ sub _default_perlcriticrc {
 [-BuiltinFunctions::ProhibitStringySplit]
 [-Compatibility::ProhibitThreeArgumentOpen]
 [-ControlStructures::ProhibitPostfixControls]
+[-ControlStructures::ProhibitCascadingIfElse]
 [-ErrorHandling::RequireCarping]
 [-ErrorHandling::RequireCheckingReturnValueOfEval]
 [-ErrorHandling::RequireUseOfExceptions]
@@ -109,8 +110,10 @@ sub _default_perlcriticrc {
 [-InputOutput::RequireCheckedSyscalls]
 [-Lax::ProhibitEmptyQuotes::ExceptAsFallback]
 [-Lax::ProhibitStringyEval::ExceptForRequire]
+[-Miscellanea::ProhibitTies]
 [-Modules::ProhibitAutomaticExportation]
 [-Modules::RequireExplicitPackage]
+[-NamingConventions::ProhibitMixedCaseSubs]
 [-References::ProhibitDoubleSigils]
 [-RegularExpressions::ProhibitEscapedMetacharacters]
 [-RegularExpressions::ProhibitFixedStringMatches]
@@ -119,6 +122,7 @@ sub _default_perlcriticrc {
 [-RegularExpressions::RequireLineBoundaryMatching]
 [-Subroutines::ProhibitCallsToUndeclaredSubs]
 [-Subroutines::ProhibitCallsToUnexportedSubs]
+[-Subroutines::ProhibitManyArgs]
 [-Subroutines::ProhibitUnusedPrivateSubroutines]
 [-Subroutines::ProtectPrivateSubs]
 [-Subroutines::RequireArgUnpacking]
@@ -126,6 +130,7 @@ sub _default_perlcriticrc {
 [-TestingAndDebugging::ProhibitNoStrict]
 [-TestingAndDebugging::ProhibitNoWarnings]
 [-ValuesAndExpressions::ProhibitAccessOfPrivateData]
+[-ValuesAndExpressions::ProhibitCommaSeparatedStatements]
 [-ValuesAndExpressions::ProhibitEmptyQuotes]
 [-ValuesAndExpressions::ProhibitFiletest_f]
 [-ValuesAndExpressions::ProhibitInterpolationOfLiterals]
@@ -158,9 +163,6 @@ sub _default_perlcriticrc {
 
 [-RegularExpressions::ProhibitUnusualDelimiters]
 # sometimes we like other delims...
-
-[-Tics::ProhibitUseBase]
-# what is the preferred workaround?
 
 [-ValuesAndExpressions::ProhibitMixedBooleanOperators]
 # sometimes it feels "natural" to code in that style...

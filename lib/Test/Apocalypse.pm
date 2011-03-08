@@ -9,7 +9,7 @@ use Test::Builder 0.96;
 use Module::Pluggable 3.9 search_path => [ __PACKAGE__ ];
 
 # auto-export the only sub we have
-use base qw( Exporter );
+use parent 'Exporter';
 our @EXPORT = qw( is_apocalypse_here );
 
 sub is_apocalypse_here {
