@@ -70,8 +70,17 @@ sub do_test {
 		plan tests => 1;
 	}
 
-	cmp_deeply( $found_runtime->as_string_hash, $runtime_req, "Runtime requires" );
-	cmp_deeply( $found_test->as_string_hash, $test_req, "Test requires" ) if defined $test_req;
+	my( $ok, $stack ) = cmp_details( $found_runtime->as_string_hash, $runtime_req );
+	unless( ok( $ok, "Runtime requires" ) ) {
+		diag( deep_diag( $stack ) );
+	}
+
+	if ( defined $test_req ) {
+		( $ok, $stack ) = cmp_details( $found_test->as_string_hash, $test_req );
+		unless( ok( $ok, "Test requires" ) ) {
+			diag( deep_diag( $stack ) );
+		}
+	}
 
 	return;
 }
