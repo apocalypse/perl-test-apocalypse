@@ -2,7 +2,11 @@ Revision history for Perl extension Test::Apocalypse
 
 {{$NEXT}}
 
+1.001
+	Released: 2011-03-08 21:37:20 UTC
+
 	Tweaked the OutdatedPrereqs test so it will correctly FAIL if a prereq wasn't found on CPAN
+	Tweaked the Dependencies test so it correctly filters provided packages
 
 1.000
 	Released: 2011-03-04 23:37:23 UTC
