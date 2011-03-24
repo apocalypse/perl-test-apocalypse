@@ -92,7 +92,7 @@ sub _default_perlcriticrc {
 [-Tics::ProhibitLongLines]
 [-ValuesAndExpressions::ProhibitMagicNumbers]
 [-ValuesAndExpressions::ProhibitNoisyQuotes]
-
+[-ValuesAndExpressions::RestrictLongStrings]
 
 # ---------------------------------------------
 # miscellaneous policies that is just plain annoying
@@ -161,8 +161,14 @@ sub _default_perlcriticrc {
 [-Modules::RequireExplicitInclusion]
 # while this makes sense sometimes it's a drag to list the modules that you *know* a prereq will pull in...
 
+[-RegularExpressions::ProhibitComplexRegexes]
+# while this is true it's unavoidable in some cases...
+
 [-RegularExpressions::ProhibitUnusualDelimiters]
 # sometimes we like other delims...
+
+[-Subroutines::ProhibitBuiltinHomonyms]
+# in POE "shutdown" is commonly used, also in some classes we define convenience methods like "print" and etc...
 
 [-ValuesAndExpressions::ProhibitMixedBooleanOperators]
 # sometimes it feels "natural" to code in that style...
