@@ -271,6 +271,10 @@ Automatically exports the "is_apocalypse_here" sub.
 
 =over 4
 
+=item * Test::NoSmartComments
+
+I don't use Smart::Comments but it might be useful? I LOVE BLOAT! :)
+
 =item * Better POD spelling checker?
 
 Test::Spelling is ancient, and often blows up. There's a Test::Pod::Spelling on CPAN but it is flaky too :(

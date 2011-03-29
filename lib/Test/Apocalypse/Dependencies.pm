@@ -74,6 +74,29 @@ sub do_test {
 		}
 	}
 
+	# Thanks to PoCo::SmokeBox::Uploads::Rsync's use of PoCo::Generic, we have to do this
+	# Mangle the found version to the required one if it was 0
+	{
+		my %temp = %{ $found_runtime->as_string_hash };
+		foreach my $p ( keys %temp ) {
+			if ( $runtime_req->{ $p } ne '0' and $temp{ $p } eq '0' ) {
+				$found_runtime->clear_requirement( $p );
+				$found_runtime->add_minimum( $p => $runtime_req->{ $p } );
+			}
+		}
+	}
+
+	# Do the same for the test stuff
+	if ( defined $test_req ) {
+		my %temp = %{ $found_test->as_string_hash };
+		foreach my $p ( keys %temp ) {
+			if ( $test_req->{ $p } ne '0' and $temp{ $p } eq '0' ) {
+				$found_test->clear_requirement( $p );
+				$found_test->add_minimum( $p => $runtime_req->{ $p } );
+			}
+		}
+	}
+
 	# Do the actual comparison!
 	if ( defined $test_req ) {
 		plan tests => 2;
