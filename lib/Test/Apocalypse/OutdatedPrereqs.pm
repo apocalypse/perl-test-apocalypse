@@ -131,10 +131,15 @@ sub _check_cpan {
 		$version = version->new( $version ) if ! ref $version;
 		my $cpanversion = version->new( $module->version );
 
-		# check it! ( use <= instead of == so we ignore old CPAN versions )
-		TODO: {
-			local $TODO = "OutdatedPrereqs";
-			cmp_ok( $cpanversion, '<=', $version, "Comparing '$prereq' to CPAN version" );
+		# Make sure that the prereq version exists on CPAN
+		if ( $cpanversion < $version ) {
+			fail( "Warning: '$prereq' version $version is not found on CPAN!" );
+		} else {
+			# The version we specified should be the latest CPAN version
+			TODO: {
+				local $TODO = "OutdatedPrereqs";
+				cmp_ok( $cpanversion, '==', $version, "Comparing '$prereq' to CPAN version" );
+			}
 		}
 	} else {
 		my $release = Module::CoreList->first_release( $prereq );
