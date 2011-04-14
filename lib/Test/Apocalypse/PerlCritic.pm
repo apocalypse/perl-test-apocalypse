@@ -90,6 +90,7 @@ sub _default_perlcriticrc {
 [-NamingConventions::ProhibitMixedCaseVars]
 [-Subroutines::ProhibitExcessComplexity]
 [-Tics::ProhibitLongLines]
+[-ValuesAndExpressions::ProhibitEscapedCharacters]
 [-ValuesAndExpressions::ProhibitMagicNumbers]
 [-ValuesAndExpressions::ProhibitNoisyQuotes]
 [-ValuesAndExpressions::RestrictLongStrings]
