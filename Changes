@@ -2,6 +2,13 @@ Revision history for Perl extension Test::Apocalypse
 
 {{$NEXT}}
 
+1.002
+	Released: 2011-04-21 21:49:46 UTC
+
+	Add more default exclusions to the Perl::Critic default .perlcriticrc
+	Tweaked the OutdatedPrereqs test *again* so it FAILs if a prereq version is higher than found on CPAN
+	Tweaked the Dependencies test so it correctly processes found prereqs that has no version
+
 1.001
 	Released: 2011-03-08 21:37:20 UTC
 
