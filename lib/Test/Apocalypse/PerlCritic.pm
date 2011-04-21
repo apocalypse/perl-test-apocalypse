@@ -102,8 +102,9 @@ sub _default_perlcriticrc {
 [-BuiltinFunctions::ProhibitStringyEval]
 [-BuiltinFunctions::ProhibitStringySplit]
 [-Compatibility::ProhibitThreeArgumentOpen]
-[-ControlStructures::ProhibitPostfixControls]
 [-ControlStructures::ProhibitCascadingIfElse]
+[-ControlStructures::ProhibitDeepNests]
+[-ControlStructures::ProhibitPostfixControls]
 [-ErrorHandling::RequireCarping]
 [-ErrorHandling::RequireCheckingReturnValueOfEval]
 [-ErrorHandling::RequireUseOfExceptions]
@@ -113,6 +114,7 @@ sub _default_perlcriticrc {
 [-Lax::ProhibitStringyEval::ExceptForRequire]
 [-Miscellanea::ProhibitTies]
 [-Modules::ProhibitAutomaticExportation]
+[-Modules::RequireBarewordIncludes]
 [-Modules::RequireExplicitPackage]
 [-NamingConventions::ProhibitMixedCaseSubs]
 [-References::ProhibitDoubleSigils]
@@ -138,6 +140,7 @@ sub _default_perlcriticrc {
 [-ValuesAndExpressions::RequireInterpolationOfMetachars]
 [-Variables::ProhibitLocalVars]
 [-Variables::ProhibitPunctuationVars]
+[-Variables::ProhibitPackageVars]
 [-Variables::RequireInitializationForLocalVars]
 
 # ---------------------------------------------
