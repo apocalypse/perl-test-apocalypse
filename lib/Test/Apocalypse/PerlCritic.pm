@@ -89,6 +89,7 @@ sub _default_perlcriticrc {
 [-NamingConventions::Capitalization]
 [-NamingConventions::ProhibitMixedCaseVars]
 [-Subroutines::ProhibitExcessComplexity]
+[-Subroutines::ProhibitSubroutinePrototypes]
 [-Tics::ProhibitLongLines]
 [-ValuesAndExpressions::ProhibitEscapedCharacters]
 [-ValuesAndExpressions::ProhibitMagicNumbers]
