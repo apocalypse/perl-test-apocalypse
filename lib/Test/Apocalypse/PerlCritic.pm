@@ -15,7 +15,7 @@ sub do_test {
 	# set default opts
 	require Perl::Critic::Utils::Constants;
 	my %opts = (
-		'-verbose' => 8, # sets "[%p] %m at line %l, column %c.  (Severity: %s)\n"
+		'-verbose' => "[%p] %m at line %l, near '%r'\n",
 		'-severity' => 'brutal',
 		'-profile-strictness' => $Perl::Critic::Utils::Constants::PROFILE_STRICTNESS_FATAL,
 	);
@@ -86,6 +86,7 @@ sub _default_perlcriticrc {
 [-Documentation::RequirePODUseEncodingUTF8]
 [-Editor::RequireEmacsFileVariables]
 [-Miscellanea::RequireRcsKeywords]
+[-Modules::ProhibitExcessMainComplexity]
 [-NamingConventions::Capitalization]
 [-NamingConventions::ProhibitMixedCaseVars]
 [-Subroutines::ProhibitExcessComplexity]
@@ -144,6 +145,11 @@ sub _default_perlcriticrc {
 [-Variables::ProhibitPackageVars]
 [-Variables::RequireInitializationForLocalVars]
 
+EOF
+
+	# Ignore optional stuff?
+	unless ( exists $ENV{'PERL_CRITIC_STRICT'} and $ENV{'PERL_CRITIC_STRICT'} ) {
+		$rcfile .= <<'EOF';
 # ---------------------------------------------
 # TODO probably sane policies but need to do a lot of work to fix them...
 # ---------------------------------------------
@@ -182,6 +188,7 @@ sub _default_perlcriticrc {
 # is this really a problem? If so, it's still a lot of work to go through code and figure out the proper string...
 
 EOF
+	}
 
 	return $rcfile;
 }
@@ -206,6 +213,8 @@ Automatically sets the following options:
 If the C<t/perlcriticrc> file isn't present a default one will be generated and used. Please see the source of this module
 for the default config, it is too lengthy to copy and paste into this POD! If you want to override the critic options,
 please create your own C<t/perlcriticrc> file in the distribution!
+
+If you want to ignore the "optional" exclusions in the default perlcriticrc, just set C<$ENV{PERL_CRITIC_STRICT}> to a true value.
 
 =head1 SEE ALSO
 Perl::Critic
