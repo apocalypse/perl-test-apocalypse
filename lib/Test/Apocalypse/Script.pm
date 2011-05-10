@@ -7,9 +7,14 @@ use Test::Script 1.07;
 use File::Find::Rule 0.32;
 
 sub do_test {
-	# Find the number of tests
 	# TODO we need to search more locations/extensions/etc?
-	my @files = File::Find::Rule->file->name( qr/\.pl$/ )->in( qw( examples bin scripts ) );
+
+	# TODO Stupid FFR complains if the dir doesn't exist?!?
+	my @dirs;
+	foreach my $d ( qw( examples bin scripts ) ) {
+		push @dirs, $d if -d $d;
+	}
+	my @files = File::Find::Rule->file->name( qr/\.pl$/ )->in( @dirs );
 
 	# Skip if no scripts
 	if ( ! scalar @files ) {
