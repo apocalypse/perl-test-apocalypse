@@ -9,6 +9,7 @@ use JSON::Any 1.25;
 use File::Find::Rule 0.32;
 use Perl::PrereqScanner 1.000;
 use Test::Deep 0.108;
+use CPAN::Meta::Requirements 2.113640;
 
 sub _do_automated { 0 }
 
@@ -41,8 +42,8 @@ sub do_test {
 	$test_req->{ $_ } =~ s/^v// for keys %$test_req;
 
 	# Okay, scan the files
-	my $found_runtime = Version::Requirements->new;
-	my $found_test = Version::Requirements->new;
+	my $found_runtime = CPAN::Meta::Requirements->new;
+	my $found_test = CPAN::Meta::Requirements->new;
 	foreach my $file ( File::Find::Rule->file()->name( qr/\.pm$/ )->in( 'lib' ) ) {
 		$found_runtime->add_requirements( Perl::PrereqScanner->new->scan_file( $file ) );
 	}
