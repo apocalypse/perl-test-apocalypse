@@ -2,6 +2,11 @@ Revision history for Perl extension Test::Apocalypse
 
 {{$NEXT}}
 
+	Add Test::Mojibake to the dist
+	Add more exclusions to the standard Perl::Critic config
+	Add PERL_CRITIC_STRICT env var to skip the bundled Perl::Critic config
+	Fix an error in Test::Apocalypse::Script
+
 1.002
 	Released: 2011-04-21 21:49:46 UTC
 
