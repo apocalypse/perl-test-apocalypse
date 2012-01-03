@@ -83,6 +83,7 @@ sub _default_perlcriticrc {
 [-CodeLayout::ProhibitHardTabs]
 [-CodeLayout::ProhibitParensWithBuiltins]
 [-CodeLayout::RequireTidyCode]
+[-CodeLayout::RequireTrailingCommaAtNewline]
 [-CodeLayout::RequireUseUTF8]
 [-Documentation::RequirePodLinksIncludeText]
 [-Documentation::RequirePODUseEncodingUTF8]
