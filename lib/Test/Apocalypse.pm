@@ -28,11 +28,11 @@ sub is_apocalypse_here {
 	my %opt;
 
 	# Support passing in a hash ref or a regular hash
-	if ( ( @_ & 1 ) and ref $_[0] and ref( $_[0] ) eq 'HASH' ) {
+	if ( ( @_ & 1 ) and ref $_[0] and ref( $_[0] ) eq 'HASH' ) { ## no critic (Bangs::ProhibitBitwiseOperators)
 		%opt = %{ $_[0] };
 	} else {
 		# Sanity checking
-		if ( @_ & 1 ) {
+		if ( @_ & 1 ) { ## no critic (Bangs::ProhibitBitwiseOperators)
 			die 'The sub is_apocalypse_here() requires an even number of options';
 		}
 
