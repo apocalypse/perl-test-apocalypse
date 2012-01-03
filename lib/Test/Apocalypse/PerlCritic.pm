@@ -8,6 +8,8 @@ use File::Spec 3.31;
 
 # This is so we always have all PerlCritic plugins installed, yay!
 use Task::Perl::Critic 1.007;
+use Perl::Critic::Itch 0.07;	# for CodeLayout::ProhibitHashBarewords
+use Perl::Critic::Deprecated 1.108;
 
 sub _do_automated { 0 }
 
