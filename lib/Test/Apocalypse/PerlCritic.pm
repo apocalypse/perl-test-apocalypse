@@ -87,6 +87,7 @@ sub _default_perlcriticrc {
 [-CodeLayout::RequireUseUTF8]
 [-Documentation::RequirePodLinksIncludeText]
 [-Documentation::RequirePODUseEncodingUTF8]
+[-Documentation::ProhibitUnbalancedParens]
 [-Editor::RequireEmacsFileVariables]
 [-Miscellanea::RequireRcsKeywords]
 [-Modules::ProhibitExcessMainComplexity]
