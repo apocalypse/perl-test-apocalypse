@@ -105,7 +105,7 @@ sub is_apocalypse_here {
 		}
 
 		# Is this plugin disabled?
-		if ( $t->can( '_is_disabled' ) and $t->_is_disabled ) {
+		if ( $t->can( '_is_disabled' ) and $t->_is_disabled and ! $ENV{PERL_APOCALYPSE} ) {
 			diag( "Skipping $plugin ( plugin is DISABLED )..." );
 			next;
 		}
@@ -136,7 +136,11 @@ sub is_apocalypse_here {
 					$err = Test::Builder->new->{Skip_All};
 				}
 
-				diag( "Error running $plugin: $err" );
+				if ( $ENV{RELEASE_TESTING} or $ENV{PERL_APOCALYPSE} ) {
+					die "Error running $plugin: $err";
+				} else {
+					diag( "Error running $plugin: $err" );
+				}
 
 				# we need to manually intervene or we'll get this:
 				# Running DOSnewline...
