@@ -14,6 +14,8 @@ sub is_apocalypse_here {
 	# should we even run those tests?
 	unless ( $ENV{RELEASE_TESTING} or $ENV{AUTOMATED_TESTING} ) {
 		plan skip_all => 'Author test. Please set $ENV{RELEASE_TESTING} to a true value to run.';
+	} else {
+		require Test::FailWarnings;
 	}
 
 	# The options hash
@@ -117,7 +119,10 @@ sub is_apocalypse_here {
 		# run it!
 		diag( "Executing $plugin..." );
 		subtest $plugin => sub {
-			eval { $t->do_test() };
+			eval {
+				local $SIG{__WARN__} = \&Test::FailWarnings::handler;
+				$t->do_test();
+			};
 			if ( $@ ) {
 				# Sometimes we get a plain string, sometimes we get
 				# Error running Kwalitee: Test::Builder::Exception=HASH(0x3fa6078)
