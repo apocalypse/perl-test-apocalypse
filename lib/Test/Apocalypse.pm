@@ -14,10 +14,6 @@ sub is_apocalypse_here {
 	# should we even run those tests?
 	unless ( $ENV{RELEASE_TESTING} or $ENV{AUTOMATED_TESTING} ) {
 		plan skip_all => 'Author test. Please set $ENV{RELEASE_TESTING} to a true value to run.';
-	} else {
-		# load our nifty "catch-all" tests
-		# TODO should this be required?
-		eval "use Test::NoWarnings";
 	}
 
 	# The options hash
