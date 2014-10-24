@@ -3,9 +3,7 @@ package Test::Apocalypse;
 # ABSTRACT: Apocalypse's favorite tests bundled into a simple interface
 
 # setup our tests and etc
-use Test::Block 0.11 qw( $Plan );
 use Test::More 0.96;
-use Test::Builder 0.96;
 use Module::Pluggable 3.9 search_path => [ __PACKAGE__ ];
 
 # auto-export the only sub we have
@@ -17,8 +15,6 @@ sub is_apocalypse_here {
 	unless ( $ENV{RELEASE_TESTING} or $ENV{AUTOMATED_TESTING} ) {
 		plan skip_all => 'Author test. Please set $ENV{RELEASE_TESTING} to a true value to run.';
 	} else {
-		plan 'no_plan';
-
 		# load our nifty "catch-all" tests
 		# TODO should this be required?
 		eval "use Test::NoWarnings";
@@ -118,57 +114,18 @@ sub is_apocalypse_here {
 
 		# Check for AUTOMATED_TESTING
 		if ( $ENV{AUTOMATED_TESTING} and ! $ENV{PERL_APOCALYPSE} and $t->can( '_do_automated' ) and ! $t->_do_automated() ) {
-			diag( "Skipping $t ( for RELEASE_TESTING only )..." );
+			diag( "Skipping $plugin ( for RELEASE_TESTING only )..." );
 			next;
 		}
 
-		# do nasty override of Test::Builder::plan
-		local $Plan;
-		my $newplan = sub {
-			my( $self, $cmd, $arg ) = @_;
-			return unless $cmd;
-
-			# handle the cmds
-			if ( $cmd eq 'skip_all' ) {
-				$Plan = { $plugin => 1 };
-				SKIP: {
-					$self->skip( "$plugin - $arg", 1 );
-				}
-			} elsif ( $cmd eq 'tests' ) {
-				$Plan = { $plugin => $arg };
-			} elsif ( $cmd eq 'no_plan' ) {
-				# ignore it
-				$Plan = { $plugin => 0 };
-			} else {
-				die "Unknown cmd: $cmd";
-			}
-
-			return 1;
-		};
-
-		# Same thing for Test::Builder::create - Test::NoPlan uses it, argh!
-		my $newcreate = sub {
-			diag( "ARGH! $plugin uses Test::Builder::create() - go patch it!" );
-			goto &Test::Builder::new;
-		};
-
-		no warnings 'redefine'; no strict 'refs';
-		local *{'Test::Builder::plan'} = $newplan;
-		local *{'Test::Builder::create'} = $newcreate;
-
 		# run it!
-		use warnings; use strict;
 		diag( "Running $plugin..." );
-		$t->do_test();
-
-#		# TODO oh, I wish it was this easy...
-#		subtest $t => sub {
-#			$t->do_test();
-#		};
-#		ok( 1, "done with $t" );
+		subtest $plugin => sub {
+			$t->do_test();
+		};
 	}
 
-	# done with testing
+	done_testing();
 	return 1;
 }
 
