@@ -145,6 +145,7 @@ sub _default_perlcriticrc {
 [-ValuesAndExpressions::ProhibitEmptyQuotes]
 [-ValuesAndExpressions::ProhibitFiletest_f]
 [-ValuesAndExpressions::ProhibitInterpolationOfLiterals]
+[-ValuesAndExpressions::RequireConstantOnLeftSideOfEquality]
 [-ValuesAndExpressions::RequireInterpolationOfMetachars]
 [-Variables::ProhibitLocalVars]
 [-Variables::ProhibitPunctuationVars]
