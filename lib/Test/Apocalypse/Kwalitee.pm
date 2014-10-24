@@ -3,7 +3,7 @@ package Test::Apocalypse::Kwalitee;
 # ABSTRACT: Plugin for Test::Kwalitee
 
 use Test::More;
-use Module::CPANTS::Analyse 0.85;
+use Module::CPANTS::Analyse 0.95;
 use version 0.77;
 
 sub _do_automated { 0 }
@@ -73,7 +73,7 @@ sub _analyze {
 			if ( ! $result && $ENV{TEST_VERBOSE} ) {
 				diag( '[' . $metric->{'name'} . '] error(' . $metric->{'error'} . ') remedy(' . $metric->{'remedy'} . ')' );
 				if ( $metric->{'name'} eq 'prereq_matches_use' or $metric->{'name'} eq 'build_prereq_matches_use' ) {
-					require Data::Dumper;
+					require Data::Dumper; ## no critic (Bangs::ProhibitDebuggingModules)
 					diag( "module information: " . Data::Dumper::Dumper( $analyzer->d->{'uses'} ) );
 				}
 			}
