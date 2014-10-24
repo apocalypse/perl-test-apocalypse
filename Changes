@@ -8,6 +8,8 @@ Revision history for Test::Apocalypse
 	Fix an error in Test::Apocalypse::Script
 	Use Test::CPAN::Changes instead of the outdated Test::CheckChanges
 	Ripped out the dysfunctional Test::NoWarnings in favor of Test::FailWarnings, thanks DAGOLDEN!
+	Ignore the 'perl' dependency when checking deps
+	Fix version mismatch error when checking dependencies ( 'v0.0.6' vs '0.0.6' )
 
 1.002	2011-04-21 21:49:46 UTC
 

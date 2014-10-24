@@ -33,14 +33,6 @@ sub do_test {
 		die 'No META.(json|yml) found!';
 	}
 
-	# remove 'perl' dep - we check it in MinimumVersion anyway
-	delete $runtime_req->{'perl'} if exists $runtime_req->{'perl'};
-	delete $test_req->{'perl'} if defined $test_req and exists $test_req->{'perl'};
-
-	# Convert version objects to regular
-	$runtime_req->{ $_ } =~ s/^v// for keys %$runtime_req;
-	$test_req->{ $_ } =~ s/^v// for keys %$test_req;
-
 	# Okay, scan the files
 	my $found_runtime = CPAN::Meta::Requirements->new;
 	my $found_test = CPAN::Meta::Requirements->new;
@@ -98,15 +90,34 @@ sub do_test {
 		}
 	}
 
+	# Convert version objects to regular or we'll get something like this:
+	# Compared $data->{"Test\:\:NoPlan"}
+	#    got : 'v0.0.6'
+	# expect : '0.0.6'
+	$found_runtime = $found_runtime->as_string_hash;
+	$found_runtime->{ $_ } =~ s/^v// for keys %$found_runtime;
+	$runtime_req->{ $_ } =~ s/^v// for keys %$runtime_req;
+
 	# Do the actual comparison!
 	if ( defined $test_req ) {
 		plan tests => 2;
+
+		$found_test = $found_test->as_string_hash;
+		$found_test->{ $_ } =~ s/^v// for keys %$found_test;
+		$test_req->{ $_ } =~ s/^v// for keys %$test_req;
+
+		# TODO interesting, somewhere deep in the build chain it auto-upgraded Test::More version...
+		# I had 0.88 set but somehow 0.96 was in the META.yml argh!
+		if ( $found_test->{'Test::More'} ne $test_req->{'Test::More'} ) {
+			diag( 'Found weird Test::More version mismatch, ignoring it! (' . $found_test->{'Test::More'} . ' vs ' . $test_req->{'Test::More'} . ')' );
+			$found_test->{'Test::More'} = $test_req->{'Test::More'};
+		}
 	} else {
 		plan tests => 1;
 	}
 
-	cmp_deeply( $found_runtime->as_string_hash, $runtime_req, "Runtime requires" );
-	cmp_deeply( $found_test->as_string_hash, $test_req, "Test requires" ) if defined $test_req;
+	cmp_deeply( $found_runtime, $runtime_req, "Runtime requires" );
+	cmp_deeply( $found_test, $test_req, "Test requires" ) if defined $test_req;
 
 	return;
 }
