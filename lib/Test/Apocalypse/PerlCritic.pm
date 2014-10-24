@@ -108,6 +108,7 @@ sub _default_perlcriticrc {
 
 [-BuiltinFunctions::ProhibitStringyEval]
 [-BuiltinFunctions::ProhibitStringySplit]
+[-BuiltinFunctions::ProhibitUselessTopic]
 [-Compatibility::ProhibitThreeArgumentOpen]
 [-ControlStructures::ProhibitCascadingIfElse]
 [-ControlStructures::ProhibitDeepNests]
@@ -131,6 +132,7 @@ sub _default_perlcriticrc {
 [-RegularExpressions::RequireDotMatchAnything]
 [-RegularExpressions::RequireExtendedFormatting]
 [-RegularExpressions::RequireLineBoundaryMatching]
+[-RegularExpressions::ProhibitUselessTopic]
 [-Subroutines::ProhibitCallsToUndeclaredSubs]
 [-Subroutines::ProhibitCallsToUnexportedSubs]
 [-Subroutines::ProhibitManyArgs]
@@ -145,7 +147,6 @@ sub _default_perlcriticrc {
 [-ValuesAndExpressions::ProhibitEmptyQuotes]
 [-ValuesAndExpressions::ProhibitFiletest_f]
 [-ValuesAndExpressions::ProhibitInterpolationOfLiterals]
-[-ValuesAndExpressions::RequireConstantOnLeftSideOfEquality]
 [-ValuesAndExpressions::RequireInterpolationOfMetachars]
 [-Variables::ProhibitLocalVars]
 [-Variables::ProhibitPunctuationVars]
@@ -193,6 +194,9 @@ EOF
 
 [-ValuesAndExpressions::ProhibitVersionStrings]
 # is this really a problem? If so, it's still a lot of work to go through code and figure out the proper string...
+
+[-ValuesAndExpressions::RequireConstantOnLeftSideOfEquality]
+# I think "$^O eq 'MSWin32'" is valid... I don't want to rewrite tons of code just to satisfy this...
 
 EOF
 	}
