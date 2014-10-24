@@ -38,7 +38,7 @@ sub _analyze {
 
 	# set the number of tests / run analyzer
 	my @indicators = $analyzer->mck()->get_indicators();
-	plan tests => scalar @indicators - 3;	# remove the problematic tests
+	plan tests => scalar @indicators;
 	$analyzer->unpack;
 	$analyzer->analyse;
 	$analyzer->calc_kwalitee;
@@ -48,10 +48,6 @@ sub _analyze {
 	# loop over the kwalitee metrics
 	foreach my $gen ( @{ $analyzer->mck()->generators() } ) {
 		foreach my $metric ( @{ $gen->kwalitee_indicators() } ) {
-			# skip problematic ones
-			if ( $metric->{'name'} =~ /^(?:is_prereq|prereq_matches_use|build_prereq_matches_use)$/ ) { next }
-			#if ( $metric->{'name'} =~ /^(?:is_prereq)$/ ) { next }
-
 			# get the result
 			my $result = $metric->{'code'}->( $analyzer->d(), $metric );
 			my $type = 'CORE';
