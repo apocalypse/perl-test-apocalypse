@@ -120,6 +120,10 @@ sub is_apocalypse_here {
 		diag( "Executing $plugin..." );
 		subtest $plugin => sub {
 			eval {
+				# TODO ignore annoying gpg warnings like 'WARNING: This key is not certified with a trusted signature!' at /usr/local/share/perl/5.18.2/Module/Signature.pm line 265.
+				no warnings qw(once);
+				local @Test::FailWarnings::ALLOW_FROM = ( 'Module::Signature' );
+
 				local $SIG{__WARN__} = \&Test::FailWarnings::handler;
 				$t->do_test();
 			};
