@@ -263,11 +263,6 @@ I don't use Smart::Comments but it might be useful? I LOVE BLOAT! :)
 
 Test::Spelling is ancient, and often blows up. There's a Test::Pod::Spelling on CPAN but it is flaky too :(
 
-=item * CPAN RT check?
-
-I want a test that checks the CPAN RT for any tickets, and display it when running the test. That would be helpful to remind me to be punctual
-with my tickets, ha!
-
 =item * Document the way we do plugins so others can add to this testsuite :)
 
 =item * POD standards check
@@ -328,10 +323,6 @@ It would be nice to signal INTERNET_TESTING=0 or something zany like that so thi
 	<@Alias> If you can break LWP from the environment, that would work
 	<@Alias> Setting a proxy ENVthat is illegal etc
 	<Apocalypse> ah good thinking, I'll read up on the fine points of LWP env vars and try to screw it up
-
-=item * Test::CPAN::Changes
-
-Use the newfangled CPAN Changes spec :)
 
 =back
 
