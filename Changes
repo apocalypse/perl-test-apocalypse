@@ -1,4 +1,4 @@
-Revision history for Perl extension Test::Apocalypse
+Revision history for Test::Apocalypse
 
 {{$NEXT}}
 
@@ -6,22 +6,20 @@ Revision history for Perl extension Test::Apocalypse
 	Add more exclusions to the standard Perl::Critic config
 	Add PERL_CRITIC_STRICT env var to skip the bundled Perl::Critic config
 	Fix an error in Test::Apocalypse::Script
+	Use Test::CPAN::Changes instead of the outdated Test::CheckChanges
 
-1.002
-	Released: 2011-04-21 21:49:46 UTC
+1.002	2011-04-21 21:49:46 UTC
 
 	Add more default exclusions to the Perl::Critic default .perlcriticrc
 	Tweaked the OutdatedPrereqs test *again* so it FAILs if a prereq version is higher than found on CPAN
 	Tweaked the Dependencies test so it correctly processes found prereqs that has no version
 
-1.001
-	Released: 2011-03-08 21:37:20 UTC
+1.001	2011-03-08 21:37:20 UTC
 
 	Tweaked the OutdatedPrereqs test so it will correctly FAIL if a prereq wasn't found on CPAN
 	Tweaked the Dependencies test so it correctly filters provided packages
 
-1.000
-	Released: 2011-03-04 23:37:23 UTC
+1.000	2011-03-04 23:37:23 UTC
 
 	Converted to Dist::Zilla for the release process!
 	Tweaked the internals to cleanup automated issues
