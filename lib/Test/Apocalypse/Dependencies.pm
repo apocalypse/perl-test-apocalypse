@@ -90,6 +90,12 @@ sub do_test {
 		}
 	}
 
+	# remove 'perl' dep - we check it in MinimumVersion anyway
+	delete $runtime_req->{'perl'} if exists $runtime_req->{'perl'};
+	delete $test_req->{'perl'} if defined $test_req and exists $test_req->{'perl'};
+	$found_runtime->clear_requirement( 'perl' );
+	$found_test->clear_requirement( 'perl' );
+
 	# Convert version objects to regular or we'll get something like this:
 	# Compared $data->{"Test\:\:NoPlan"}
 	#    got : 'v0.0.6'
