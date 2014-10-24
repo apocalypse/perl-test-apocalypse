@@ -58,11 +58,15 @@ sub _analyze {
 				$type = 'EXTRA';
 			}
 
-			# non-core tests PASS automatically
 			if ( $type eq 'CORE' or $result ) {
 				ok( $result, "[$type] $metric->{'name'}" );
 			} else {
-				pass( "[$type] $metric->{'name'} treated as PASS" );
+				if ( ! $ENV{PERL_APOCALYPSE} ) {
+					# non-core tests PASS automatically for ease of use
+					pass( "[$type] $metric->{'name'} treated as PASS" );
+				} else {
+					fail( "[$type] $metric->{'name'}" );
+				}
 			}
 
 			# print more diag if it failed
