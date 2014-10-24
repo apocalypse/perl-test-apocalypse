@@ -119,9 +119,31 @@ sub is_apocalypse_here {
 		}
 
 		# run it!
-		diag( "Running $plugin..." );
+		diag( "Executing $plugin..." );
 		subtest $plugin => sub {
-			$t->do_test();
+			eval { $t->do_test() };
+			if ( $@ ) {
+				# Sometimes we get a plain string, sometimes we get
+				# Error running Kwalitee: Test::Builder::Exception=HASH(0x3fa6078)
+				my $err = $@;
+				if ( $err->isa( 'Test::Builder::Exception' ) ) {
+					# TODO reach into T::B to get the actual skip reason
+					$err = Test::Builder->new->{Skip_All};
+				}
+
+				diag( "Error running $plugin: $err" );
+
+				# we need to manually intervene or we'll get this:
+				# Running DOSnewline...
+				# Running Dependencies...
+					# Child (Dependencies) exited without calling finalize()
+					#   Failed test 'Dependencies'
+					#   at /usr/local/share/perl/5.18.2/Test/Apocalypse.pm line 134.
+					# Error running Dependencies: Can't locate object method "new" via package "Version::Requirements" (perhaps you forgot to load "Version::Requirements"?) at /usr/local/share/perl/5.18.2/Test/Apocalypse/Dependencies.pm line 59.
+				# Running DirChecks...
+				# Error running DirChecks: You already have a child named (Dependencies) running at /usr/local/share/perl/5.18.2/Test/More.pm line 771.
+				done_testing();
+			}
 		};
 	}
 
