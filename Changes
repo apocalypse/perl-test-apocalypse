@@ -2,6 +2,10 @@ Revision history for Test::Apocalypse
 
 {{$NEXT}}
 
+1.005	2014-10-25 19:58:22 UTC
+
+	FakeRelease to test my dzil configs!
+
 1.004	2014-10-25 05:07:26 UTC
 
 	Tweak how we skip/disable plugins because of the recent subtest change, I broke some stuff :(

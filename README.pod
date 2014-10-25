@@ -14,7 +14,7 @@ Test::Apocalypse - Apocalypse's favorite tests bundled into a simple interface
 
 =head1 VERSION
 
-  This document describes v1.004 of Test::Apocalypse - released October 24, 2014 as part of Test-Apocalypse.
+  This document describes v1.005 of Test::Apocalypse - released October 25, 2014 as part of Test-Apocalypse.
 
 =head1 SYNOPSIS
 
