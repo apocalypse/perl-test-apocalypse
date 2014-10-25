@@ -7,6 +7,7 @@ use Test::Pod::No404s 0.01;
 
 # Don't hammer the internet on smokers' machines :)
 sub _do_automated { 0 }
+sub _is_disabled { 'I give up on the internet...' }
 
 sub do_test {
 	TODO: {

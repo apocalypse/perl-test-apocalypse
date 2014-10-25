@@ -3,6 +3,7 @@ Revision history for Test::Apocalypse
 {{$NEXT}}
 
 	Tweak how we skip/disable plugins because of the recent subtest change, I broke some stuff :(
+	I give up on the Pod::No404s test, the internet is too flaky everywhere :(
 
 1.003	2014-10-25 00:12:08 UTC
 
