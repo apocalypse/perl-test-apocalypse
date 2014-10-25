@@ -189,7 +189,7 @@ updated!
 
 This module respects the RELEASE_TESTING/AUTOMATED_TESTING env variable, if it is not set it will skip the entire
 testsuite. Normally end-users should not run it; but you can if you want to see how bad my dists are, ha! The scheme
-is exactly the same as the one Alias proposed in L<Test::XT> and in his blog post, L<http://use.perl.org/~Alias/journal/38822>.
+is exactly the same as the one Alias proposed in L<Test::XT> and in his blog post, L<http://use.perl.org/use.perl.org/_Alias/journal/38822.html>.
 
 This module uses L<Module::Pluggable> to have custom "backends" that process various tests. We wrap them in a hackish
 L<Test::Block> block per-plugin and it seems to work nicely. If you want to write your own, it should be a breeze
