@@ -18,6 +18,7 @@ sub _is_disabled {
 	} else {
 		# Set the spell path, to be sure!
 		set_spell_cmd( $binary );
+		return;
 	}
 }
 
