@@ -22,17 +22,9 @@ sub _is_disabled {
 	}
 }
 
+# the following code was copied/plagarized/transformed from Test::Kwalitee, thanks!
+# The reason why I didn't just use that module is because it doesn't print the kwalitee or consider extra metrics...
 sub do_test {
-	# the following code was copied/plagarized/transformed from Test::Kwalitee, thanks!
-	# The reason why I didn't just use that module is because it doesn't print the kwalitee or consider extra metrics...
-	_analyze( $tarball );
-
-	return;
-}
-
-sub _analyze {
-	my $tarball = shift;
-
 	my $analyzer = Module::CPANTS::Analyse->new({
 		'dist'	=> $tarball,
 	});

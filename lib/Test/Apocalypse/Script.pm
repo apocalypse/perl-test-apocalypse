@@ -14,7 +14,7 @@ sub _is_disabled {
 	foreach my $d ( qw( examples bin scripts ) ) {
 		push @dirs, $d if -d $d;
 	}
-	my @files = File::Find::Rule->file->name( qr/\.pl$/ )->in( @dirs );
+	@files = File::Find::Rule->file->name( qr/\.pl$/ )->in( @dirs );
 
 	# Skip if no scripts
 	if ( ! scalar @files ) {
