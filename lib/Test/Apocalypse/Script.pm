@@ -6,9 +6,9 @@ use Test::More;
 use Test::Script 1.07;
 use File::Find::Rule 0.32;
 
-sub do_test {
-	# TODO we need to search more locations/extensions/etc?
-
+# TODO we need to search more locations/extensions/etc?
+my @files;
+sub _is_disabled {
 	# TODO Stupid FFR complains if the dir doesn't exist?!?
 	my @dirs;
 	foreach my $d ( qw( examples bin scripts ) ) {
@@ -18,12 +18,14 @@ sub do_test {
 
 	# Skip if no scripts
 	if ( ! scalar @files ) {
-		plan skip_all => 'No script files found in the distribution';
-	} else {
-		plan tests => scalar @files;
-		foreach my $f ( @files ) {
-			script_compiles( $f );
-		}
+		return 'No script files found in the distribution';
+	}
+}
+
+sub do_test {
+	plan tests => scalar @files;
+	foreach my $f ( @files ) {
+		script_compiles( $f );
 	}
 
 	return;

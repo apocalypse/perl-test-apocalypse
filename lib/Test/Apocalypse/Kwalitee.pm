@@ -8,23 +8,24 @@ use version 0.77;
 
 sub _do_automated { 0 }
 
-sub do_test {
-	# the following code was copied/plagarized/transformed from Test::Kwalitee, thanks!
-	# The reason why I didn't just use that module is because it doesn't print the kwalitee or consider extra metrics...
-
-	# init CPANTS with the latest tarball
-	my $tarball = _get_tarball( '.' );
+# init CPANTS with the latest tarball
+my $tarball;
+sub _is_disabled {
+	$tarball = _get_tarball( '.' );
 	if ( ! defined $tarball ) {
 		# Dist::Zilla-specific code, the tarball we want is 3 levels up ( when using dzp::TestRelease :)
 		# [@Apocalyptic/TestRelease] Extracting /home/apoc/mygit/perl-pod-weaver-pluginbundle-apocalyptic/Pod-Weaver-PluginBundle-Apocalyptic-0.001.tar.gz to .build/MiNXla4CY7
 		$tarball = _get_tarball( '../../..' );
 		if ( ! defined $tarball ) {
-			plan skip_all => 'Distribution tarball not found, unable to run CPANTS Kwalitee tests!';
-			return;
+			return 'Distribution tarball not found, unable to run CPANTS Kwalitee tests!';
 		}
 	}
+}
 
-	_analyze( $tarball ) if defined $tarball;
+sub do_test {
+	# the following code was copied/plagarized/transformed from Test::Kwalitee, thanks!
+	# The reason why I didn't just use that module is because it doesn't print the kwalitee or consider extra metrics...
+	_analyze( $tarball );
 
 	return;
 }

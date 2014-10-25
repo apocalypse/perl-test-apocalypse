@@ -105,9 +105,12 @@ sub is_apocalypse_here {
 		}
 
 		# Is this plugin disabled?
-		if ( $t->can( '_is_disabled' ) and $t->_is_disabled and ! $ENV{PERL_APOCALYPSE} ) {
-			diag( "Skipping $plugin ( plugin is DISABLED )..." );
-			next;
+		if ( $t->can( '_is_disabled' ) and ! $ENV{PERL_APOCALYPSE} ) {
+			my $ret = $t->_is_disabled;
+			if ( $ret ) {
+				diag( "Skipping $plugin => $ret" );
+				next;
+			}
 		}
 
 		# Check for AUTOMATED_TESTING

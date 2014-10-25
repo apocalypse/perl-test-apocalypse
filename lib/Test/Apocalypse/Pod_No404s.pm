@@ -5,9 +5,6 @@ package Test::Apocalypse::Pod_No404s;
 use Test::More;
 use Test::Pod::No404s 0.01;
 
-# TODO since cpants is down, all of my tests FAIL... :(
-sub _is_disabled { 1 }
-
 # Don't hammer the internet on smokers' machines :)
 sub _do_automated { 0 }
 

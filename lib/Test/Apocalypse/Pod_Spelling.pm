@@ -7,22 +7,21 @@ use Test::Spelling 0.11;
 use File::Spec 3.31;
 use File::Which 1.09;
 
-# TODO because spelling test almost always FAILs even with stopwords added to it...
+# Spelling test almost always FAILs even with stopwords added to it...
 sub _do_automated { 0 }
-sub _is_disabled { 1 }
-
-sub do_test {
+sub _is_disabled {
 	# Thanks to CPANTESTERS, not everyone have "spell" installed...
 	# FIXME pester Test::Spelling author to be more smarter about this failure mode!
 	my $binary = which( 'spell' );
 	if ( ! defined $binary ) {
-		plan skip_all => 'The binary "spell" is not found, unable to test spelling!';
-		return;
+		return 'The binary "spell" is not found, unable to test spelling!';
 	} else {
 		# Set the spell path, to be sure!
 		set_spell_cmd( $binary );
 	}
+}
 
+sub do_test {
 	# get our list of files, and add the "namespaces" as stopwords
 	foreach my $p ( Test::Spelling::all_pod_files() ) {
 		foreach my $word ( File::Spec->splitdir( $p ) ) {
