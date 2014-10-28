@@ -198,6 +198,11 @@ EOF
 [-ValuesAndExpressions::RequireConstantOnLeftSideOfEquality]
 # I think "$^O eq 'MSWin32'" is valid... I don't want to rewrite tons of code just to satisfy this...
 
+[-CodeLayout::RequireASCII]
+# This popped up in Dist::Zilla::Plugin::MinimumPerl thanks to DOLMEN's real name :)
+# TODO why did perlcritic specificially complain: Use only ASCII code at line 146, near '=encoding UTF-8'
+# when really the problem was way down in the CONTRIBUTORS section???
+
 EOF
 	}
 
