@@ -72,6 +72,9 @@ sub do_test {
 	{
 		my %temp = %{ $found_runtime->as_string_hash };
 		foreach my $p ( keys %temp ) {
+			# Thanks to Test::Pod::LinkCheck requiring Config we have to do this!
+			$runtime_req->{$p} = 0 if ! defined $runtime_req->{$p};
+
 			if ( $runtime_req->{ $p } ne '0' and $temp{ $p } eq '0' ) {
 				$found_runtime->clear_requirement( $p );
 				$found_runtime->add_minimum( $p => $runtime_req->{ $p } );
