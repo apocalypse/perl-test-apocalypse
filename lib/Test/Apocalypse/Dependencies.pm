@@ -36,7 +36,9 @@ sub do_test {
 	# Okay, scan the files
 	my $found_runtime = CPAN::Meta::Requirements->new;
 	my $found_test = CPAN::Meta::Requirements->new;
-	foreach my $file ( File::Find::Rule->file()->name( qr/\.pm$/ )->in( 'lib' ) ) {
+	my @found_files = File::Find::Rule->file()->name( qr/\.pm$/ )->in( 'lib' );
+	push @found_files, File::Find::Rule->file()->executable->in( 'bin' ) if -d 'bin';
+	foreach my $file ( @found_files ) {
 		$found_runtime->add_requirements( Perl::PrereqScanner->new->scan_file( $file ) );
 	}
 
