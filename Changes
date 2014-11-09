@@ -4,6 +4,7 @@ Revision history for Test::Apocalypse
 
 	Removed yet another perlcritic rule, thanks to crazy UTF8 creeping into my code :)
 	Fixed the Dependencies plugin so it also processes the bin/ directory
+	Fixed the Dependencies plugin to skip testing Task/Bundle dists
 
 1.006	2014-10-25 20:10:12 UTC
 

@@ -13,11 +13,30 @@ use CPAN::Meta::Requirements 2.113640;
 
 sub _do_automated { 0 }
 
+# Checks to see if we can test
+sub _is_disabled {
+	my $metadata; # TODO I'm too lazy to cache this!
+	if ( -e 'META.json' ) {
+		my $file = read_file( 'META.json' );
+		eval { $metadata = JSON::Any->new->Load( $file ) };
+		return "Unable to load META.json => $@" if $@;
+	} elsif ( -e 'META.yml' ) {
+		my $file = read_file( 'META.yml' );
+		eval { $metadata = Load( $file ) };
+		return "Unable to load META.yml => $@" if $@;
+	} else {
+		return 'No META.(json|yml) found!';
+	}
+
+	# We don't check deps for Task/Bundles!
+	if ( $metadata->{'name'} =~ /^(?:Bundle|Task)\-/ ) {
+		return 'No real dependencies for Tasks or Bundles!';
+	}
+}
+
 sub do_test {
 	# load the metadata
-	my $runtime_req;
-	my $test_req;
-	my $provides;
+	my( $runtime_req, $test_req, $provides );
 	if ( -e 'META.json' ) {
 		my $file = read_file( 'META.json' );
 		my $metadata = JSON::Any->new->Load( $file );
